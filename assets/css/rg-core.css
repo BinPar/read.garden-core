@@ -1,5 +1,9 @@
+@import url('./vars.css');
+
 /* Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property */
-*:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
+*:where(
+    :not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)
+  ) {
   all: unset;
   display: revert;
 }
@@ -12,12 +16,15 @@
 }
 
 /* Reapply the pointer cursor for anchor tags */
-a, button {
+a,
+button {
   cursor: revert;
 }
 
 /* Remove list styles (bullets/numbers) */
-ol, ul, menu {
+ol,
+ul,
+menu {
   list-style: none;
 }
 
@@ -33,7 +40,8 @@ table {
 }
 
 /* Safari - solving issue when using user-select:none on the <body> text input doesn't working */
-input, textarea {
+input,
+textarea {
   -webkit-user-select: auto;
 }
 
@@ -69,7 +77,7 @@ meter {
 }
 
 /* Revert for bug in Chromium browsers - fix for the content editable attribute will work properly */
-:where([contenteditable]:not([contenteditable="false"])) {
+:where([contenteditable]:not([contenteditable='false'])) {
   -moz-user-modify: read-write;
   -webkit-user-modify: read-write;
   overflow-wrap: break-word;
@@ -78,7 +86,7 @@ meter {
 }
 
 /* Apply back the draggable feature - exist only in Chromium and Safari */
-:where([draggable="true"]) {
+:where([draggable='true']) {
   -webkit-user-drag: element;
 }
 
@@ -97,13 +105,19 @@ html {
 body {
   height: 100%;
   background-color: gray;
-  white-space: nowrap;
   overflow-y: hidden;
   overflow-x: scroll;
   padding: 10px;
 }
 
-div {
+body.flow {
+  column-count: var(--column-count);
+  /* column-gap: var(--column-gap);
+  column-width: var(--column-width);
+  column-rule: 1px solid #eee; */
+}
+
+/* div {
   display: inline-block;
   text-wrap: wrap;
   width: 400px;
@@ -116,4 +130,4 @@ div {
 
 div:last-child {
   margin-right: 0;
-}
+} */

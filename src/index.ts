@@ -1,3 +1,5 @@
+import setup from '@/utils/setup';
+
 const lines =
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet urna at risus facilisis aliquam. Sed id elit non nisi elementum dictum. Integer cursus vel nibh ut hendrerit. Integer et nibh risus. Pellentesque vitae purus eros. Etiam porttitor lectus est. Etiam eleifend rutrum libero. Etiam hendrerit metus justo, ut commodo enim scelerisque sit amet. Nullam ut iaculis justo. Mauris ipsum mi, efficitur sit amet ipsum ac, fringilla cursus velit. Mauris velit sapien, suscipit non ante id, viverra accumsan nibh. Cras iaculis ex at gravida laoreet. Proin sit amet egestas erat.
 Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut vitae laoreet purus, in suscipit eros. Sed ut mi nec nunc mattis tristique. Vestibulum pellentesque vel metus in accumsan. Curabitur lobortis ultrices ultricies. Phasellus id metus nec orci molestie imperdiet. Mauris ultricies facilisis sem, pharetra maximus arcu tempus id.
@@ -12,18 +14,22 @@ Sed pulvinar porttitor nisl, sed convallis justo viverra eget. Orci varius natoq
     '\n',
   );
 
-const contents = 100;
+const contents = 1000;
 
 window.onload = () => {
+  const config = setup({
+    layout: 'flow',
+  });
+
+  console.log({ config, body: document.body });
+
+  document.body.classList.add(config.layout);
+
   for (let i = 0; i < contents; i++) {
-    const div = document.createElement('div');
     lines.forEach((p) => {
-      const pEl = document.createElement('p');
-      pEl.textContent = p;
-      div.appendChild(pEl);
+      const div = document.createElement('div');
+      div.textContent = p;
+      document.body.appendChild(div);
     });
-    document.body.appendChild(div);
   }
 };
-
-console.log('Hello, world!');
