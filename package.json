@@ -15,8 +15,11 @@
     "node": ">=20.16.0"
   },
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "http-server ./web",
+    "build": "node esbuild.mjs",
+    "build:dev": "node esbuild.dev.mjs",
+    "dev": "concurrently \"node esbuild.dev.mjs\" \"http-server ./web -c-1\"",
     "lint": "eslint",
     "preinstall": "npx only-allow pnpm"
   },
@@ -25,6 +28,9 @@
     "@types/node": "^20.14.10",
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
+    "concurrently": "^9.0.1",
+    "esbuild": "0.24.0",
+    "esbuild-plugin-copy": "^2.1.1",
     "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.3",
