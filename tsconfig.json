@@ -1,7 +1,5 @@
 {
-  "compilerOptions": {
-    
-  },
-  "include": ["src/**/*.ts"],
+  "compilerOptions": {},
+  "include": ["**/*.ts", "**/*.cjs", "**/*.js"],
   "exclude": ["node_modules"]
 }
