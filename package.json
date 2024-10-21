@@ -17,10 +17,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "node esbuild.mjs",
+    "build": "pnpm run build:bundle && pnpm run build:declarations",
+    "build:bundle": "node esbuild.mjs",
+    "build:declarations": "tsc --declaration --emitDeclarationOnly --project tsconfig.declarations.json",
     "build:dev": "node esbuild.dev.mjs",
     "dev": "concurrently \"node esbuild.dev.mjs\" \"http-server ./web -c-1\"",
-    "dev:ngrok": "concurrently \"npm run dev\" \"tsx dev/ngrok.ts\"",
+    "dev:ngrok": "concurrently \"pnpm run dev\" \"tsx dev/ngrok.ts\"",
     "lint": "eslint",
     "preinstall": "npx only-allow pnpm"
   },
