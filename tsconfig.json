@@ -20,7 +20,7 @@
     "module": "ES2022",
     "moduleResolution": "Bundler",
     "jsx": "preserve",
-    "incremental": true,
+    "incremental": false,
 
     /* Path Aliases */
     "baseUrl": ".",

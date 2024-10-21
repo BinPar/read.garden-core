@@ -14,16 +14,17 @@ await build({
     {
       out: '',
       in: 'assets/**/*',
-    }
+    },
   ],
   bundle: true,
   minify: true,
   minifyIdentifiers: true,
   minifySyntax: true,
   minifyWhitespace: true,
+  outdir: 'build',
+  outExtension: { '.js': '.cjs' },
   platform: 'node',
   target: 'node20',
-  outdir: 'build',
-  legalComments: 'none',
   sourcemap: false,
+  legalComments: 'none',
 });
