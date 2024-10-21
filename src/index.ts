@@ -25,3 +25,5 @@ window.onload = () => {
     document.body.appendChild(div);
   }
 };
+
+console.log('Hello, world!');
