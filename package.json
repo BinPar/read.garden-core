@@ -1,0 +1,24 @@
+{
+  "name": "read.garden-core",
+  "version": "1.0.0",
+  "description": "Read Garden viewer core",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BinPar/read.garden-core.git"
+  },
+  "author": "Miguel Rodríguez",
+  "bugs": {
+    "url": "https://github.com/BinPar/read.garden-core/issues"
+  },
+  "homepage": "https://github.com/BinPar/read.garden-core#readme",
+  "engines": {
+    "node": ">=20.16.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "dev": "http-server ./web"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
