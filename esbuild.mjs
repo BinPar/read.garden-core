@@ -1,25 +1,29 @@
-import { build } from "esbuild";
-import { copy } from "esbuild-plugin-copy";
+import { build } from 'esbuild';
 
 await build({
-  entryPoints: ["src/index.ts"],
+  loader: {
+    '.js': 'file',
+    '.css': 'css',
+    '.svg': 'copy',
+  },
+  entryPoints: [
+    {
+      out: 'rg-core',
+      in: 'src/index.ts',
+    },
+    {
+      out: '',
+      in: 'assets/**/*',
+    }
+  ],
   bundle: true,
   minify: true,
   minifyIdentifiers: true,
   minifySyntax: true,
   minifyWhitespace: true,
-  platform: "node",
-  target: "node20",
-  format: "cjs",
-  outdir: "build",
-  legalComments: "none",
-  outExtension: { ".js": ".cjs" },
+  platform: 'node',
+  target: 'node20',
+  outdir: 'build',
+  legalComments: 'none',
   sourcemap: false,
-  plugins: [copy({
-    resolveFrom: "cwd",
-    assets: {
-      from: ["./assets/**/*"],
-      to: ["./build"],
-    },
-  })],
 });

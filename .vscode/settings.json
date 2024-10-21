@@ -2,5 +2,8 @@
   "cSpell.words": [
     "outdir",
     "preinstall"
-  ]
+  ],
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "javascript.preferences.importModuleSpecifier": "shortest",
+  "typescript.preferences.importModuleSpecifier": "non-relative"
 }

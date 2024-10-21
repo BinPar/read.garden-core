@@ -1,30 +1,29 @@
 import { context } from 'esbuild';
-// import { copy } from 'esbuild-plugin-copy';
 
 const ctx = await context({
   loader: {
     '.js': 'file',
-
+    '.css': 'css',
+    '.svg': 'copy',
   },
-  entryPoints: ['src/index.ts'],
+  assetNames: '[name][ext]',
+  entryPoints: [
+    {
+      out: 'js/rg-core',
+      in: 'src/index.ts',
+    },
+    {
+      out: '',
+      in: 'assets/**/*',
+    },
+  ],
   bundle: true,
   minify: false,
   platform: 'node',
   target: 'node20',
-  format: 'cjs',
-  outdir: 'web/js',
+  outdir: 'web',
   legalComments: 'none',
-  outExtension: { '.js': '.js' },
-  sourcemap: true,
-  // plugins: [
-  //   copy({
-  //     resolveFrom: 'cwd',
-  //     assets: {
-  //       from: ['./assets/**/*'],
-  //       to: ['./web'],
-  //     },
-  //   }),
-  // ],
+  sourcemap: false, // Not sure
 });
 
 await ctx.watch();
