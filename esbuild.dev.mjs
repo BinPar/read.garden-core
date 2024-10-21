@@ -23,7 +23,7 @@ const ctx = await context({
   target: 'node20',
   outdir: 'web',
   legalComments: 'none',
-  sourcemap: false, // Not sure
+  sourcemap: false,
 });
 
 await ctx.watch();
