@@ -19,9 +19,14 @@ body {
 
 body.flow {
   column-count: var(--column-count);
+  scroll-snap-type: x mandatory;
   /* column-gap: var(--column-gap);
   column-width: var(--column-width);
   column-rule: 1px solid #eee; */
+}
+
+body>*{
+  scroll-snap-align: start;
 }
 
 .rg-buttons-container {

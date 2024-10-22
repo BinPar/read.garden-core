@@ -10,7 +10,7 @@ const render = (buttons: Button[]) => {
         const btn = document.createElement('button');
         btn.textContent = option.text ?? '';
         btn.classList.add('rg-button');
-        btn.addEventListener('mousedown', (ev) => {
+        btn.addEventListener('pointerdown', (ev) => {
           if (ev.button === 0) {
             document.body.scrollLeft += document.body.clientWidth;
           }
