@@ -2,16 +2,19 @@ import { z } from 'zod';
 
 import { fixedOptions } from '@/types/config/fixed';
 import { flowOptions } from '@/types/config/flow';
+import { button } from '@/types/buttons';
 
 export const layout = z.enum(['fixed', 'flow']);
 export const direction = z.enum(['horizontal', 'vertical']);
 
 export const config = z.object({
   layout,
+  buttons: z.array(button).optional(),
 });
 
 export const commonOptions = z.object({
   direction: direction.optional().default('horizontal'),
+  buttons: config.shape.buttons.optional(),
 });
 
 export const options = z.union([

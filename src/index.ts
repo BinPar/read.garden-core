@@ -19,6 +19,7 @@ const contents = 1000;
 window.onload = () => {
   const config = setup({
     layout: 'flow',
+    options: {},
   });
 
   console.log({ config, body: document.body });
@@ -32,4 +33,22 @@ window.onload = () => {
       document.body.appendChild(div);
     });
   }
+
+  console.log({
+    window,
+    outer: window.parent,
+    mainWindow: window.parent.parent,
+  });
+
+  window.test = () => {
+    console.log('test window');
+  };
+
+  window.parent.test = () => {
+    console.log('test window.parent');
+  };
+
+  window.parent.parent.test = () => {
+    console.log('test window.parent.parent');
+  };
 };
