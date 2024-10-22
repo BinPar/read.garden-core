@@ -43,10 +43,12 @@ export const options = z.discriminatedUnion('layout', [
 ]);
 
 export type FlowConfig = z.output<typeof flowConfig>;
-export type FlowOptions = z.input<typeof flowOptions>;
+export type FlowOptionsInput = z.input<typeof flowOptions>;
+export type FlowOptionsOutput = z.output<typeof flowOptions>;
 
 export type FixedConfig = z.output<typeof fixedConfig>;
-export type FixedOptions = z.input<typeof fixedOptions>;
+export type FixedOptionsInput = z.input<typeof fixedOptions>;
+export type FixedOptionsOutput = z.output<typeof fixedOptions>;
 
 export type Layout = z.infer<typeof layout>;
 export type Options = z.input<typeof options>;

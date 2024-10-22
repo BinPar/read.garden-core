@@ -1,4 +1,5 @@
 import { buttonType } from '@/types/buttons';
+import { setConfig } from '@/utils/config';
 
 import setup from '@/utils/setup';
 
@@ -35,6 +36,8 @@ window.onload = () => {
       ],
     },
   });
+
+  setConfig(config);
 
   console.log({ config });
 

@@ -4,11 +4,11 @@ import {
   type CommonConfig,
   type Config,
   type FixedConfig,
-  type FlowConfig,
   type Options,
 } from '@/types/config';
 
 import render from '@/utils/buttons/render';
+import flowSetup from '@/utils/flow/setup';
 
 const setup = (initialOptions: Options): Config => {
   const res = options.safeParse(initialOptions);
@@ -29,9 +29,7 @@ const setup = (initialOptions: Options): Config => {
   }
 
   if (res.data.layout === 'flow') {
-    const flowConfig: FlowConfig = {
-      fontSize: res.data.options.fontSize,
-    };
+    const flowConfig = flowSetup(res.data.options);
 
     return {
       layout: 'flow',
