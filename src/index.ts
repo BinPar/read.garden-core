@@ -1,3 +1,4 @@
+import { buttonType } from '@/types/buttons';
 import type { Options } from '@/types/config';
 import setup from '@/utils/setup';
 
@@ -15,13 +16,16 @@ Sed pulvinar porttitor nisl, sed convallis justo viverra eget. Orci varius natoq
     '\n',
   );
 
-const contents = 1000;
+const contents = 100;
 
 window.onload = () => {
   const options: Options = {
     layout: 'flow',
     options: {
       fontSize: 50,
+      buttons: [{
+        type: buttonType.enum.backward
+      }]
     },
   };
   const config = setup({
