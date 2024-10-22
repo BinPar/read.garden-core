@@ -27,23 +27,22 @@ body.flow {
 .rg-buttons-container {
   position: absolute;
   bottom: 2rem;
-  aspect-ratio: 6/1;
-  width: 40%;
   left: 50%;
-  transform: translate(-50%);
+  transform: translateX(-50%);
   background-color: #0000043f;
   border-radius: 0.5rem;
   box-shadow:
     0 1px 3px 0 rgba(0, 0, 0, 0.1),
     0 1px 2px 0 rgba(0, 0, 0, 0.06);
   display: flex;
-  padding: 1.25rem;
+  padding: 1rem;
   gap: 1rem;
 }
 
 .rg-button {
+  width: 2rem;
+  height: 2rem;
   background-color: red;
-  aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
   align-items: center;

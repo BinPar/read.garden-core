@@ -26,11 +26,11 @@ window.onload = () => {
       fontSize: 16,
       buttons: [
         {
-          text: 'Backwards',
+          text: '<',
           type: buttonType.enum.backward,
         },
         {
-          text: 'Forward',
+          text: '>',
           type: buttonType.enum.forward,
         },
       ],
