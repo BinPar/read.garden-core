@@ -20,7 +20,7 @@ const setupDomEvents = () => {
 
       if (touchX <= pixels) {
         console.log({ pixels, touchX });
-        document.body.scrollLeft += document.body.clientWidth;
+        document.body.scrollLeft -= document.body.clientWidth;
       }
 
       if (touchX > w - pixels) {
