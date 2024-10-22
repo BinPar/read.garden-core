@@ -41,13 +41,16 @@ window.onload = () => {
 
   console.log({ config });
 
-  document.body.classList.add(config.layout);
+  const container = document.createElement('div');
+  container.id = 'container';
+  container.classList.add(config.layout);
+  document.body.appendChild(container);
 
   for (let i = 0; i < contents; i++) {
     lines.forEach((p) => {
       const div = document.createElement('div');
       div.textContent = p;
-      document.body.appendChild(div);
+      container.appendChild(div);
     });
   }
 

@@ -5,17 +5,29 @@ const render = (buttons: Button[]) => {
     const container = document.createElement('div');
     container.classList.add('rg-buttons-container');
     for (let i = 0; i < buttons.length; i++) {
-      const option = buttons[i];
-      if (option) {
-        const btn = document.createElement('button');
-        btn.textContent = option.text ?? '';
-        btn.classList.add('rg-button');
-        btn.addEventListener('pointerdown', (ev) => {
+      const button = buttons[i];
+      if (button) {
+        const domButton = document.createElement('button');
+        domButton.textContent = button.text ?? '';
+        domButton.classList.add('rg-button');
+        domButton.addEventListener('pointerdown', (ev) => {
           if (ev.button === 0) {
-            document.body.scrollLeft += document.body.clientWidth;
+            if (button.type === 'forward') {
+              document.body.querySelector('#container')?.scrollBy({
+                left: document.body.clientWidth,
+                behavior: 'instant',
+              });
+            }
+
+            if (button.type === 'backward') {
+              document.body.querySelector('#container')?.scrollBy({
+                left: -document.body.clientWidth,
+                behavior: 'instant',
+              });
+            }
           }
         });
-        container.append(btn);
+        container.append(domButton);
       }
     }
     document.body.append(container);

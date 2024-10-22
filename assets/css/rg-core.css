@@ -11,27 +11,39 @@ html {
 body {
   height: 100%;
   background-color: gray;
-  overflow-y: hidden;
-  overflow-x: scroll;
-  padding: 10px;
-  user-select: none;
+  /* user-select: none; */
 }
 
-body.flow {
+#container {
+  height: 100%;
+  overflow: hidden;
+}
+
+.flow {
+  text-align: justify;
+  /* scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: calc(var(--column-gap) / 2); */
+  will-change: column-count;
+  /* column-width: var(--column-width); */
   column-count: var(--column-count);
-  scroll-snap-type: x mandatory;
-  /* column-gap: var(--column-gap);
-  column-width: var(--column-width);
-  column-rule: 1px solid #eee; */
+  column-gap: var(--column-gap);
+  padding-inline: calc(var(--column-gap) / 2);
 }
 
-body>*{
+.flow > * {
   scroll-snap-align: start;
+  content-visibility: auto;
+  display: inline;
+}
+
+.flow > *::after {
+  content: '\A';
+  white-space: pre;
 }
 
 .rg-buttons-container {
   position: absolute;
-  bottom: 2rem;
+  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   background-color: #0000043f;
@@ -42,11 +54,12 @@ body>*{
   display: flex;
   padding: 1rem;
   gap: 1rem;
+  z-index: 1;
 }
 
 .rg-button {
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   background-color: red;
   display: flex;
   justify-content: center;

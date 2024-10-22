@@ -1,4 +1,5 @@
 import debounce from '@/tools/debounce';
+import setCssVariable from '@/tools/setCssVariable';
 import type {
   CommonConfig,
   FlowConfig,
@@ -7,7 +8,7 @@ import type {
 
 const charWidthFactor = 1.65;
 
-const getColumnNumber = (config: FlowConfig) => {
+const updateColumnNumber = (config: FlowConfig) => {
   const {
     fontSize,
     maxColumns: absoluteMaxColumns,
@@ -42,11 +43,18 @@ const getColumnNumber = (config: FlowConfig) => {
     maxColumns,
   });
 
+  const gap = 32;
+  const columnWidth =
+    (clientWidth - gap - gap * (columnNumber - 1)) / columnNumber;
+
   console.log({
     columnNumber,
+    columnWidth,
   });
 
-  return columnNumber;
+  setCssVariable('column-count', `${columnNumber}`);
+  setCssVariable('column-width', `${columnWidth}px`);
+  setCssVariable('column-gap', `${gap}px`);
 };
 
 const setup = (
@@ -75,12 +83,12 @@ const setup = (
     window.addEventListener(
       'resize',
       debounce(() => {
-        getColumnNumber(config);
+        updateColumnNumber(config);
       }, 300),
     );
   }
 
-  getColumnNumber(config);
+  updateColumnNumber(config);
 
   // TODO: Margins and paddings should be configurable
 
