@@ -19,7 +19,9 @@ const contents = 1000;
 window.onload = () => {
   const config = setup({
     layout: 'flow',
-    options: {},
+    options: {
+      
+    },
   });
 
   console.log({ config, body: document.body });

@@ -8,3 +8,5 @@ export const button = z.object({
   icon: z.string().optional(),
   title: z.string().optional(),
 });
+
+export type Button = z.infer<typeof button>;

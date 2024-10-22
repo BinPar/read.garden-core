@@ -3,6 +3,7 @@ import {
   type Config,
   type Options,
 } from '@/types/config';
+import render from '@/utils/buttons/render';
 
 const setup = (options: Options) => {
   const res = optionsSchema.safeParse(options);
@@ -17,6 +18,10 @@ const setup = (options: Options) => {
     layout: res.data.layout,
     buttons: res.data.options.buttons,
   };
+
+  if (config.buttons?.length) {
+    render(config.buttons);
+  }
 
   return config;
 };
