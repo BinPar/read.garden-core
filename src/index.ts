@@ -17,7 +17,7 @@ Sed pulvinar porttitor nisl, sed convallis justo viverra eget. Orci varius natoq
     '\n',
   );
 
-const contents = 100;
+const contents = 1000;
 
 window.onload = () => {
   const config = setup({

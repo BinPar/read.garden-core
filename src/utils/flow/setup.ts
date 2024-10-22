@@ -8,9 +8,14 @@ import type {
 const charWidthFactor = 1.65;
 
 const getColumnNumber = (config: FlowConfig) => {
-  const { fontSize, maxColumns, minCharsPerColumn, maxCharsPerColumn } = config;
+  const {
+    fontSize,
+    maxColumns: absoluteMaxColumns,
+    minCharsPerColumn,
+    maxCharsPerColumn,
+  } = config;
 
-  if (maxColumns === 1) {
+  if (absoluteMaxColumns === 1) {
     return 1;
   }
 
@@ -18,19 +23,23 @@ const getColumnNumber = (config: FlowConfig) => {
   const charWidth = fontSize / charWidthFactor;
   const minColumnWidth = minCharsPerColumn * charWidth;
   const maxColumnWidth = maxCharsPerColumn * charWidth;
-  const maxColumnsByMinWidth = Math.floor(clientWidth / minColumnWidth);
-  const maxColumnsByMaxWidth = Math.round(clientWidth / maxColumnWidth);
+  const minColumns = Math.floor(clientWidth / maxColumnWidth);
+  const maxColumns = Math.floor(clientWidth / minColumnWidth);
+  // const maxColumnsByMinWidth = Math.floor(clientWidth / minColumnWidth);
+  // const maxColumnsByMaxWidth = Math.round(clientWidth / maxColumnWidth);
   const columnNumber = Math.max(
     1,
-    Math.min(maxColumnsByMinWidth, maxColumnsByMaxWidth, maxColumns),
+    minColumns,
+    Math.min(maxColumns, absoluteMaxColumns),
   );
 
   console.log({
     clientWidth,
     minColumnWidth,
     maxColumnWidth,
-    maxColumnsByMinWidth,
-    maxColumnsByMaxWidth,
+    absoluteMaxColumns,
+    minColumns,
+    maxColumns,
   });
 
   console.log({
@@ -55,11 +64,21 @@ const setup = (
 
   console.log('flow setup');
 
-  const onResize = () => {
-    getColumnNumber(config);
-  };
+  const meta = document.createElement('meta');
+  meta.name = 'viewport';
+  meta.content = 'user-scalable=0';
 
-  window.addEventListener('resize', debounce(onResize, 300));
+  document.head.appendChild(meta);
+  window.parent.parent.document.head.appendChild(meta);
+
+  if (maxColumns > 1) {
+    window.addEventListener(
+      'resize',
+      debounce(() => {
+        getColumnNumber(config);
+      }, 300),
+    );
+  }
 
   getColumnNumber(config);
 

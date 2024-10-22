@@ -12,9 +12,6 @@ const render = (buttons: Button[]) => {
         btn.classList.add('rg-button');
         btn.addEventListener('mousedown', (ev) => {
           if (ev.button === 0) {
-            console.log(
-              `Acabas de pulsar un botón con el titulo: ${option.text ?? ''}`,
-            );
             document.body.scrollLeft += document.body.clientWidth;
           }
         });
