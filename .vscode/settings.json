@@ -5,5 +5,11 @@
   ],
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "javascript.preferences.importModuleSpecifier": "shortest",
-  "typescript.preferences.importModuleSpecifier": "non-relative"
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "files.readonlyInclude": {
+    "build/**": true,
+    "web/css/**": true,
+    "web/img/**": true,
+    "web/js/**": true
+  }
 }
