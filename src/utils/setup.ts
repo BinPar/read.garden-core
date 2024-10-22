@@ -9,6 +9,7 @@ import {
 
 import render from '@/utils/buttons/render';
 import flowSetup from '@/utils/flow/setup';
+import setupDomEvents from '@/utils/setupDomEvents';
 
 const setup = (initialOptions: Options): Config => {
   const res = options.safeParse(initialOptions);
@@ -18,6 +19,8 @@ const setup = (initialOptions: Options): Config => {
       `Invalid config with following error(s):\n${JSON.stringify(res.error.issues)}`,
     );
   }
+
+  setupDomEvents();
 
   const commonConfig: CommonConfig = {
     buttons: res.data.options.buttons,
