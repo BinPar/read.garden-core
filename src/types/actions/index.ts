@@ -30,6 +30,12 @@ export const commonAction = z
 
 export const action = commonAction.or(fixedAction).or(flowAction);
 
+export type FixedActionType = z.infer<typeof fixedActionType>;
+export type FixedAction = z.infer<typeof fixedAction>;
+
+export type FlowActionType = z.infer<typeof flowActionType>;
+export type FlowAction = z.infer<typeof flowAction>;
+
 export type ActionType = z.infer<typeof actionType>;
 export type CommonAction = z.infer<typeof commonAction>;
 export type Action = z.infer<typeof action>;

@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 export const flowActionType = z.enum(['setFontSize']);
-export type FlowActionType = z.infer<typeof flowActionType>;
 
 export const flowAction = z
   .object({
@@ -15,4 +14,3 @@ export const flowAction = z
       }),
     ]),
   );
-export type FlowAction = z.infer<typeof flowAction>;

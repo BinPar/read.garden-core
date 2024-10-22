@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 export const fixedActionType = z.enum(['setZoom']);
-export type FixedActionType = z.infer<typeof fixedActionType>;
 
 export const fixedAction = z
   .object({
@@ -15,4 +14,3 @@ export const fixedAction = z
       }),
     ]),
   );
-export type FixedAction = z.infer<typeof fixedAction>;

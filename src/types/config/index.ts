@@ -42,38 +42,13 @@ export const options = z.discriminatedUnion('layout', [
   }),
 ]);
 
-export type Layout = z.infer<typeof layout>;
-
-export type CommonConfig = z.output<typeof commonConfig>;
 export type FlowConfig = z.output<typeof flowConfig>;
+export type FlowOptions = z.input<typeof flowOptions>;
+
 export type FixedConfig = z.output<typeof fixedConfig>;
-export type Config = z.output<typeof config>;
+export type FixedOptions = z.input<typeof fixedOptions>;
 
+export type Layout = z.infer<typeof layout>;
 export type Options = z.input<typeof options>;
-
-const testFlowOptions: Options = {
-  layout: 'flow',
-  options: {},
-};
-
-const testFixedOptions: Options = {
-  layout: 'fixed',
-  options: {},
-};
-
-const testFlowConfig: Config = {
-  layout: 'flow',
-  fontSize: 12,
-};
-
-const testFixedConfig: Config = {
-  layout: 'fixed',
-  // fit: 'page',
-};
-
-console.log({
-  testFlowOptions,
-  testFixedOptions,
-  testFlowConfig,
-  testFixedConfig,
-});
+export type CommonConfig = z.output<typeof commonConfig>;
+export type Config = z.output<typeof config>;
