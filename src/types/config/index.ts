@@ -19,7 +19,7 @@ export const config = z
     buttons,
   })
   .and(
-    z.union([
+    z.discriminatedUnion('layout', [
       fixedConfig.extend({ layout: z.literal(layout.Values.fixed) }),
       flowConfig.extend({ layout: z.literal(layout.Values.flow) }),
     ]),
@@ -31,7 +31,7 @@ export const commonOptions = z.object({
   buttons,
 });
 
-export const options = z.union([
+export const options = z.discriminatedUnion('layout', [
   z.object({
     layout: z.literal(layout.Values.fixed),
     options: commonOptions.merge(fixedOptions),
