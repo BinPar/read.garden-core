@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+export const fontSize = z.number().min(8).max(24);
+
 export const flowOptions = z.object({
-  fontSize: z.number().min(8).max(24).optional().default(12),
+  fontSize: fontSize.or(z.undefined()).default(12),
+});
+
+export const flowConfig = z.object({
+  fontSize,
 });

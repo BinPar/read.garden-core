@@ -1,3 +1,4 @@
+import type { Options } from '@/types/config';
 import setup from '@/utils/setup';
 
 const lines =
@@ -17,6 +18,12 @@ Sed pulvinar porttitor nisl, sed convallis justo viverra eget. Orci varius natoq
 const contents = 1000;
 
 window.onload = () => {
+  const options: Options = {
+    layout: 'flow',
+    options: {
+      fontSize: 50,
+    },
+  };
   const config = setup({
     layout: 'flow',
     options: {
@@ -24,7 +31,7 @@ window.onload = () => {
     },
   });
 
-  console.log({ config, body: document.body });
+  console.log({ options, config });
 
   document.body.classList.add(config.layout);
 

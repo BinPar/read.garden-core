@@ -1,29 +1,59 @@
 import {
-  options as optionsSchema,
+  options,
+  type CommonConfig,
   type Config,
+  type FixedConfig,
+  type FlowConfig,
   type Options,
 } from '@/types/config';
+import { flowOptions } from '@/types/config/flow';
+
 import render from '@/utils/buttons/render';
 
-const setup = (options: Options) => {
-  const res = optionsSchema.safeParse(options);
+const setup = (initialOptions: Options): Config => {
+  const res = options.safeParse(initialOptions);
+
+  console.log(flowOptions.safeParse({}));
 
   if (!res.success) {
     throw new Error(
-      `Invalid config with following error(s):\n${res.error.errors.join('\n')}`,
+      `Invalid config with following error(s):\n${JSON.stringify(res.error.issues)}`,
     );
   }
 
-  const config: Config = {
-    layout: res.data.layout,
+  const commonConfig: CommonConfig = {
     buttons: res.data.options.buttons,
   };
 
-  if (config.buttons?.length) {
-    render(config.buttons);
+  if (commonConfig.buttons?.length) {
+    render(commonConfig.buttons);
   }
 
-  return config;
+  if (res.data.layout === 'flow') {
+    const flowConfig: FlowConfig = {
+      fontSize: res.data.options.fontSize,
+    };
+
+    return {
+      layout: 'flow',
+      ...commonConfig,
+      ...flowConfig,
+    };
+  }
+
+  if (res.data.layout === 'fixed') {
+    const fixedConfig: FixedConfig = {
+      fit: res.data.options.fit,
+    };
+
+    return {
+      layout: 'fixed',
+      ...commonConfig,
+      ...fixedConfig,
+    };
+  }
+
+  throw new Error('Invalid layout');
 };
 
 export default setup;
