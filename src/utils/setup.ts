@@ -6,14 +6,11 @@ import {
   type FlowConfig,
   type Options,
 } from '@/types/config';
-import { flowOptions } from '@/types/config/flow';
 
 import render from '@/utils/buttons/render';
 
 const setup = (initialOptions: Options): Config => {
   const res = options.safeParse(initialOptions);
-
-  console.log(flowOptions.safeParse({}));
 
   if (!res.success) {
     throw new Error(
