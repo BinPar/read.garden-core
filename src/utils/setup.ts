@@ -1,3 +1,4 @@
+import isTouchDevice from '@/tools/isTouchDevice';
 import {
   options,
   type CommonConfig,
@@ -20,6 +21,7 @@ const setup = (initialOptions: Options): Config => {
 
   const commonConfig: CommonConfig = {
     buttons: res.data.options.buttons,
+    touch: res.data.options.touch ?? isTouchDevice(),
   };
 
   if (commonConfig.buttons?.length) {

@@ -6,10 +6,12 @@ import { button } from '@/types/buttons';
 
 export const layout = z.enum(['fixed', 'flow']);
 export const direction = z.enum(['horizontal', 'vertical']);
+export const touch = z.boolean();
 export const buttons = z.array(button).optional();
 
 export const commonConfig = z.object({
   buttons,
+  touch,
 });
 
 export const config = z
@@ -25,6 +27,7 @@ export const config = z
 
 export const commonOptions = z.object({
   direction: direction.optional(),
+  touch: touch.optional(),
   buttons,
 });
 
@@ -65,7 +68,7 @@ const testFlowConfig: Config = {
 
 const testFixedConfig: Config = {
   layout: 'fixed',
-  fit: 'page',
+  // fit: 'page',
 };
 
 console.log({
