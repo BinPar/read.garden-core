@@ -25,7 +25,12 @@ window.onload = () => {
       fontSize: 16,
       buttons: [
         {
+          text: 'Backwards',
           type: buttonType.enum.backward,
+        },
+        {
+          text: 'Forward',
+          type: buttonType.enum.forward,
         },
       ],
     },

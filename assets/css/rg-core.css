@@ -149,6 +149,9 @@ div:last-child {
 
 .defaultButtonStyle {
   background-color: red;
-  width: 20%;
+  aspect-ratio: 1/1;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
 
 }
