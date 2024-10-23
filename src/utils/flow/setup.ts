@@ -26,8 +26,6 @@ const updateColumnNumber = (config: FlowConfig) => {
   const maxColumnWidth = maxCharsPerColumn * charWidth;
   const minColumns = Math.floor(clientWidth / maxColumnWidth);
   const maxColumns = Math.floor(clientWidth / minColumnWidth);
-  // const maxColumnsByMinWidth = Math.floor(clientWidth / minColumnWidth);
-  // const maxColumnsByMaxWidth = Math.round(clientWidth / maxColumnWidth);
   const columnNumber = Math.max(
     1,
     minColumns,
