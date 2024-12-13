@@ -10,38 +10,43 @@ html {
 
 body {
   height: 100%;
+  overflow: hidden;
   background-color: gray;
-  /* user-select: none; */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
-#container {
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* #container {
   height: 100%;
   overflow: hidden;
-}
+} */
 
 .flow {
   text-align: justify;
-  /* scroll-snap-type: x mandatory;
-  scroll-padding-inline-start: calc(var(--column-gap) / 2); */
   will-change: column-count;
-  /* column-width: var(--column-width); */
   column-count: var(--column-count);
   column-gap: var(--column-gap);
   padding-inline: calc(var(--column-gap) / 2);
 }
 
 .flow > * {
-  scroll-snap-align: start;
   content-visibility: auto;
-  display: inline;
 }
 
-.flow > *::after {
-  content: '\A';
-  white-space: pre;
+#rg-ui-container {
+  position: static;
+  height: 0px;
+  width: 0px;
+  overflow: visible;
+  left: 0;
+  bottom: 0;
 }
 
-.rg-buttons-container {
+#rg-buttons-container {
   position: absolute;
   bottom: 1rem;
   left: 50%;

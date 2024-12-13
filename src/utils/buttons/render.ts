@@ -1,9 +1,9 @@
 import type { Button } from '@/types/buttons';
 
-const render = (buttons: Button[]) => {
+const render = (buttons: Button[], uiContainer: HTMLDivElement) => {
   if (buttons.length) {
     const container = document.createElement('div');
-    container.classList.add('rg-buttons-container');
+    container.id = 'rg-buttons-container';
     for (let i = 0; i < buttons.length; i++) {
       const button = buttons[i];
       if (button) {
@@ -13,14 +13,14 @@ const render = (buttons: Button[]) => {
         domButton.addEventListener('pointerdown', (ev) => {
           if (ev.button === 0) {
             if (button.type === 'forward') {
-              document.body.querySelector('#container')?.scrollBy({
+              document.body.scrollBy({
                 left: document.body.clientWidth,
                 behavior: 'instant',
               });
             }
 
             if (button.type === 'backward') {
-              document.body.querySelector('#container')?.scrollBy({
+              document.body.scrollBy({
                 left: -document.body.clientWidth,
                 behavior: 'instant',
               });
@@ -30,7 +30,7 @@ const render = (buttons: Button[]) => {
         container.append(domButton);
       }
     }
-    document.body.append(container);
+    uiContainer.append(container);
   }
 };
 

@@ -6,8 +6,8 @@ const setupDomEvents = () => {
 
   const handleTouchStart = (event: PointerEvent) => {
     touches.add(event.pointerId);
-    if(touches.size == 1 ) {
-        timeout = setTimeout(handleLongPress, longPressDuration);
+    if (touches.size == 1) {
+      timeout = setTimeout(handleLongPress, longPressDuration);
     }
   };
 
@@ -31,6 +31,7 @@ const setupDomEvents = () => {
   };
 
   const handleTouchEnd = (event: PointerEvent) => {
+    console.log(event.type);
     touches.delete(event.pointerId);
     clearTimeout(timeout);
     checkIfScreenXBorderIsPressed(event);

@@ -28,7 +28,11 @@ const setup = (initialOptions: Options): Config => {
   };
 
   if (commonConfig.buttons?.length) {
-    render(commonConfig.buttons);
+    const uiContainer = document.createElement('div');
+    uiContainer.id = 'rg-ui-container';
+    document.body.append(uiContainer);
+
+    render(commonConfig.buttons, uiContainer);
   }
 
   if (res.data.layout === 'flow') {

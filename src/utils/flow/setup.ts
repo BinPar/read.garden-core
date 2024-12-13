@@ -51,7 +51,7 @@ const updateColumnNumber = (config: FlowConfig) => {
   });
 
   setCssVariable('column-count', `${columnNumber}`);
-  setCssVariable('column-width', `${columnWidth}px`);
+  // setCssVariable('column-width', `${columnWidth}px`);
   setCssVariable('column-gap', `${gap}px`);
 };
 

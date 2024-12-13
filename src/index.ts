@@ -1,4 +1,4 @@
-import { buttonType } from '@/types/buttons';
+// import { buttonType } from '@/types/buttons';
 import { setConfig } from '@/utils/config';
 
 import setup from '@/utils/setup';
@@ -17,23 +17,23 @@ Sed pulvinar porttitor nisl, sed convallis justo viverra eget. Orci varius natoq
     '\n',
   );
 
-const contents = 1000;
+const contents = 20;
 
 window.onload = () => {
   const config = setup({
     layout: 'flow',
     options: {
       fontSize: 16,
-      buttons: [
-        {
-          text: '<',
-          type: buttonType.enum.backward,
-        },
-        {
-          text: '>',
-          type: buttonType.enum.forward,
-        },
-      ],
+      // buttons: [
+      //   {
+      //     text: '<',
+      //     type: buttonType.enum.backward,
+      //   },
+      //   {
+      //     text: '>',
+      //     type: buttonType.enum.forward,
+      //   },
+      // ],
     },
   });
 
@@ -41,16 +41,19 @@ window.onload = () => {
 
   console.log({ config });
 
-  const container = document.createElement('div');
-  container.id = 'container';
-  container.classList.add(config.layout);
-  document.body.appendChild(container);
+  // const container = document.createElement('div');
+  // container.id = 'container';
+  // container.classList.add(config.layout);
+  // document.body.appendChild(container);
+  
+  document.body.classList.add(config.layout);
 
   for (let i = 0; i < contents; i++) {
     lines.forEach((p) => {
       const div = document.createElement('div');
       div.textContent = p;
-      container.appendChild(div);
+      // container.appendChild(div);
+      document.body.appendChild(div);
     });
   }
 
