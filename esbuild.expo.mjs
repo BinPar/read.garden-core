@@ -28,6 +28,4 @@ const ctx = await context({
   sourcemap: false,
 });
 
-console.log(packageJson.readGarden.publish.expoPath);
-
 await ctx.watch();

@@ -45,6 +45,9 @@ importers:
       http-server:
         specifier: ^14.1.1
         version: 14.1.1
+      js-base64:
+        specifier: ^3.7.7
+        version: 3.7.7
       ngrok:
         specifier: 5.0.0-beta.2
         version: 5.0.0-beta.2
@@ -1120,6 +1123,9 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+
+  js-base64@3.7.7:
+    resolution: {integrity: sha512-7rCnleh0z2CkXhH67J8K1Ytz0b2Y+yxTPL+/KOJoa20hfnVQ/3/T6W/KflYI4bRHRagNeXeU2bkNGI3v1oS/lw==}
 
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
@@ -2728,6 +2734,8 @@ snapshots:
   isarray@2.0.5: {}
 
   isexe@2.0.0: {}
+
+  js-base64@3.7.7: {}
 
   js-yaml@4.1.0:
     dependencies:

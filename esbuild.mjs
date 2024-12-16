@@ -22,7 +22,6 @@ await build({
   minifySyntax: true,
   minifyWhitespace: true,
   outdir: 'build',
-  outExtension: { '.js': '.cjs' },
   platform: 'node',
   target: 'node20',
   sourcemap: false,

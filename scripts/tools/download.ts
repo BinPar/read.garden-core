@@ -1,0 +1,40 @@
+import * as fs from 'fs';
+import * as https from 'https';
+
+/**
+ * Downloads file from URL to local disk
+ * @param url URL to download
+ * @param filePath File to write download content
+ */
+const download = (url: string, filePath: string): Promise<void> =>
+  new Promise<void>((resolve, reject) => {
+    const file = fs.createWriteStream(filePath);
+    https
+      .get(url, (response): void => {
+        if (response.statusCode !== 200) {
+          reject(
+            new Error(
+              `Response status was ${response.statusCode || 'unknown'}`,
+            ),
+          );
+        } else {
+          console.info(`Downloading ${url}...`);
+          response.on('error', reject);
+          file.on('error', reject);
+          file.on('finish', (): void => {
+            file.close(() => {
+              console.info(`Downloaded ${url}...`);
+              resolve();
+            });
+          });
+          response.pipe(file);
+        }
+      })
+      .on('error', (ex) => {
+        fs.unlink(filePath, () => {
+          reject(ex);
+        });
+      });
+  });
+
+export default download;
