@@ -4,26 +4,23 @@ import { fixedConfig, fixedOptions } from '@/types/config/fixed';
 import { flowConfig, flowOptions } from '@/types/config/flow';
 import { button } from '@/types/buttons';
 
-export const layout = z.enum(['fixed', 'flow']);
-export const direction = z.enum(['horizontal', 'vertical']);
-export const touch = z.boolean();
-export const buttons = z.array(button).optional();
+const layout = z.enum(['fixed', 'flow']);
+const direction = z.enum(['horizontal', 'vertical']);
+const touch = z.boolean();
+const buttons = z.array(button).optional();
 
-export const commonConfig = z.object({
+const commonConfig = z.object({
   buttons,
   touch,
+  direction,
 });
 
-export const config = z
-  .object({
-    buttons,
-  })
-  .and(
-    z.discriminatedUnion('layout', [
-      fixedConfig.extend({ layout: z.literal(layout.Values.fixed) }),
-      flowConfig.extend({ layout: z.literal(layout.Values.flow) }),
-    ]),
-  );
+export const config = commonConfig.and(
+  z.discriminatedUnion('layout', [
+    fixedConfig.extend({ layout: z.literal(layout.Values.fixed) }),
+    flowConfig.extend({ layout: z.literal(layout.Values.flow) }),
+  ]),
+);
 
 export const commonOptions = z.object({
   direction: direction.optional(),
@@ -41,6 +38,8 @@ export const options = z.discriminatedUnion('layout', [
     options: commonOptions.merge(flowOptions),
   }),
 ]);
+
+export const defaultDirection = direction.Values.horizontal;
 
 export type FlowConfig = z.output<typeof flowConfig>;
 export type FlowOptionsInput = z.input<typeof flowOptions>;

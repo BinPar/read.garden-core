@@ -1,5 +1,6 @@
 import isTouchDevice from '@/tools/isTouchDevice';
 import {
+  defaultDirection,
   options,
   type CommonConfig,
   type Config,
@@ -25,6 +26,7 @@ const setup = (initialOptions: Options): Config => {
   const commonConfig: CommonConfig = {
     buttons: res.data.options.buttons,
     touch: res.data.options.touch ?? isTouchDevice(),
+    direction: res.data.options.direction ?? defaultDirection,
   };
 
   if (commonConfig.buttons?.length) {
