@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import { fixedConfig, fixedOptions } from '@/types/config/fixed';
-import { flowConfig, flowOptions } from '@/types/config/flow';
-import { button } from '@/types/buttons';
+import { fixedConfig, fixedOptions } from '@/@types/config/fixed';
+import { flowConfig, flowOptions } from '@/@types/config/flow';
+import { button } from '@/@types/buttons';
 
 const layout = z.enum(['fixed', 'flow']);
 const direction = z.enum(['horizontal', 'vertical']);

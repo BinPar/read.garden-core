@@ -4,7 +4,7 @@ import type {
   CommonConfig,
   FlowConfig,
   FlowOptionsOutput,
-} from '@/types/config';
+} from '@/@types/config';
 
 const charWidthFactor = 1.65;
 

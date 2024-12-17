@@ -25,7 +25,7 @@ const envSchema = z.object({
 const parsedEnv = envSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
-  throw new Error(parsedEnv.error.issues.join('\n'));
+  throw new Error(parsedEnv.error.toString());
 }
 
 export const { data: env } = parsedEnv;

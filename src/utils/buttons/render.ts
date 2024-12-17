@@ -1,4 +1,4 @@
-import type { Button } from '@/types/buttons';
+import type { Button } from '@/@types/buttons';
 
 const render = (buttons: Button[], uiContainer: HTMLDivElement) => {
   if (buttons.length) {

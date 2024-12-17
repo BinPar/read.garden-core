@@ -1,7 +1,9 @@
 {
   "cSpell.words": [
+    "isbn",
     "outdir",
-    "preinstall"
+    "preinstall",
+    "tspc"
   ],
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.preferences.importModuleSpecifier": "non-relative",

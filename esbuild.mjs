@@ -8,7 +8,7 @@ await build({
   },
   entryPoints: [
     {
-      out: 'rg-core',
+      out: 'index',
       in: 'src/index.ts',
     },
     {
@@ -18,12 +18,12 @@ await build({
   ],
   bundle: true,
   minify: true,
-  minifyIdentifiers: true,
+  // minifyIdentifiers: true,
   minifySyntax: true,
   minifyWhitespace: true,
   outdir: 'build',
   platform: 'node',
-  target: 'node20',
+  // target: ['es2019'],
   sourcemap: false,
   legalComments: 'none',
-});
+}).catch(() => process.exit(1));

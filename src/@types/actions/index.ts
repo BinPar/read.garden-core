@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { fixedAction, fixedActionType } from '@/types/actions/fixed';
-import { flowAction, flowActionType } from '@/types/actions/flow';
+import { fixedAction, fixedActionType } from '@/@types/actions/fixed';
+import { flowAction, flowActionType } from '@/@types/actions/flow';
 
 export const commonActionType = z.enum(['goForward', 'goBackward']);
 

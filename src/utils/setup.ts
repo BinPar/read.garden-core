@@ -6,7 +6,7 @@ import {
   type Config,
   type FixedConfig,
   type Options,
-} from '@/types/config';
+} from '@/@types/config';
 
 import render from '@/utils/buttons/render';
 import flowSetup from '@/utils/flow/setup';
@@ -17,7 +17,7 @@ const setup = (initialOptions: Options): Config => {
 
   if (!res.success) {
     throw new Error(
-      `Invalid config with following error(s):\n${JSON.stringify(res.error.issues)}`,
+      `Invalid config with following error(s):\n${res.error.toString()}`,
     );
   }
 

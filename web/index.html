@@ -10,17 +10,37 @@
         padding: 0;
         overflow: hidden;
       }
-      iframe {
-        border: none;
-        height: 100%;
-        width: 100%;
-      }
     </style>
   </head>
   <body>
-    <img src="http://localhost:3000/set-cookies?key=rg-d6ceff3d0829166581184e16e43bd206" />
-    <iframe
-      srcdoc='<html><head><link rel="preload" as="script" href="/js/rg-core.js" /><link rel="preload" as="style" href="/css/rg-core.css" /><link rel="stylesheet" type="text/css" href="/css/rg-core.css" /></head><body><script src="/js/rg-core.js"></script></body></html>'
-    ></iframe>
+    <script type="text/javascript">
+      fetch('http://localhost:3001/get-books').then(async (res) => {
+        const { books, cloudFrontUrl } = await res.json();
+        if (cloudFrontUrl && books && books.length) {
+          window.sessionStorage.setItem('rg_dev_cloudFrontUrl', cloudFrontUrl);
+          const booksList = document.getElementById('books-list');
+          if (booksList) {
+            for (let i = 0, l = books.length; i < l; i++) {
+              const book = books[i];
+              if (book) {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `/viewer.html?key=${book}`;
+                a.title = book;
+                a.textContent = book;
+                li.appendChild(a);
+                booksList.appendChild(li);
+              }
+            }
+          }
+        }
+      });
+    </script>
+    <h1>Read.Garden Core Viewer</h1>
+    <div>
+      If you want to add some books for testing, check server env.<br />You'll
+      also need to setup redis, CloudFront and project slug.
+    </div>
+    <ul id="books-list"></ul>
   </body>
 </html>
