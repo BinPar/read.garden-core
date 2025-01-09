@@ -22,8 +22,8 @@ await build({
   minifySyntax: true,
   minifyWhitespace: true,
   outdir: 'build',
-  platform: 'node',
-  // target: ['es2019'],
+  platform: 'neutral',
+  target: ['es2019'],
   sourcemap: false,
   legalComments: 'none',
 }).catch(() => process.exit(1));

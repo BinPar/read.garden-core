@@ -1,12 +1,8 @@
-import { z } from 'zod';
+export type ButtonType = 'forward' | 'backward';
 
-export const buttonType = z.enum(['forward', 'backward']);
-
-export const button = z.object({
-  type: buttonType,
-  text: z.string().optional(),
-  icon: z.string().optional(),
-  title: z.string().optional(),
-});
-
-export type Button = z.infer<typeof button>;
+export interface Button {
+  type: ButtonType;
+  text?: string;
+  icon?: string;
+  title?: string;
+}

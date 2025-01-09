@@ -1,74 +1,68 @@
 import debounce from '@/tools/debounce';
 import setCssVariable from '@/tools/setCssVariable';
-import type {
-  CommonConfig,
-  FlowConfig,
-  FlowOptionsOutput,
-} from '@/@types/config';
+import { getState } from '@/utils/state';
+import { getConfig } from '@/utils/config';
 
 const charWidthFactor = 1.65;
 
-const updateColumnNumber = (config: FlowConfig) => {
+const updateColumnNumber = (state = getState(), config = getConfig()) => {
+  if (config.layout !== 'flow' || state.layout !== 'flow') {
+    return;
+  }
+
   const {
     fontSize,
     maxColumns: absoluteMaxColumns,
     minCharsPerColumn,
     maxCharsPerColumn,
+    columnGap: desiredColumnGap,
   } = config;
 
   if (absoluteMaxColumns === 1) {
     return 1;
   }
 
-  const { clientWidth } = document.body;
+  const { container } = state;
+
+  const containerRect = container.getBoundingClientRect();
+  const containerWidth = Math.floor(containerRect.width);
+  // const containerHeight = Math.floor(containerRect.height);
+
   const charWidth = fontSize / charWidthFactor;
-  const minColumnWidth = minCharsPerColumn * charWidth;
-  const maxColumnWidth = maxCharsPerColumn * charWidth;
-  const minColumns = Math.floor(clientWidth / maxColumnWidth);
-  const maxColumns = Math.floor(clientWidth / minColumnWidth);
-  const columnNumber = Math.max(
-    1,
-    minColumns,
-    Math.min(maxColumns, absoluteMaxColumns),
+  const minColumnWidth = Math.min(
+    minCharsPerColumn * charWidth,
+    containerWidth,
+  );
+  const maxColumnWidth = Math.min(
+    maxCharsPerColumn * charWidth + desiredColumnGap,
+    containerWidth,
   );
 
-  console.log({
-    clientWidth,
-    minColumnWidth,
-    maxColumnWidth,
-    absoluteMaxColumns,
-    minColumns,
-    maxColumns,
-  });
+  if (config.direction === 'horizontal') {
+    const doubleColumnWidth = containerWidth / 2 - desiredColumnGap;
+    const columnsInViewport = doubleColumnWidth < minColumnWidth ? 1 : 2;
+    const totalColumnWidth = containerWidth / columnsInViewport;
+    const columnGap = Math.max(config.columnGap, totalColumnWidth - maxColumnWidth);
+    const columnWidth = totalColumnWidth - columnGap;
+  
+    console.log({
+      containerWidth,
+      minColumnWidth,
+      maxColumnWidth,
+      columnsInViewport,
+      columnGap,
+      columnWidth,
+    });
+  
+    setCssVariable('column-count', `${columnsInViewport}`);
+    setCssVariable('column-width', `${columnWidth}px`);
+    setCssVariable('column-gap', `${columnGap}px`);
 
-  const gap = 32;
-  const columnWidth =
-    (clientWidth - gap - gap * (columnNumber - 1)) / columnNumber;
-
-  console.log({
-    columnNumber,
-    columnWidth,
-  });
-
-  setCssVariable('column-count', `${columnNumber}`);
-  // setCssVariable('column-width', `${columnWidth}px`);
-  setCssVariable('column-gap', `${gap}px`);
+  }
 };
 
-const setup = (
-  flowOptions: FlowOptionsOutput,
-): FlowConfig & Partial<CommonConfig> => {
-  const { fontSize, maxColumns, minCharsPerColumn, maxCharsPerColumn } =
-    flowOptions;
-
-  const config: FlowConfig & Partial<CommonConfig> = {
-    fontSize,
-    maxColumns,
-    minCharsPerColumn,
-    maxCharsPerColumn,
-  };
-
-  console.log('flow setup');
+const setup = (state = getState(), config = getConfig()) => {
+  console.log('flow setup', state);
 
   const meta = document.createElement('meta');
   meta.name = 'viewport';
@@ -77,16 +71,14 @@ const setup = (
   document.head.appendChild(meta);
   window.parent.parent.document.head.appendChild(meta);
 
-  if (maxColumns > 1) {
-    window.addEventListener(
-      'resize',
-      debounce(() => {
-        updateColumnNumber(config);
-      }, 300),
-    );
-  }
+  window.addEventListener(
+    'resize',
+    debounce(() => {
+      updateColumnNumber();
+    }, 300),
+  );
 
-  updateColumnNumber(config);
+  updateColumnNumber();
 
   // TODO: Margins and paddings should be configurable
 

@@ -1,6 +1,3 @@
-@import url('./reset.css');
-@import url('./vars.css');
-
 html {
   height: 100%;
   width: 100%;
@@ -16,57 +13,86 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
 }
 
-body::-webkit-scrollbar {
-  display: none;
-}
-
-/* #container {
+#container {
   height: 100%;
   overflow: hidden;
+  background-color: sandybrown;
+}
+
+/* #container::-webkit-scrollbar {
+  display: none;
 } */
 
-.flow {
-  text-align: justify;
-  will-change: column-count;
-  column-count: var(--column-count);
-  column-gap: var(--column-gap);
-  padding-inline: calc(var(--column-gap) / 2);
-}
-
-.flow > * {
-  content-visibility: auto;
-}
-
-#rg-ui-container {
-  position: static;
-  height: 0px;
-  width: 0px;
-  overflow: visible;
+#bg-cleaner {
+  position: absolute;
+  background-color: #fff;
+  top: 0;
+  right: 0;
   left: 0;
   bottom: 0;
+  z-index: 10;
+  pointer-events: none;
 }
 
-#rg-buttons-container {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #0000043f;
-  border-radius: 0.5rem;
-  box-shadow:
-    0 1px 3px 0 rgba(0, 0, 0, 0.1),
-    0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  display: flex;
-  padding: 1rem;
-  gap: 1rem;
-  z-index: 1;
+.fixed #bg-cleaner {
+  background-color: #eee;
 }
 
-.rg-button {
-  width: 3rem;
-  height: 3rem;
-  background-color: red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#viewer {
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  margin-top: var(--viewer-margin-top);
+  pointer-events: var(--pointer-events, auto);
+  overflow-y: hidden;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: calc(var(--column-gap) / 2);
+  scroll-behavior: smooth;
+}
+
+#wrapper {
+  height: 100%;
+  padding: var(--padding-top) 0 var(--padding-bottom) 0;
+  clear: both;
+  cursor: var(--drag-cursor, grab);
+  user-select: none;
+}
+
+.flow #wrapper {
+  padding: var(--padding-top) calc(var(--column-gap) / 2) var(--padding-bottom);
+  font-size: var(--font-size);
+  font-family: var(--font-family);
+}
+
+.flow.horizontal #wrapper {
+  column-count: var(--column-count);
+  column-rule: 1px solid #eee;
+  column-gap: var(--column-gap);
+  column-width: var(--column-width);
+  touch-action: pan-x;
+}
+
+#chapter-end {
+  width: 100%;
+  height: 0;
+  font-size: 0;
+  -moz-user-select: var(--user-select-end);
+  user-select: var(--user-select-end);
+  -webkit-user-select: var(--user-select-end);
+}
+
+#wrapper span[data-page]::before {
+  content: '';
+  display: block;
+  scroll-snap-align: start;
+}
+
+#chapter-end::before {
+  content: '';
+  display: block;
+  scroll-snap-align: end;
+  scroll-padding-right: calc(var(--column-gap) / 2);
 }

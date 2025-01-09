@@ -23,11 +23,11 @@ const ctx = await context({
   ],
   bundle: true,
   minify: false,
+  outdir: 'web',
   platform: 'browser',
   target: ['es2019'],
-  outdir: 'web',
+  sourcemap: true,
   legalComments: 'none',
-  sourcemap: false,
 });
 
 await ctx.watch();

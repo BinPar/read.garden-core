@@ -1,65 +1,55 @@
-import isTouchDevice from '@/tools/isTouchDevice';
-import {
-  defaultDirection,
-  options,
-  type CommonConfig,
-  type Config,
-  type FixedConfig,
-  type Options,
-} from '@/@types/config';
+import { type Options } from '@/@types/config';
 
-import render from '@/utils/buttons/render';
-import flowSetup from '@/utils/flow/setup';
+// import render from '@/utils/buttons/render';
 import setupDomEvents from '@/utils/setupDomEvents';
+import setupDomElements from '@/utils/setupDomElements';
+import { getState, init as initState } from '@/utils/state';
+import { getConfig, init as initConfig } from '@/utils/config';
+import setupCssVars from '@/utils/setupCssVars';
+import { defaultState } from '@/utils/defaults';
+import loadFirstContent from '@/utils/loadFirstContent';
+import genericCatch from '@/tools/genericCatch';
 
-const setup = (initialOptions: Options): Config => {
-  const res = options.safeParse(initialOptions);
+const setup = (initialOptions: Options) => {
+  console.log('setup', initialOptions);
 
-  if (!res.success) {
-    throw new Error(
-      `Invalid config with following error(s):\n${res.error.toString()}`,
-    );
-  }
+  const readMode = initialOptions.options.readMode ?? defaultState.readMode;
 
+  const domElements = setupDomElements();
+  initConfig(initialOptions);
+  initState(initialOptions, { readMode, ...domElements });
+
+  const config = getConfig();
+  const state = getState();
+
+  domElements.container.classList.add(config.layout);
+  domElements.container.classList.add(config.direction);
+
+  setupCssVars();
   setupDomEvents();
 
-  const commonConfig: CommonConfig = {
-    buttons: res.data.options.buttons,
-    touch: res.data.options.touch ?? isTouchDevice(),
-    direction: res.data.options.direction ?? defaultDirection,
+  // buttons in options
+
+  let initialContentSlug = initialOptions.options.initialContentSlug;
+  if (initialOptions.options.jsonData) {
+    if (!initialContentSlug) {
+      initialContentSlug = initialOptions.options.jsonData.initialContentSlug;
+    }
+  }
+
+  if (!initialContentSlug) {
+    console.warn('Missing initial content slug, assuming "1"');
+    initialContentSlug = '1';
+  }
+
+  loadFirstContent(initialContentSlug).catch(
+    genericCatch('Exception loading first content'),
+  );
+
+  return {
+    state,
+    config,
   };
-
-  if (commonConfig.buttons?.length) {
-    const uiContainer = document.createElement('div');
-    uiContainer.id = 'rg-ui-container';
-    document.body.append(uiContainer);
-
-    render(commonConfig.buttons, uiContainer);
-  }
-
-  if (res.data.layout === 'flow') {
-    const flowConfig = flowSetup(res.data.options);
-
-    return {
-      layout: 'flow',
-      ...commonConfig,
-      ...flowConfig,
-    };
-  }
-
-  if (res.data.layout === 'fixed') {
-    const fixedConfig: FixedConfig = {
-      fit: res.data.options.fit,
-    };
-
-    return {
-      layout: 'fixed',
-      ...commonConfig,
-      ...fixedConfig,
-    };
-  }
-
-  throw new Error('Invalid layout');
 };
 
 export default setup;

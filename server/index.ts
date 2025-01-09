@@ -1,4 +1,6 @@
 import express from 'express';
+import chalk from 'chalk';
+import ngrok from 'ngrok';
 import cors from 'cors';
 import { default as jsonwebtoken } from 'jsonwebtoken';
 import { z } from 'zod';
@@ -7,10 +9,13 @@ import getSignerUrl from 'server/lib/getSignerUrl';
 import setValue from 'server/tools/redis/setValue';
 
 import { env, timestamp } from './env';
+import genericCatch from '@/tools/genericCatch';
 
 const app = express();
 
 app.use(cors());
+
+let ngrokUrl = '';
 
 app.get('/set-cookies', async (req, res) => {
   const signerUrl = getSignerUrl();
@@ -39,14 +44,42 @@ app.get('/set-cookies', async (req, res) => {
 });
 
 app.get('/get-books', (_, res) => {
-  res
-    .status(200)
-    .json({
-      books: env.BOOKS_S3_KEYS,
-      cloudFrontUrl: `${env.CLOUDFRONT_URL}/${env.BOOKS_S3_FOLDER}`,
-    });
+  res.status(200).json({
+    books: env.BOOKS_S3_KEYS,
+    cloudFrontUrl: `${env.CLOUDFRONT_URL}/${env.BOOKS_S3_FOLDER}`,
+    ngrokUrl,
+  });
 });
 
-app.listen(3001, () => {
-  console.log('Hello there');
+const port = process.env.SERVER_PORT || 3001;
+
+app.listen(port, () => {
+  console.info(
+    `::: ${chalk.yellow(`Server listening at`)} ${chalk.green(`http://localhost:${port}`)}`,
+  );
+  if (process.env.FOR_MOBILE) {
+    ngrok
+      .connect({
+        proto: 'http',
+        addr: port,
+      })
+      .then((serverUrl) => {
+        console.info(
+          `::: ${chalk.yellow('Server available with Ngrok on:')} ${chalk.green(serverUrl)}`,
+        );
+        ngrokUrl = serverUrl;
+        ngrok
+          .connect({
+            proto: 'http',
+            addr: process.env.PORT ?? 3000,
+          })
+          .then((url) => {
+            console.info(
+              `::: ${chalk.yellow('Web available with Ngrok on:')} ${chalk.green(`${url}?server=${encodeURIComponent(serverUrl)}`)}`,
+            );
+          })
+          .catch(genericCatch('Error serving web with ngrok'));
+      })
+      .catch(genericCatch('Error serving server with ngrok'));
+  }
 });

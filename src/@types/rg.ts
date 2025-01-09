@@ -43,4 +43,6 @@ export interface FixedData extends CommonData {
   contents: FixedContent[];
 }
 
+export type Content = FlowContent | FixedContent;
+
 export type JsonData = FlowData | FixedData;

@@ -14,10 +14,19 @@
   </head>
   <body>
     <script type="text/javascript">
-      fetch('http://localhost:3001/get-books').then(async (res) => {
-        const { books, cloudFrontUrl } = await res.json();
+      const url = new URL(document.location.toString());
+      const server = url.searchParams.get('server');
+      fetch(
+        `${server ? decodeURIComponent(server) : 'http://localhost:3001'}/get-books`,
+      ).then(async (res) => {
+        const { books, cloudFrontUrl, ngrokUrl } = await res.json();
         if (cloudFrontUrl && books && books.length) {
           window.sessionStorage.setItem('rg_dev_cloudFrontUrl', cloudFrontUrl);
+          if (ngrokUrl) {
+            window.sessionStorage.setItem('rg_dev_ngrokUrl', ngrokUrl);
+          } else {
+            window.sessionStorage.removeItem('rg_dev_ngrokUrl');
+          }
           const booksList = document.getElementById('books-list');
           if (booksList) {
             for (let i = 0, l = books.length; i < l; i++) {

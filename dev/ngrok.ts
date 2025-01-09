@@ -1,13 +1,15 @@
 import ngrok from 'ngrok';
 import chalk from 'chalk';
 
+console.log(process.env.PORT);
+
 await ngrok
   .connect({
     proto: 'http',
-    addr: 8080,
+    addr: process.env.PORT ?? 3000,
   })
   .then((url) => {
     console.info(
-      `::: ${chalk.yellow('And available with Ngrok on:')} ${chalk.green(url)}`,
+      `::: ${chalk.yellow('Web available with Ngrok on:')} ${chalk.green(url)}`,
     );
   });
