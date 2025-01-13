@@ -42,18 +42,14 @@ body {
   position: relative;
   float: left;
   width: 100%;
-  height: 100%;
+  height: 100svh;
   z-index: 20;
   margin-top: var(--viewer-margin-top);
   pointer-events: var(--pointer-events, auto);
-  overflow-y: hidden;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: calc(var(--column-gap) / 2);
-  scroll-behavior: smooth;
 }
 
 #wrapper {
+  position: relative;
   height: 100%;
   padding: var(--padding-top) 0 var(--padding-bottom) 0;
   clear: both;
@@ -73,26 +69,69 @@ body {
   column-gap: var(--column-gap);
   column-width: var(--column-width);
   touch-action: pan-x;
+  overflow-y: hidden;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
 }
 
+.flow #content {
+  text-align: justify;
+}
+
+.flow #snaps-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.flow #snaps-container > div {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background-color: transparent;
+  pointer-events: none;
+  scroll-snap-align: start;
+}
+
+#chapter-start,
 #chapter-end {
   width: 100%;
-  height: 0;
+  height: 100%;
+  position: relative;
   font-size: 0;
   -moz-user-select: var(--user-select-end);
   user-select: var(--user-select-end);
   -webkit-user-select: var(--user-select-end);
 }
 
-#wrapper span[data-page]::before {
+#chapter-start::before,
+#chapter-start::after {
   content: '';
   display: block;
-  scroll-snap-align: start;
+  position: absolute;
+  inset: 0;
 }
 
-#chapter-end::before {
+#chapter-start::before {
+  background-color: green;
+}
+
+#chapter-start::after {
   content: '';
   display: block;
-  scroll-snap-align: end;
-  scroll-padding-right: calc(var(--column-gap) / 2);
+  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 0, 0, 0));
+}
+
+#chapter-start {
+  break-after: column;
+}
+
+#chapter-end {
+  break-before: column;
+}
+
+#content span[data-page]::before {
+  content: '';
+  display: block;
 }

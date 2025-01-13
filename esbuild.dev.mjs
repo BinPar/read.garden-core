@@ -5,6 +5,7 @@ const ctx = await context({
     '.js': 'file',
     '.css': 'css',
     '.svg': 'copy',
+    '.png': 'copy',
   },
   assetNames: '[name][ext]',
   entryPoints: [

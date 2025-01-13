@@ -21,6 +21,7 @@ const getClient = async () => {
   }
 
   if (!client) {
+    console.info('Connecting to redis', env.REDIS_URL);
     creating = true;
 
     client = createClient({

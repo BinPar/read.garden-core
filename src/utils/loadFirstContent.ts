@@ -24,6 +24,14 @@ const loadFirstContent = async (contentSlug: string) => {
         state.content.innerHTML = processedHtml;
         content.html = processedHtml;
 
+        const chapterStart = state.doc.createElement('div');
+        chapterStart.id = 'chapter-start';
+        state.wrapper.prepend(chapterStart);
+
+        const inlineEnd = state.doc.createElement('div');
+        inlineEnd.id = 'inline-end';
+        state.wrapper.appendChild(inlineEnd);
+
         const chapterEnd = state.doc.createElement('div');
         chapterEnd.id = 'chapter-end';
         state.wrapper.appendChild(chapterEnd);

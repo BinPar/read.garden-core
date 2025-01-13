@@ -32,7 +32,7 @@ export const init = (
     common = {
       ...common,
       ...processJsonData(initialOptions.options.jsonData),
-    }
+    };
   }
 
   if (layout === 'fixed') {
@@ -49,6 +49,8 @@ export const init = (
       ...common,
       layout: 'flow',
       columnWidth: 0,
+      columnGap: 0,
+      columnCount: 0,
     };
   }
 };

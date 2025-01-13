@@ -1,0 +1,26 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#outer {
+  border: 1px solid red;
+  background-color: aliceblue;
+}
+
+#inner {
+  --gap: 80px;
+  max-height: 90svh;
+  overflow-x: auto;
+  columns: 2;
+  column-gap: var(--gap);
+  column-rule: 1px solid #aaa;
+  padding: 10px calc(var(--gap) / 2);
+  text-align: justify;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: calc(var(--gap) / 2);
+}
+
+#inner div, #inner p {
+  scroll-snap-align: start;
+}

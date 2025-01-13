@@ -1,6 +1,6 @@
 import debounce from '@/tools/debounce';
 import setCssVariable from '@/tools/setCssVariable';
-import { getState } from '@/utils/state';
+import { getState, updateState } from '@/utils/state';
 import { getConfig } from '@/utils/config';
 
 const charWidthFactor = 1.65;
@@ -40,25 +40,57 @@ const updateColumnNumber = (state = getState(), config = getConfig()) => {
 
   if (config.direction === 'horizontal') {
     const doubleColumnWidth = containerWidth / 2 - desiredColumnGap;
-    const columnsInViewport = doubleColumnWidth < minColumnWidth ? 1 : 2;
-    const totalColumnWidth = containerWidth / columnsInViewport;
-    const columnGap = Math.max(config.columnGap, totalColumnWidth - maxColumnWidth);
+    const columnCount = doubleColumnWidth < minColumnWidth ? 1 : 2;
+    const totalColumnWidth = containerWidth / columnCount;
+    const columnGap = Math.max(
+      config.columnGap,
+      totalColumnWidth - maxColumnWidth,
+    );
     const columnWidth = totalColumnWidth - columnGap;
-  
+
     console.log({
       containerWidth,
       minColumnWidth,
       maxColumnWidth,
-      columnsInViewport,
+      columnCount,
       columnGap,
       columnWidth,
     });
-  
-    setCssVariable('column-count', `${columnsInViewport}`);
+
+    setCssVariable('column-count', `${columnCount}`);
     setCssVariable('column-width', `${columnWidth}px`);
     setCssVariable('column-gap', `${columnGap}px`);
 
+    updateState({
+      columnWidth,
+      columnGap,
+      columnCount,
+    });
   }
+};
+
+const setupSnaps = (state = getState()) => {
+  if (state.layout !== 'flow') {
+    return;
+  }
+
+  const totalColumnWidth = state.columnWidth + state.columnGap;
+  const { width } = state.content.getBoundingClientRect();
+
+  const snapsContainer = state.doc.createElement('div');
+  snapsContainer.id = 'snaps-container';
+
+  state.wrapper.appendChild(snapsContainer);
+
+  let left = totalColumnWidth;
+  while (left < width) {
+    const snap = state.doc.createElement('div');
+    snap.style.left = `${left}px`;
+    snapsContainer.appendChild(snap);
+    left += totalColumnWidth;
+  }
+
+  state.wrapper.scrollLeft = totalColumnWidth;
 };
 
 const setup = (state = getState(), config = getConfig()) => {
@@ -79,6 +111,7 @@ const setup = (state = getState(), config = getConfig()) => {
   );
 
   updateColumnNumber();
+  setupSnaps();
 
   // TODO: Margins and paddings should be configurable
 

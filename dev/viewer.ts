@@ -29,6 +29,6 @@ window.onload = () => {
         })
         .catch(genericCatch(`Error fetching ${indexJson}`));
     });
-    img.src = `${ngrokUrl || 'http://localhost:3001'}/set-cookies?key=${key}`;
+    img.src = `${ngrokUrl && !window.location.host.includes('localhost') ? ngrokUrl : 'http://localhost:3001'}/set-cookies?key=${key}`;
   }
 };

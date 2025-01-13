@@ -5,6 +5,7 @@ await build({
     '.js': 'file',
     '.css': 'css',
     '.svg': 'copy',
+    '.png': 'copy',
   },
   entryPoints: [
     {
