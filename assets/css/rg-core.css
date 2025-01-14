@@ -55,6 +55,11 @@ body {
   clear: both;
   cursor: var(--drag-cursor, grab);
   user-select: none;
+  transition: transform 0.5s;
+}
+
+.ui-mode #wrapper {
+  transform: scale(0.75) translate(200px, 20px);
 }
 
 .flow #wrapper {

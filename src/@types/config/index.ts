@@ -1,3 +1,4 @@
+import type { Button, ButtonType } from '@/@types/buttons';
 import type { Direction, Layout } from '@/@types/common';
 import type { FixedConfig } from '@/@types/config/fixed';
 import type { FlowConfig } from '@/@types/config/flow';
@@ -32,13 +33,23 @@ export type InitialOptions = RequiredOptions &
 export type Config = CommonConfig &
   (({ layout: 'flow' } & FlowConfig) | ({ layout: 'fixed' } & FixedConfig));
 
-export type Options = { layout: Layout } & (
-  | {
-      layout: 'flow';
-      options: InitialOptions & Partial<FlowConfig>;
-    }
-  | {
-      layout: 'fixed';
-      options: InitialOptions & Partial<FixedConfig>;
-    }
-);
+export interface UIOptions {
+  buttons?: ButtonType[] | Button[];
+}
+
+export interface CommonOptions {
+  layout: Layout;
+  ui?: UIOptions;
+}
+
+export type Options = CommonOptions &
+  (
+    | {
+        layout: 'flow';
+        options: InitialOptions & Partial<FlowConfig>;
+      }
+    | {
+        layout: 'fixed';
+        options: InitialOptions & Partial<FixedConfig>;
+      }
+  );

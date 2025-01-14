@@ -1,4 +1,4 @@
-export type ButtonType = 'forward' | 'backward';
+export type ButtonType = 'forward' | 'backward' | 'switchMode';
 
 export interface Button {
   type: ButtonType;

@@ -25,6 +25,13 @@ window.onload = () => {
               baseUrl,
               jsonData: data,
             },
+            ui: {
+              buttons: [
+                {
+                  type: 'switchMode',
+                },
+              ],
+            },
           });
         })
         .catch(genericCatch(`Error fetching ${indexJson}`));

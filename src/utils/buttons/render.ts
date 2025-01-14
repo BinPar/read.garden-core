@@ -1,36 +1,49 @@
-import type { Button } from '@/@types/buttons';
+import type { Button, ButtonType } from '@/@types/buttons';
+import { getState, updateState } from '@/utils/state';
 
-const render = (buttons: Button[], uiContainer: HTMLDivElement) => {
+const render = (buttons: ButtonType[] | Button[], state = getState()) => {
   if (buttons.length) {
-    const container = document.createElement('div');
-    container.id = 'rg-buttons-container';
+    const uiContainer = state.doc.createElement('div');
+    uiContainer.id = 'ui-container';
     for (let i = 0; i < buttons.length; i++) {
       const button = buttons[i];
       if (button) {
         const domButton = document.createElement('button');
-        domButton.textContent = button.text ?? '';
-        domButton.classList.add('rg-button');
+        const type = typeof button === 'string' ? button : button.type;
+        const text =
+          (typeof button === 'string' ? button : button.text) ?? type;
+        domButton.innerHTML = text;
+        const title = typeof button === 'string' ? undefined : button.title;
+        if (title) {
+          domButton.title = title;
+        }
+        domButton.classList.add('button');
         domButton.addEventListener('pointerdown', (ev) => {
           if (ev.button === 0) {
-            if (button.type === 'forward') {
+            if (type === 'forward') {
               document.body.scrollBy({
                 left: document.body.clientWidth,
                 behavior: 'instant',
               });
             }
 
-            if (button.type === 'backward') {
+            if (type === 'backward') {
               document.body.scrollBy({
                 left: -document.body.clientWidth,
                 behavior: 'instant',
               });
             }
+
+            if (type === 'switchMode') {
+              state.container.classList.toggle('ui-mode');
+            }
           }
         });
-        container.append(domButton);
+        uiContainer.append(domButton);
       }
     }
-    uiContainer.append(container);
+    state.viewer.appendChild(uiContainer);
+    updateState({ uiContainer });
   }
 };
 

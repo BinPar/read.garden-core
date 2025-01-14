@@ -18,6 +18,8 @@ export interface CommonState {
   wrapper: HTMLDivElement;
   content: HTMLDivElement;
 
+  uiContainer?: HTMLDivElement;
+
   readMode: boolean;
 
   contentsBySlug?: Map<string, CoreContent>;

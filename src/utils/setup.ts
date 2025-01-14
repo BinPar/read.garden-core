@@ -1,6 +1,6 @@
 import { type Options } from '@/@types/config';
 
-// import render from '@/utils/buttons/render';
+import render from '@/utils/buttons/render';
 import setupDomEvents from '@/utils/setupDomEvents';
 import setupDomElements from '@/utils/setupDomElements';
 import { getState, init as initState } from '@/utils/state';
@@ -15,7 +15,7 @@ const setup = (initialOptions: Options) => {
 
   const readMode = initialOptions.options.readMode ?? defaultState.readMode;
 
-  const domElements = setupDomElements();
+  const domElements = setupDomElements(initialOptions);
   initConfig(initialOptions);
   initState(initialOptions, { readMode, ...domElements });
 
@@ -27,8 +27,6 @@ const setup = (initialOptions: Options) => {
 
   setupCssVars();
   setupDomEvents();
-
-  // buttons in options
 
   let initialContentSlug = initialOptions.options.initialContentSlug;
   if (initialOptions.options.jsonData) {
@@ -45,6 +43,10 @@ const setup = (initialOptions: Options) => {
   loadFirstContent(initialContentSlug).catch(
     genericCatch('Exception loading first content'),
   );
+
+  if (initialOptions.ui?.buttons?.length) {
+    render(initialOptions.ui.buttons, state);
+  }
 
   return {
     state,
