@@ -55,15 +55,25 @@ body {
   clear: both;
   cursor: var(--drag-cursor, grab);
   user-select: none;
-  transition: transform 0.5s;
+  transition: transform 0.3s;
+  transform: scale(var(--scale, 1))
+    translate(var(--ui-left, 0), var(--ui-top, 0));
 }
 
 .ui-mode #wrapper {
-  transform: scale(0.75) translate(200px, 20px);
+  --scale: 0.75;
+  --ui-left: 0;
+  --ui-top: 0;
+}
+
+.flow.ui-mode #wrapper {
+  --ui-top: calc(var(--pages-labels-height) * -1);
 }
 
 .flow #wrapper {
-  padding: var(--padding-top) calc(var(--column-gap) / 2) var(--padding-bottom);
+  height: calc(100% + 100px);
+  padding: var(--padding-top) calc(var(--column-gap) / 2)
+    calc(var(--padding-bottom) + calc(var(--pages-labels-height) * 2));
   font-size: var(--font-size);
   font-family: var(--font-family);
 }
@@ -73,9 +83,12 @@ body {
   column-rule: 1px solid #eee;
   column-gap: var(--column-gap);
   column-width: var(--column-width);
-  touch-action: pan-x;
   overflow-y: hidden;
   overflow-x: auto;
+}
+
+.flow.horizontal:not(.touching) #wrapper {
+  touch-action: pan-x;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 }
@@ -84,19 +97,37 @@ body {
   text-align: justify;
 }
 
-.flow #snaps-container {
+#snaps-container {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.flow #snaps-container > div {
+#snaps-container > div {
   position: absolute;
   width: 1px;
   height: 1px;
   background-color: transparent;
   pointer-events: none;
   scroll-snap-align: start;
+}
+
+#page-labels-container {
+  position: absolute;
+  left: 0;
+  top: calc(100% - calc(var(--pages-labels-height) * 2));
+  height: var(--pages-labels-height);
+  display: flex;
+  flex-direction: row;
+  padding-left: calc(var(--column-width) + var(--column-gap));
+}
+
+#page-labels-container > div {
+  width: calc(var(--column-width) + var(--column-gap));
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #chapter-start,
@@ -125,7 +156,11 @@ body {
 #chapter-start::after {
   content: '';
   display: block;
-  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 0, 0, 0));
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 1),
+    rgba(255, 0, 0, 0)
+  );
 }
 
 #chapter-start {

@@ -45,9 +45,20 @@ export const init = (
   }
 
   if (layout === 'flow') {
+    const snapsContainer = initialState.doc.createElement('div');
+    snapsContainer.id = 'snaps-container';
+    initialState.wrapper.appendChild(snapsContainer);
+    
+    const pagesLabelsContainer = initialState.doc.createElement('div');
+    pagesLabelsContainer.id = 'page-labels-container';
+    initialState.wrapper.appendChild(pagesLabelsContainer);
+
     state = {
       ...common,
       layout: 'flow',
+      snaps: new Set<number>(),
+      snapsContainer,
+      pageLabelsContainer: pagesLabelsContainer,
       columnWidth: 0,
       columnGap: 0,
       columnCount: 0,

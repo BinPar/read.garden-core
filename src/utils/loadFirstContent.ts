@@ -26,15 +26,15 @@ const loadFirstContent = async (contentSlug: string) => {
 
         const chapterStart = state.doc.createElement('div');
         chapterStart.id = 'chapter-start';
-        state.wrapper.prepend(chapterStart);
+        state.content.insertAdjacentElement('beforebegin', chapterStart);
 
         const inlineEnd = state.doc.createElement('div');
         inlineEnd.id = 'inline-end';
-        state.wrapper.appendChild(inlineEnd);
+        state.wrapper.insertAdjacentElement('afterend', inlineEnd);
 
         const chapterEnd = state.doc.createElement('div');
         chapterEnd.id = 'chapter-end';
-        state.wrapper.appendChild(chapterEnd);
+        state.wrapper.insertAdjacentElement('afterend', chapterEnd);
       }
     }
   }

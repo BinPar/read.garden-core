@@ -77,20 +77,53 @@ const setupSnaps = (state = getState()) => {
   const totalColumnWidth = state.columnWidth + state.columnGap;
   const { width } = state.content.getBoundingClientRect();
 
-  const snapsContainer = state.doc.createElement('div');
-  snapsContainer.id = 'snaps-container';
-
-  state.wrapper.appendChild(snapsContainer);
+  state.snapsContainer.innerHTML = '';
+  state.snaps.clear();
 
   let left = totalColumnWidth;
   while (left < width) {
+    state.snaps.add(left);
     const snap = state.doc.createElement('div');
     snap.style.left = `${left}px`;
-    snapsContainer.appendChild(snap);
+    state.snapsContainer.appendChild(snap);
     left += totalColumnWidth;
   }
 
   state.wrapper.scrollLeft = totalColumnWidth;
+};
+
+const setupPageLabels = (state = getState()) => {
+  if (state.layout !== 'flow') {
+    return;
+  }
+
+  state.pageLabelsContainer.innerHTML = '';
+
+  const snaps = new Map<number, string>();
+
+  state.content
+    .querySelectorAll<HTMLSpanElement>('[data-page]')
+    .forEach((element) => {
+      const rect = element.getBoundingClientRect();
+      const page = element.dataset.page;
+      const snap = rect.left - state.columnGap / 2;
+      console.log({ snap, page, left: rect.left });
+      if (page) {
+        if (!snaps.has(snap)) {
+          const label = state.doc.createElement('div');
+          label.classList.add('page-label');
+          label.style.left = `${snap}px`;
+          label.textContent = page;
+          state.pageLabelsContainer.appendChild(label);
+        }
+        snaps.set(snap, page);
+      }
+    });
+
+  // TODO: Check columns with missing label (missing snaps)
+  // let lastPage = '';
+  // state.snaps.forEach((snap) => {
+  // });
 };
 
 const setup = (state = getState(), config = getConfig()) => {
@@ -112,6 +145,7 @@ const setup = (state = getState(), config = getConfig()) => {
 
   updateColumnNumber();
   setupSnaps();
+  setupPageLabels();
 
   // TODO: Margins and paddings should be configurable
 

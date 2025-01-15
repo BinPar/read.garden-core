@@ -45,7 +45,7 @@ const setupDomElements = (initialOptions: Options) => {
   wrapper.appendChild(content);
 
   iframeDoc.body.appendChild(container);
-
+  
   return {
     doc: iframeDoc,
     container,
