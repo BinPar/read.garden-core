@@ -16,6 +16,7 @@ const updateColumnNumber = (state = getState(), config = getConfig()) => {
     minCharsPerColumn,
     maxCharsPerColumn,
     columnGap: desiredColumnGap,
+    minColumnGap,
   } = config;
 
   if (absoluteMaxColumns === 1) {
@@ -31,20 +32,20 @@ const updateColumnNumber = (state = getState(), config = getConfig()) => {
   const charWidth = fontSize / charWidthFactor;
   const minColumnWidth = Math.min(
     minCharsPerColumn * charWidth,
-    containerWidth,
+    containerWidth - minColumnGap,
   );
   const maxColumnWidth = Math.min(
     maxCharsPerColumn * charWidth + desiredColumnGap,
-    containerWidth,
+    containerWidth - minColumnGap,
   );
 
   if (config.direction === 'horizontal') {
     const doubleColumnWidth = containerWidth / 2 - desiredColumnGap;
     const columnCount = doubleColumnWidth < minColumnWidth ? 1 : 2;
     const totalColumnWidth = containerWidth / columnCount;
-    const columnGap = Math.max(
-      config.columnGap,
-      totalColumnWidth - maxColumnWidth,
+    const columnGap = Math.min(
+      containerWidth - minColumnWidth,
+      Math.max(config.columnGap, totalColumnWidth - maxColumnWidth),
     );
     const columnWidth = totalColumnWidth - columnGap;
 
@@ -126,30 +127,50 @@ const setupPageLabels = (state = getState()) => {
   // });
 };
 
-const setup = (state = getState(), config = getConfig()) => {
-  console.log('flow setup', state);
-
-  const meta = document.createElement('meta');
-  meta.name = 'viewport';
-  meta.content = 'user-scalable=0';
-
-  document.head.appendChild(meta);
-  window.parent.parent.document.head.appendChild(meta);
-
-  window.addEventListener(
-    'resize',
-    debounce(() => {
-      updateColumnNumber();
-    }, 300),
-  );
-
+export const flowSetup = () => {
   updateColumnNumber();
   setupSnaps();
   setupPageLabels();
+};
+
+const setup = (state = getState()) => {
+  console.log('flow init', state, state.loadingStyles, [
+    ...Array.from(state.doc.styleSheets),
+  ]);
+
+  // TODO: Improve fonts CSS setup
+
+  const fontsStyles =
+    window.parent.parent.document.querySelector<HTMLStyleElement>('#fonts-css');
+
+  if (fontsStyles) {
+    const clone = fontsStyles.cloneNode(true);
+    (clone as HTMLStyleElement).onload = () => {
+      console.log('fonts loaded');
+      updateState((current) => {
+        if (current.coreCssLoaded && current.contentCssLoaded) {
+          return { fontsCssLoaded: true, loadingStyles: false };
+        }
+        return { fontsCssLoaded: true };
+      });
+    };
+    state.doc.head.appendChild(clone);
+  }
+
+  const meta = document.createElement('meta');
+  meta.name = 'viewport';
+  meta.content = 'user-scalable=0, width=device-width, initial-scale=1';
+
+  window.parent.parent.document.head.appendChild(meta);
+  state.doc.head.appendChild(meta.cloneNode(true));
+
+  window.addEventListener('resize', debounce(flowSetup, 300));
+
+  if (!state.loadingStyles) {
+    flowSetup();
+  }
 
   // TODO: Margins and paddings should be configurable
-
-  return config;
 };
 
 export default setup;

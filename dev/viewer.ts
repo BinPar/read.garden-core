@@ -5,7 +5,6 @@ window.onload = () => {
   const url = new URL(document.location.toString());
   const key = url.searchParams.get('key');
   const cloudFrontUrl = window.sessionStorage.getItem('rg_dev_cloudFrontUrl');
-  console.log({ key, cloudFrontUrl });
   if (key && cloudFrontUrl) {
     const ngrokUrl = window.sessionStorage.getItem('rg_dev_ngrokUrl');
     const img = document.createElement('img');
@@ -17,22 +16,25 @@ window.onload = () => {
         .then((response) => response.json())
         .then((json) => {
           const data = json as JsonData;
-          window.rgCore = window.readGardenCore({
-            layout: data.type,
-            options: {
-              initialContentSlug: '3',
-              direction: 'horizontal',
-              baseUrl,
-              jsonData: data,
-            },
-            ui: {
-              buttons: [
-                {
-                  type: 'switchMode',
-                },
-              ],
-            },
-          });
+          if (data.type === 'flow') {
+            window.rgCore = window.readGardenCore({
+              layout: data.type,
+              options: {
+                initialContentSlug: '3',
+                direction: 'horizontal',
+                baseUrl,
+                jsonData: data,
+                fontFamily: 'Obf-Helvetica',
+              },
+              ui: {
+                buttons: [
+                  {
+                    type: 'switchMode',
+                  },
+                ],
+              },
+            });
+          }
         })
         .catch(genericCatch(`Error fetching ${indexJson}`));
     });

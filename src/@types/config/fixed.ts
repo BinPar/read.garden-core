@@ -6,3 +6,7 @@ export interface FixedConfig {
   minimumZoomValue: number;
   zoom: number;
 }
+
+export type RequiredFixedConfig = Required<
+  Pick<FixedConfig, 'minimumZoomValue' | 'maximumZoomValue'>
+>;

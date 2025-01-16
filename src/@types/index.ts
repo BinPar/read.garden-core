@@ -18,4 +18,6 @@ export type CssVariableKey =
   | 'column-width'
   | 'padding-top'
   | 'padding-bottom'
-  | 'viewer-margin-top';
+  | 'viewer-margin-top'
+  | 'font-family'
+  | 'font-size';

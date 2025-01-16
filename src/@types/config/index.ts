@@ -1,7 +1,7 @@
 import type { Button, ButtonType } from '@/@types/buttons';
 import type { Direction, Layout } from '@/@types/common';
-import type { FixedConfig } from '@/@types/config/fixed';
-import type { FlowConfig } from '@/@types/config/flow';
+import type { FixedConfig, RequiredFixedConfig } from '@/@types/config/fixed';
+import type { FlowConfig, RequiredFlowConfig } from '@/@types/config/flow';
 import type { JsonData } from '@/@types/rg';
 
 export interface MarginOrPadding {
@@ -46,10 +46,10 @@ export type Options = CommonOptions &
   (
     | {
         layout: 'flow';
-        options: InitialOptions & Partial<FlowConfig>;
+        options: InitialOptions & Partial<FlowConfig> & RequiredFlowConfig;
       }
     | {
         layout: 'fixed';
-        options: InitialOptions & Partial<FixedConfig>;
+        options: InitialOptions & Partial<FixedConfig> & RequiredFixedConfig;
       }
   );

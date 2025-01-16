@@ -1,4 +1,5 @@
 import type { Options } from '@/@types/config';
+import { updateState } from '@/utils/state';
 
 const setupDomElements = (initialOptions: Options) => {
   const iframe = document.createElement('iframe');
@@ -15,6 +16,18 @@ const setupDomElements = (initialOptions: Options) => {
   styles.rel = 'stylesheet';
   styles.type = 'text/css';
   styles.href = '/css/styles.css';
+  styles.onload = () => {
+    console.log('styles.css loaded');
+    updateState((current) => {
+      if (
+        current.contentCssLoaded &&
+        (current.layout === 'fixed' || current.fontsCssLoaded)
+      ) {
+        return { coreCssLoaded: true, loadingStyles: false };
+      }
+      return { coreCssLoaded: true };
+    });
+  };
   iframeDoc.head.appendChild(styles);
 
   if (initialOptions.ui) {
@@ -45,7 +58,7 @@ const setupDomElements = (initialOptions: Options) => {
   wrapper.appendChild(content);
 
   iframeDoc.body.appendChild(container);
-  
+
   return {
     doc: iframeDoc,
     container,

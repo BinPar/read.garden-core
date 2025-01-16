@@ -9,6 +9,7 @@ import setupCssVars from '@/utils/setupCssVars';
 import { defaultState } from '@/utils/defaults';
 import loadFirstContent from '@/utils/loadFirstContent';
 import genericCatch from '@/tools/genericCatch';
+import { default as flowInit, flowSetup } from '@/utils/flow/setup';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -39,6 +40,26 @@ const setup = (initialOptions: Options) => {
     console.warn('Missing initial content slug, assuming "1"');
     initialContentSlug = '1';
   }
+
+  const observer = new MutationObserver(() => {
+    console.log('content changed');
+    window.requestAnimationFrame(() => {
+      console.log('animation frame');
+      if (state.layout === 'flow') {
+        if (!state.initialized) {
+          flowInit();
+        } else {
+          flowSetup();
+        }
+      }
+    });
+  });
+
+  observer.observe(state.content, {
+    attributes: false,
+    childList: true,
+    subtree: true,
+  });
 
   loadFirstContent(initialContentSlug).catch(
     genericCatch('Exception loading first content'),

@@ -1,5 +1,4 @@
 import { getConfig } from '@/utils/config';
-import flowSetup from '@/utils/flow/setup';
 import replaceUrls from '@/utils/replaceUrls';
 import { getState } from '@/utils/state';
 
@@ -9,8 +8,6 @@ const loadFirstContent = async (contentSlug: string) => {
 
   if (state.contentsBySlug) {
     const content = state.contentsBySlug.get(contentSlug);
-
-    console.log({ content, contentSlug });
 
     if (content) {
       if (content.html) {
@@ -38,16 +35,6 @@ const loadFirstContent = async (contentSlug: string) => {
       }
     }
   }
-
-  if (state.layout === 'flow') {
-    flowSetup();
-
-    // recalculate
-  }
-
-  // if (layout === 'fixed') {
-  //   // fixedSetup
-  // }
 };
 
 export default loadFirstContent;

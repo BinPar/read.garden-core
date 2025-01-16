@@ -1,6 +1,8 @@
 export interface FlowState {
   layout: 'flow';
 
+  fontsCssLoaded: boolean;
+
   snapsContainer: HTMLDivElement;
   pageLabelsContainer: HTMLDivElement;
 

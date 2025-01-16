@@ -25,12 +25,14 @@ export const defaultCommonConfig: Pick<CommonConfig, 'padding' | 'readModeMargin
 
 export const defaultFlowConfig: Omit<FlowConfig, 'layout'> = {
   fontSize: 16,
+  fontFamily: '',
   lineHeight: 1.5,
   maxColumns: 4,
   minCharsPerColumn: 60,
   maxCharsPerColumn: 80,
   textAlign: null,
   columnGap: 216,
+  minColumnGap: 16,
 }
 
 export const defaultFixedConfig: Omit<FixedConfig, 'layout'> = {

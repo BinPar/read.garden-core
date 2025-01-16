@@ -26,6 +26,9 @@ export const init = (initialOptions: Options) => {
   };
 
   if (initialOptions.layout === 'flow') {
+    if (!initialOptions.options.fontFamily) {
+      console.error('Missing font-family in options (required for flow)');
+    }
     config = {
       layout: 'flow',
       ...common,
@@ -40,8 +43,12 @@ export const init = (initialOptions: Options) => {
         defaultFlowConfig.minCharsPerColumn,
       columnGap:
         initialOptions.options.columnGap ?? defaultFlowConfig.columnGap,
+      minColumnGap:
+        initialOptions.options.minColumnGap ?? defaultFlowConfig.minColumnGap,
 
       fontSize: initialOptions.options.fontSize ?? defaultFlowConfig.fontSize,
+      fontFamily:
+        initialOptions.options.fontFamily ?? defaultFlowConfig.fontFamily,
       lineHeight:
         initialOptions.options.lineHeight ?? defaultFlowConfig.lineHeight,
       textAlign:

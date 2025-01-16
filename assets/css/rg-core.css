@@ -74,8 +74,6 @@ body {
   height: calc(100% + 100px);
   padding: var(--padding-top) calc(var(--column-gap) / 2)
     calc(var(--padding-bottom) + calc(var(--pages-labels-height) * 2));
-  font-size: var(--font-size);
-  font-family: var(--font-family);
 }
 
 .flow.horizontal #wrapper {
@@ -85,15 +83,14 @@ body {
   column-width: var(--column-width);
   overflow-y: hidden;
   overflow-x: auto;
-}
-
-.flow.horizontal:not(.touching) #wrapper {
-  touch-action: pan-x;
+  /* touch-action: pan-x; */
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 }
 
 .flow #content {
+  font-size: var(--font-size);
+  font-family: var(--font-family);
   text-align: justify;
 }
 
@@ -110,6 +107,7 @@ body {
   background-color: transparent;
   pointer-events: none;
   scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 #page-labels-container {

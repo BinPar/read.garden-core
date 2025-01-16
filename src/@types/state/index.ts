@@ -5,9 +5,15 @@ import type { FlowState } from '@/@types/state/flow';
 
 export interface CommonState {
   layout: Layout;
+
   slug: string;
   productSlug: string;
   contentSlug: string;
+
+  initialized: boolean;
+  loadingStyles: boolean;
+  coreCssLoaded: boolean;
+  contentCssLoaded: boolean;
 
   containerWidth: number;
   containerHeight: number;
@@ -26,3 +32,7 @@ export interface CommonState {
 }
 
 export type State = CommonState & (FixedState | FlowState);
+
+export type FullState = CommonState &
+  Omit<FixedState, 'layout'> &
+  Omit<FlowState, 'layout'>;
