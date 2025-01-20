@@ -1,5 +1,8 @@
 import type { Button, ButtonType } from '@/@types/buttons';
+import moveBackwards from '@/utils/moveBackwards';
+import moveForward from '@/utils/moveForward';
 import { getState, updateState } from '@/utils/state';
+import switchMode from '@/utils/switchMode';
 
 const render = (buttons: ButtonType[] | Button[], state = getState()) => {
   if (buttons.length) {
@@ -20,29 +23,25 @@ const render = (buttons: ButtonType[] | Button[], state = getState()) => {
         domButton.classList.add('button');
         domButton.addEventListener('pointerdown', (ev) => {
           if (ev.button === 0) {
+            ev.preventDefault();
+            ev.stopPropagation();
             if (type === 'forward') {
-              document.body.scrollBy({
-                left: document.body.clientWidth,
-                behavior: 'instant',
-              });
+              moveForward();
             }
 
             if (type === 'backward') {
-              document.body.scrollBy({
-                left: -document.body.clientWidth,
-                behavior: 'instant',
-              });
+              moveBackwards();
             }
 
             if (type === 'switchMode') {
-              state.container.classList.toggle('ui-mode');
+              switchMode();
             }
           }
         });
         uiContainer.append(domButton);
       }
     }
-    state.viewer.appendChild(uiContainer);
+    state.container.appendChild(uiContainer);
     updateState({ uiContainer });
   }
 };

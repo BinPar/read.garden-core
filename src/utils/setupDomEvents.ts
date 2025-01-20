@@ -1,22 +1,19 @@
+import { getConfig } from '@/utils/config';
+import moveBackwards from '@/utils/moveBackwards';
+import moveForward from '@/utils/moveForward';
 import { getState } from '@/utils/state';
+import switchMode from '@/utils/switchMode';
 
-const longPressDuration = 500;
+const threshold = 20;
 
-const setupDomEvents = (state = getState()) => {
-  let timeout: NodeJS.Timeout;
+const setupDomEvents = (state = getState(), config = getConfig()) => {
   const touches = new Set<number>();
-
-  const handleLongPress = () => {
-    if (touches.size != 1) {
-      return null;
-    }
-    alert('Has hecho una pulsación larga');
-  };
+  let isLongPress = false;
 
   const handleTouchStart = (event: PointerEvent) => {
     console.log(event.type);
     if (touches.size === 0) {
-      timeout = setTimeout(handleLongPress, longPressDuration);
+      // timeout = setTimeout(handleLongPress, longPressDuration);
     }
     touches.add(event.pointerId);
   };
@@ -24,22 +21,20 @@ const setupDomEvents = (state = getState()) => {
   const checkIfScreenXBorderIsPressed = (event: PointerEvent) => {
     const touchX = event.x;
     if (touchX) {
-      const threshold = 20;
-      const w = window.innerWidth;
+      const w = state.doc.body.clientWidth;
       const pixels = w * (threshold / 100);
 
-      if (touchX <= pixels) {
-        console.log({ pixels, touchX });
-        if (state.layout === 'flow') {
-          state.wrapper.scrollLeft -= state.columnWidth + state.columnGap;
-        }
-      }
+      console.log({
+        pixels,
+        touchX,
+      });
 
-      if (touchX > w - pixels) {
-        console.log({ touchX, content: w - pixels });
-        if (state.layout === 'flow') {
-          state.wrapper.scrollLeft += state.columnWidth + state.columnGap;
-        }
+      if (touchX <= pixels) {
+        moveBackwards();
+      } else if (touchX > w - pixels) {
+        moveForward();
+      } else if (config.touch) {
+        switchMode();
       }
     }
   };
@@ -47,26 +42,32 @@ const setupDomEvents = (state = getState()) => {
   const handleTouchEnd = (event: PointerEvent) => {
     console.log(event.type);
     touches.delete(event.pointerId);
-    clearTimeout(timeout);
-    checkIfScreenXBorderIsPressed(event);
+    if (!isLongPress) {
+      checkIfScreenXBorderIsPressed(event);
+    }
+    isLongPress = false;
     state.wrapper.dispatchEvent(new Event('scrollend'));
   };
 
-  // const handleTouchMove = (event: PointerEvent) => {
-  //   if (state.wrapper.hasPointerCapture(event.pointerId)) {
-  //     clearTimeout(timeout);
-  //     state.wrapper.scrollLeft -= event.movementX;
-  //   }
-  // };
-
   const handleScroll = () => {
-    clearTimeout(timeout);
+    console.log('scroll');
   };
 
-  state.wrapper.addEventListener('pointerdown', handleTouchStart);
-  // state.wrapper.addEventListener('pointermove', handleTouchMove);
-  state.wrapper.addEventListener('pointerup', handleTouchEnd);
-  state.wrapper.addEventListener('pointercancel', handleTouchEnd);
+  const handleContextMenu = (ev: MouseEvent) => {
+    ev.preventDefault();
+    console.log('context menu');
+    isLongPress = true;
+  };
+
+  const handleSelectionChange = () => {
+    console.log('selectionchange');
+  };
+
+  state.doc.addEventListener('contextmenu', handleContextMenu, false);
+  state.doc.addEventListener('selectionchange', handleSelectionChange);
+  state.viewer.addEventListener('pointerdown', handleTouchStart);
+  state.viewer.addEventListener('pointerup', handleTouchEnd);
+  state.viewer.addEventListener('pointercancel', handleTouchEnd);
   state.wrapper.addEventListener('scroll', handleScroll);
 };
 

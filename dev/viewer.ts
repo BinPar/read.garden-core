@@ -29,7 +29,16 @@ window.onload = () => {
               ui: {
                 buttons: [
                   {
+                    type: 'backward',
+                    text: '<',
+                  },
+                  {
+                    type: 'forward',
+                    text: '>',
+                  },
+                  {
                     type: 'switchMode',
+                    text: 'UI',
                   },
                 ],
               },

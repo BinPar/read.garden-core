@@ -45,7 +45,8 @@ body {
   height: 100svh;
   z-index: 20;
   margin-top: var(--viewer-margin-top);
-  pointer-events: var(--pointer-events, auto);
+  /* pointer-events: none;
+  user-select: none; */
 }
 
 #wrapper {
@@ -54,8 +55,7 @@ body {
   padding: var(--padding-top) 0 var(--padding-bottom) 0;
   clear: both;
   cursor: var(--drag-cursor, grab);
-  user-select: none;
-  transition: transform 0.3s;
+  transition: transform var(--animation-delay);
   transform: scale(var(--scale, 1))
     translate(var(--ui-left, 0), var(--ui-top, 0));
 }
@@ -67,13 +67,15 @@ body {
 }
 
 .flow.ui-mode #wrapper {
-  --ui-top: calc(var(--pages-labels-height) * -1);
+  --ui-top: calc(var(--vertical-padding-corrector) * -1);
 }
 
 .flow #wrapper {
   height: calc(100% + 100px);
+  pointer-events: var(--pointer-events, auto);
+  user-select: initial;
   padding: var(--padding-top) calc(var(--column-gap) / 2)
-    calc(var(--padding-bottom) + calc(var(--pages-labels-height) * 2));
+    calc(var(--padding-bottom) + calc(var(--vertical-padding-corrector) * 3));
 }
 
 .flow.horizontal #wrapper {
@@ -83,10 +85,19 @@ body {
   column-width: var(--column-width);
   overflow-y: hidden;
   overflow-x: auto;
-  /* touch-action: pan-x; */
+  touch-action: pan-x;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 }
+
+.flow.vertical #wrapper {
+  touch-action: pan-y;
+}
+
+/* #content {
+  pointer-events: var(--pointer-events, auto);
+  user-select: initial;
+} */
 
 .flow #content {
   font-size: var(--font-size);
@@ -102,6 +113,10 @@ body {
 
 #snaps-container > div {
   position: absolute;
+  top: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
   width: 1px;
   height: 1px;
   background-color: transparent;
@@ -110,19 +125,13 @@ body {
   scroll-snap-stop: always;
 }
 
-#page-labels-container {
+.page-label {
   position: absolute;
+  top: 100svh;
   left: 0;
-  top: calc(100% - calc(var(--pages-labels-height) * 2));
-  height: var(--pages-labels-height);
-  display: flex;
-  flex-direction: row;
-  padding-left: calc(var(--column-width) + var(--column-gap));
-}
-
-#page-labels-container > div {
+  padding-top: var(--vertical-padding-corrector);
+  height: var(--vertical-padding-corrector);
   width: calc(var(--column-width) + var(--column-gap));
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -134,9 +143,7 @@ body {
   height: 100%;
   position: relative;
   font-size: 0;
-  -moz-user-select: var(--user-select-end);
   user-select: var(--user-select-end);
-  -webkit-user-select: var(--user-select-end);
 }
 
 #chapter-start::before,

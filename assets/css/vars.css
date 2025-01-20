@@ -1,3 +1,5 @@
 :root {
-  --pages-labels-height: 40px;
+  --animation-delay: .3s;
+  --pages-labels-height: 1rem;
+  --vertical-padding-corrector: calc(var(--pages-labels-height) * 2);
 }

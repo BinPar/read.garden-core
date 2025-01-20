@@ -4,9 +4,9 @@ import type { CommonConfig } from '@/@types/config';
 
 export const defaultCommonConfig: Pick<CommonConfig, 'padding' | 'readModeMargin' | 'uiModeMargin'> = {
   padding: {
-    top: 60,
+    top: 32,
     right: 0,
-    bottom: 60,
+    bottom: 32,
     left: 0,
   },
   readModeMargin: {
