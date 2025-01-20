@@ -6,11 +6,19 @@ const setupDomElements = (initialOptions: Options) => {
   iframe.id = 'rg-iframe';
   document.body.appendChild(iframe);
 
+  console.log({ iframe });
+
   const iframeDoc = iframe.contentDocument ?? iframe.contentWindow?.document;
 
   if (!iframeDoc) {
     throw new Error(`Can't find iframe document`);
   }
+
+  const meta = document.createElement('meta');
+  meta.name = 'viewport';
+  meta.content = 'user-scalable=0, width=device-width, initial-scale=1';
+
+  window.parent.parent.document.head.appendChild(meta);
 
   const styles = iframeDoc.createElement('link');
   styles.rel = 'stylesheet';

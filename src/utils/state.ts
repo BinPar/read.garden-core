@@ -31,8 +31,6 @@ for (let i = 0, l = listeners.length; i < l; i++) {
   }
 }
 
-console.log(listenersMap);
-
 export const init = (
   initialOptions: Options,
   initialState: Pick<
@@ -102,17 +100,12 @@ export const init = (
     snapsContainer.id = 'snaps-container';
     initialState.wrapper.appendChild(snapsContainer);
 
-    const pagesLabelsContainer = initialState.doc.createElement('div');
-    pagesLabelsContainer.id = 'page-labels-container';
-    initialState.wrapper.appendChild(pagesLabelsContainer);
-
     state = {
       ...common,
       layout: 'flow',
       fontsCssLoaded: false,
       snaps: new Set<number>(),
       snapsContainer,
-      pageLabelsContainer: pagesLabelsContainer,
       columnWidth: 0,
       columnGap: 0,
       columnCount: 0,

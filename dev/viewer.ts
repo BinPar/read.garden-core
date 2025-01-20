@@ -16,6 +16,7 @@ window.onload = () => {
         .then((response) => response.json())
         .then((json) => {
           const data = json as JsonData;
+          console.log({ data });
           if (data.type === 'flow') {
             window.rgCore = window.readGardenCore({
               layout: data.type,
@@ -44,9 +45,42 @@ window.onload = () => {
               },
             });
           }
+
+          if (data.type === 'fixed') {
+            window.rgCore = window.readGardenCore({
+              layout: data.type,
+              options: {
+                initialContentSlug: '3',
+                direction: 'horizontal',
+                baseUrl,
+                jsonData: data,
+                minimumZoomValue: 0.25,
+                maximumZoomValue: 4,
+              },
+              ui: {
+                buttons: [
+                  {
+                    type: 'backward',
+                    text: '<',
+                  },
+                  {
+                    type: 'forward',
+                    text: '>',
+                  },
+                  {
+                    type: 'switchMode',
+                    text: 'UI',
+                  },
+                ],
+              },
+            });
+          }
         })
         .catch(genericCatch(`Error fetching ${indexJson}`));
     });
-    img.src = `${ngrokUrl && !window.location.host.includes('localhost') ? ngrokUrl : 'http://localhost:3001'}/set-cookies?key=${key}`;
+    img.addEventListener('error', () => {
+      console.error(`Error loading ${img.src}`);
+    });
+    img.src = `${ngrokUrl && !window.location.host.includes('localhost') ? ngrokUrl : 'http://localhost:3001'}/set-cookies?key=${key}&v=${Date.now()}`;
   }
 };

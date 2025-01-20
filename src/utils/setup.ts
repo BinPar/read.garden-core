@@ -10,6 +10,7 @@ import { defaultState } from '@/utils/defaults';
 import loadFirstContent from '@/utils/loadFirstContent';
 import genericCatch from '@/tools/genericCatch';
 import { default as flowInit, flowSetup } from '@/utils/flow/setup';
+import { default as fixedInit, fixedSetup } from '@/utils/fixed/setup';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -50,6 +51,13 @@ const setup = (initialOptions: Options) => {
           flowInit();
         } else {
           flowSetup();
+        }
+      }
+      if (state.layout === 'fixed') {
+        if (!state.initialized) {
+          fixedInit();
+        } else {
+          fixedSetup();
         }
       }
     });

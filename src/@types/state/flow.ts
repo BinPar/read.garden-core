@@ -4,11 +4,10 @@ export interface FlowState {
   fontsCssLoaded: boolean;
 
   snapsContainer: HTMLDivElement;
-  pageLabelsContainer: HTMLDivElement;
 
   columnWidth: number;
-  columnCount: number,
+  columnCount: number;
   columnGap: number;
-  
+
   snaps: Set<number>;
 }
