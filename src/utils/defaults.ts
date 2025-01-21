@@ -2,7 +2,10 @@ import type { FlowConfig } from '@/@types/config/flow';
 import type { FixedConfig } from '@/@types/config/fixed';
 import type { CommonConfig } from '@/@types/config';
 
-export const defaultCommonConfig: Pick<CommonConfig, 'padding' | 'readModeMargin' | 'uiModeMargin'> = {
+export const defaultCommonConfig: Pick<
+  CommonConfig,
+  'padding' | 'readModeMargin' | 'uiModeMargin'
+> = {
   padding: {
     top: 32,
     right: 0,
@@ -21,7 +24,7 @@ export const defaultCommonConfig: Pick<CommonConfig, 'padding' | 'readModeMargin
     bottom: 0,
     left: 140,
   },
-}
+};
 
 export const defaultFlowConfig: Omit<FlowConfig, 'layout'> = {
   fontSize: 16,
@@ -33,16 +36,17 @@ export const defaultFlowConfig: Omit<FlowConfig, 'layout'> = {
   textAlign: null,
   columnGap: 216,
   minColumnGap: 16,
-}
+};
 
 export const defaultFixedConfig: Omit<FixedConfig, 'layout'> = {
   maximumZoomValue: 4,
   minimumZoomValue: 0.5,
+  paginated: true,
   fit: 'page',
   zoom: 1,
   gapMode: 'pairs',
   gapSize: 16,
-}
+};
 
 export const defaultState = {
   readMode: true,

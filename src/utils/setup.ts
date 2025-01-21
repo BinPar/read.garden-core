@@ -27,6 +27,10 @@ const setup = (initialOptions: Options) => {
   domElements.container.classList.add(config.layout);
   domElements.container.classList.add(config.direction);
 
+  if (config.layout === 'fixed' && config.paginated) {
+    domElements.container.classList.add('paginated');
+  }
+
   setupCssVars();
   setupDomEvents();
 

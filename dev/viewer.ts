@@ -52,10 +52,17 @@ window.onload = () => {
               options: {
                 initialContentSlug: '3',
                 direction: 'horizontal',
+                paginated: true,
                 baseUrl,
                 jsonData: data,
                 minimumZoomValue: 0.25,
                 maximumZoomValue: 4,
+                padding: {
+                  top: 20,
+                  bottom: 20,
+                  left: 20,
+                  right: 20,
+                },
               },
               ui: {
                 buttons: [

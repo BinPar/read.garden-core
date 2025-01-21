@@ -4,6 +4,8 @@ import { updateState } from '@/utils/state';
 const setupDomElements = (initialOptions: Options) => {
   const iframe = document.createElement('iframe');
   iframe.id = 'rg-iframe';
+  iframe.name = 'Read Garden Viewer';
+  iframe.title = 'Read Garden Viewer';
   document.body.appendChild(iframe);
 
   console.log({ iframe });

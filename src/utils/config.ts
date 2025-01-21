@@ -62,6 +62,8 @@ export const init = (initialOptions: Options) => {
     config = {
       layout: 'fixed',
       ...common,
+      paginated:
+        initialOptions.options.paginated ?? defaultFixedConfig.paginated,
       gapMode: initialOptions.options.gapMode ?? defaultFixedConfig.gapMode,
       gapSize: initialOptions.options.gapSize ?? defaultFixedConfig.gapSize,
       maximumZoomValue:

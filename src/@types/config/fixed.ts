@@ -1,6 +1,7 @@
 export interface FixedConfig {
   fit?: 'width' | 'height' | 'page';
   gapMode: 'all' | 'pairs' | 'none';
+  paginated: boolean;
   gapSize: number;
   maximumZoomValue: number;
   minimumZoomValue: number;

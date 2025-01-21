@@ -60,6 +60,21 @@ body {
     translate(var(--ui-left, 0), var(--ui-top, 0));
 }
 
+.fixed.paginated #wrapper {
+  padding: 0;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fixed.paginated #content {
+  padding: var(--padding-top) var(--padding-right, 0) var(--padding-bottom)
+    var(--padding-left, 0);
+  transform-origin: top center;
+  transform: scale(var(--zoom, 1));
+}
+
 .ui-mode #wrapper {
   --scale: 0.75;
   --ui-left: 0;
