@@ -57,7 +57,7 @@ app.listen(port, () => {
   console.info(
     `::: ${chalk.yellow(`Server listening at`)} ${chalk.green(`http://localhost:${port}`)}`,
   );
-  if (process.env.FOR_MOBILE) {
+  if (process.env.WITH_NGROK) {
     ngrok
       .connect({
         proto: 'http',

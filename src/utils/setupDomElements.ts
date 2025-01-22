@@ -8,8 +8,6 @@ const setupDomElements = (initialOptions: Options) => {
   iframe.title = 'Read Garden Viewer';
   document.body.appendChild(iframe);
 
-  console.log({ iframe });
-
   const iframeDoc = iframe.contentDocument ?? iframe.contentWindow?.document;
 
   if (!iframeDoc) {
@@ -65,7 +63,15 @@ const setupDomElements = (initialOptions: Options) => {
 
   const content = iframeDoc.createElement('div');
   content.id = 'content';
-  wrapper.appendChild(content);
+
+  if (initialOptions.layout === 'fixed') {
+    const contentPlaceholder = iframeDoc.createElement('div');
+    contentPlaceholder.id = 'content-placeholder';
+    wrapper.appendChild(contentPlaceholder);
+    contentPlaceholder.appendChild(content);
+  } else {
+    wrapper.appendChild(content);
+  }
 
   iframeDoc.body.appendChild(container);
 

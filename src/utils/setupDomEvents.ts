@@ -9,13 +9,11 @@ const threshold = 20;
 const setupDomEvents = (state = getState(), config = getConfig()) => {
   const touches = new Set<number>();
   let isLongPress = false;
+  let isMultipleTouch = false;
 
   const handleTouchStart = (event: PointerEvent) => {
-    console.log(event.type);
-    if (touches.size === 0) {
-      // timeout = setTimeout(handleLongPress, longPressDuration);
-    }
     touches.add(event.pointerId);
+    isMultipleTouch = touches.size > 1;
   };
 
   const checkIfScreenXBorderIsPressed = (event: PointerEvent) => {
@@ -40,17 +38,15 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
   };
 
   const handleTouchEnd = (event: PointerEvent) => {
-    console.log(event.type);
     touches.delete(event.pointerId);
-    if (!isLongPress) {
+    if (!isLongPress && !isMultipleTouch) {
       checkIfScreenXBorderIsPressed(event);
+    }
+    if (touches.size === 0) {
+      isMultipleTouch = false;
     }
     isLongPress = false;
     state.wrapper.dispatchEvent(new Event('scrollend'));
-  };
-
-  const handleScroll = () => {
-    console.log('scroll');
   };
 
   const handleContextMenu = (ev: MouseEvent) => {
@@ -59,16 +55,15 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     isLongPress = true;
   };
 
-  const handleSelectionChange = () => {
-    console.log('selectionchange');
-  };
+  // const handleSelectionChange = () => {
+  //   console.log('selectionchange');
+  // };
 
   state.doc.addEventListener('contextmenu', handleContextMenu, false);
-  state.doc.addEventListener('selectionchange', handleSelectionChange);
+  // state.doc.addEventListener('selectionchange', handleSelectionChange);
   state.viewer.addEventListener('pointerdown', handleTouchStart);
   state.viewer.addEventListener('pointerup', handleTouchEnd);
   state.viewer.addEventListener('pointercancel', handleTouchEnd);
-  state.wrapper.addEventListener('scroll', handleScroll);
 };
 
 export default setupDomEvents;

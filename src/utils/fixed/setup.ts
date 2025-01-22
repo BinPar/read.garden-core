@@ -5,11 +5,7 @@ export const fixedSetup = () => {
 };
 
 const setup = (state = getState()) => {
-  const meta = state.doc.createElement('meta');
-  meta.name = 'viewport';
-  meta.content = 'user-scalable=1';
-
-  state.doc.head.appendChild(meta);
+  console.log('fixed init', state);
 };
 
 export default setup;

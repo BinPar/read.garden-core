@@ -21,7 +21,7 @@ window.onload = () => {
             window.rgCore = window.readGardenCore({
               layout: data.type,
               options: {
-                initialContentSlug: '3',
+                initialContentSlug: '8',
                 direction: 'horizontal',
                 baseUrl,
                 jsonData: data,

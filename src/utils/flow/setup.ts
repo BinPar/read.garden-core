@@ -152,12 +152,6 @@ const setup = (state = getState()) => {
     state.doc.head.appendChild(clone);
   }
 
-  const meta = state.doc.createElement('meta');
-  meta.name = 'viewport';
-  meta.content = 'user-scalable=0, width=device-width, initial-scale=1';
-
-  state.doc.head.appendChild(meta);
-
   window.addEventListener('resize', debounce(flowSetup, 300));
 
   if (!state.loadingStyles) {

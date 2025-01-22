@@ -43,7 +43,7 @@ export const defaultFixedConfig: Omit<FixedConfig, 'layout'> = {
   minimumZoomValue: 0.5,
   paginated: true,
   fit: 'page',
-  zoom: 1,
+  zoom: 100,
   gapMode: 'pairs',
   gapSize: 16,
 };

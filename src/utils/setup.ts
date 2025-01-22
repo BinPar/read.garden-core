@@ -11,6 +11,7 @@ import loadFirstContent from '@/utils/loadFirstContent';
 import genericCatch from '@/tools/genericCatch';
 import { default as flowInit, flowSetup } from '@/utils/flow/setup';
 import { default as fixedInit, fixedSetup } from '@/utils/fixed/setup';
+import setupFixedEvents from '@/utils/fixed/setupEvents';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -33,6 +34,13 @@ const setup = (initialOptions: Options) => {
 
   setupCssVars();
   setupDomEvents();
+  if (config.layout === 'fixed') {
+    // setupFixedVars();
+    setupFixedEvents();
+  } else {
+    // setupFlowVars();
+    // setupFlowEvents();
+  }
 
   let initialContentSlug = initialOptions.options.initialContentSlug;
   if (initialOptions.options.jsonData) {
