@@ -2,6 +2,53 @@ import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
 import { getState } from '@/utils/state';
 
+let scale = 1;
+
+export const checkCenter = () => {
+  const state = getState();
+  const element = state.content;
+  const parent = element.parentElement;
+
+  if (!parent) {
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    const parentRect = parent.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+
+    let elementWidth = elementRect.width;
+    let elementHeight = elementRect.height;
+
+    if (elementHeight === 0 || elementWidth === 0) {
+      return;
+    }
+
+    if (state.isSafari) {
+      elementWidth = elementWidth * scale;
+      elementHeight = elementHeight * scale;
+    }
+
+    if (parentRect.width > elementWidth) {
+      setCssVariable(
+        'fixed-left',
+        `${(parentRect.width - elementWidth) / 2}px`,
+      );
+    } else {
+      setCssVariable('fixed-left', '0');
+    }
+
+    if (parentRect.height > elementHeight) {
+      setCssVariable(
+        'fixed-top',
+        `${(parentRect.height - elementHeight) / 2}px`,
+      );
+    } else {
+      setCssVariable('fixed-top', '0');
+    }
+  });
+};
+
 const setupEvents = () => {
   const state = getState();
   const config = getConfig();
@@ -10,48 +57,27 @@ const setupEvents = () => {
     return;
   }
 
+  scale = config.zoom / 100;
   const element = state.content;
-  const parent = element.parentElement;
-
-  if (!parent) {
-    return;
-  }
 
   const minScale = 0.5;
   const maxScale = 4;
   let startDistance = 0;
-  let scale = config.zoom / 100;
-
-  const checkCenter = () => {
-    window.requestAnimationFrame(() => {
-      const parentRect = parent.getBoundingClientRect();
-      const elementRect = element.getBoundingClientRect();
-
-      if (parentRect.width > elementRect.width) {
-        setCssVariable(
-          'fixed-left',
-          `${(parentRect.width - elementRect.width) / 2}px`,
-        );
-      } else {
-        setCssVariable('fixed-left', '0');
-      }
-
-      if (parentRect.height > elementRect.height) {
-        setCssVariable(
-          'fixed-top',
-          `${(parentRect.height - elementRect.height) / 2}px`,
-        );
-      } else {
-        setCssVariable('fixed-top', '0');
-      }
-    });
-  };
 
   const updateScale = () => {
     window.requestAnimationFrame(() => {
       setCssVariable('zoom', `${scale * 100}`);
       checkCenter();
     });
+  };
+
+  const applyScale = (factor: number) => {
+    if (factor === 1) {
+      return;
+    }
+    scale *= factor;
+    scale = Math.min(Math.max(scale, minScale), maxScale);
+    updateScale();
   };
 
   const handleTouchStart = (e: TouchEvent) => {
@@ -84,15 +110,6 @@ const setupEvents = () => {
       Math.pow(p2.clientX - p1.clientX, 2) +
         Math.pow(p2.clientY - p1.clientY, 2),
     );
-  };
-
-  const applyScale = (factor: number) => {
-    if (factor === 1) {
-      return;
-    }
-    scale *= factor;
-    scale = Math.min(Math.max(scale, minScale), maxScale);
-    updateScale();
   };
 
   updateScale();

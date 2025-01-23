@@ -2,7 +2,7 @@
   position: absolute;
   display: flex;
   left: 50%;
-  top: -100svh;
+  top: -20svh;
   transform: translateX(-50%);
   background-color: #0000043f;
   border-radius: 0.5rem;

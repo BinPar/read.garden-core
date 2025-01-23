@@ -35,7 +35,15 @@ export const init = (
   initialOptions: Options,
   initialState: Pick<
     State,
-    'doc' | 'container' | 'viewer' | 'wrapper' | 'content' | 'readMode'
+    | 'iframe'
+    | 'win'
+    | 'doc'
+    | 'container'
+    | 'viewer'
+    | 'wrapper'
+    | 'content'
+    | 'selectionMenu'
+    | 'readMode'
   >,
 ) => {
   const { layout } = initialOptions;
@@ -47,6 +55,7 @@ export const init = (
 
   let common: CommonState = {
     ...initialState,
+    isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
     initialized: false,
     coreCssLoaded: false,
     contentCssLoaded: false,
@@ -70,14 +79,25 @@ export const init = (
       link.rel = 'stylesheet';
       link.type = 'text/css';
       link.href = `${initialOptions.options.baseUrl}/${initialOptions.options.jsonData.cssURL}`;
-      link.onload = () => {
-        console.log('content styles loaded');
+      const onFinish = () => {
         updateState((current) => {
-          if (current.coreCssLoaded && (current.layout === 'fixed' || current.fontsCssLoaded)) {
+          if (
+            current.coreCssLoaded &&
+            (current.layout === 'fixed' || current.fontsCssLoaded)
+          ) {
             return { contentCssLoaded: true, loadingStyles: false };
           }
           return { contentCssLoaded: true };
         });
+      };
+      link.onload = () => {
+        console.log('content styles loaded');
+        onFinish();
+      };
+      // TODO: Handle error
+      link.onerror = (ex) => {
+        console.error('Error loading content styles', ex);
+        onFinish();
       };
       initialState.doc.head.appendChild(link);
     }
@@ -107,10 +127,13 @@ export const init = (
       layout: 'flow',
       fontsCssLoaded: false,
       snaps: new Set<number>(),
+      firstSnap: 0,
+      lastSnap: 0,
       snapsContainer,
       columnWidth: 0,
       columnGap: 0,
       columnCount: 0,
+      goToEnd: false,
     };
   }
 };

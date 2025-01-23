@@ -2,6 +2,8 @@ import debounce from '@/tools/debounce';
 import setCssVariable from '@/tools/setCssVariable';
 import { getState, updateState } from '@/utils/state';
 import { getConfig } from '@/utils/config';
+import genericCatch from '@/tools/genericCatch';
+import waitForRender from '@/utils/waitForRender';
 
 const charWidthFactor = 1.65;
 
@@ -19,15 +21,10 @@ const updateColumnNumber = (state = getState(), config = getConfig()) => {
     minColumnGap,
   } = config;
 
-  if (absoluteMaxColumns === 1) {
-    return 1;
-  }
-
   const { container } = state;
 
   const containerRect = container.getBoundingClientRect();
   const containerWidth = Math.floor(containerRect.width);
-  // const containerHeight = Math.floor(containerRect.height);
 
   const charWidth = fontSize / charWidthFactor;
   const minColumnWidth = Math.min(
@@ -41,7 +38,10 @@ const updateColumnNumber = (state = getState(), config = getConfig()) => {
 
   if (config.direction === 'horizontal') {
     const doubleColumnWidth = containerWidth / 2 - desiredColumnGap;
-    const columnCount = doubleColumnWidth < minColumnWidth ? 1 : 2;
+    const columnCount = Math.min(
+      absoluteMaxColumns,
+      doubleColumnWidth < minColumnWidth ? 1 : 2,
+    );
     const totalColumnWidth = containerWidth / columnCount;
     const columnGap = Math.min(
       containerWidth - minColumnWidth,
@@ -61,6 +61,7 @@ const updateColumnNumber = (state = getState(), config = getConfig()) => {
     setCssVariable('column-count', `${columnCount}`);
     setCssVariable('column-width', `${columnWidth}px`);
     setCssVariable('column-gap', `${columnGap}px`);
+    setCssVariable('column-rule-width', `${columnCount > 1 ? 1 : 0}px`);
 
     updateState({
       columnWidth,
@@ -70,13 +71,23 @@ const updateColumnNumber = (state = getState(), config = getConfig()) => {
   }
 };
 
-const setupSnaps = (state = getState()) => {
+export const setupSnaps = () => {
+  const state = getState();
   if (state.layout !== 'flow') {
     return;
   }
 
   const totalColumnWidth = state.columnWidth + state.columnGap;
-  const { width } = state.content.getBoundingClientRect();
+  const chapterEnd = state.wrapper.querySelector('#chapter-end');
+
+  if (!chapterEnd) {
+    return;
+  }
+
+  const width =
+    chapterEnd.getBoundingClientRect().left +
+    state.wrapper.scrollLeft -
+    state.columnGap;
 
   state.snapsContainer.innerHTML = '';
   state.snaps.clear();
@@ -87,6 +98,7 @@ const setupSnaps = (state = getState()) => {
 
   let lastPage = '';
 
+  let lastSnap = totalColumnWidth;
   let left = totalColumnWidth;
   while (left < width) {
     state.snaps.add(left);
@@ -117,15 +129,41 @@ const setupSnaps = (state = getState()) => {
         lastPage = page;
       }
     }
+    lastSnap = left;
     left += totalColumnWidth;
   }
 
-  state.wrapper.scrollLeft = totalColumnWidth;
+  console.log({
+    labels,
+    totalColumnWidth,
+    width,
+    left: state.wrapper.scrollLeft,
+  });
+
+  state.wrapper.scrollTo({
+    left: state.goToEnd ? lastSnap : totalColumnWidth,
+    behavior: 'instant',
+  });
+
+  updateState({
+    firstSnap: totalColumnWidth,
+    lastSnap,
+    goToEnd: false,
+  });
+
+  window.requestAnimationFrame(() => {
+    setCssVariable('viewer-margin-top', '0');
+  });
 };
 
 export const flowSetup = () => {
-  updateColumnNumber();
-  setupSnaps();
+  console.log('flow setup');
+  window.requestAnimationFrame(() => {
+    updateColumnNumber();
+    window.requestAnimationFrame(() => {
+      setupSnaps();
+    });
+  });
 };
 
 const setup = (state = getState()) => {
@@ -133,21 +171,75 @@ const setup = (state = getState()) => {
     ...Array.from(state.doc.styleSheets),
   ]);
 
-  // TODO: Improve fonts CSS setup
-
   const fontsStyles =
     window.parent.parent.document.querySelector<HTMLStyleElement>('#fonts-css');
 
-  if (fontsStyles) {
-    const clone = fontsStyles.cloneNode(true);
-    (clone as HTMLStyleElement).onload = () => {
-      console.log('fonts loaded');
+  const onFinish = () => {
+    console.log(`Finish flow init`);
+    waitForRender(() => {
       updateState((current) => {
         if (current.coreCssLoaded && current.contentCssLoaded) {
-          return { fontsCssLoaded: true, loadingStyles: false };
+          return {
+            fontsCssLoaded: true,
+            initialized: true,
+            loadingStyles: false,
+          };
         }
-        return { fontsCssLoaded: true };
+        return { fontsCssLoaded: true, initialized: true };
       });
+    });
+  };
+
+  if (fontsStyles) {
+    const config = getConfig();
+    const clone = fontsStyles.cloneNode(true) as HTMLStyleElement;
+    clone.onload = () => {
+      waitForRender(
+        () => {
+          if (config.layout === 'flow') {
+            const styleSheet = Array.from(state.doc.styleSheets).find(
+              (item) => (item.ownerNode as HTMLElement).id === clone.id,
+            );
+
+            if (styleSheet?.ownerNode?.textContent) {
+              const fonts = Array.from(
+                styleSheet.ownerNode.textContent.matchAll(
+                  new RegExp(
+                    `font-family:\\s?'${config.fontFamily}'[^\\(]+\\('([^']+)`,
+                    'g',
+                  ),
+                ),
+              );
+
+              console.log(`Loading ${fonts.length} fonts`);
+
+              Promise.all(
+                fonts.map(
+                  (fontMatch) =>
+                    new Promise((resolve) => {
+                      const [, url] = fontMatch;
+                      if (url) {
+                        const link = state.doc.createElement('link');
+                        link.onload = resolve;
+                        link.onerror = resolve;
+                        link.rel = 'preload';
+                        link.href = url;
+                        link.as = 'font';
+                        link.crossOrigin = 'anonymous';
+                        state.doc.head.appendChild(link);
+                      }
+                    }),
+                ),
+              )
+                .then(onFinish)
+                .catch(genericCatch('Exception while loading fonts'));
+              return;
+            }
+          }
+          onFinish();
+        },
+        state.isSafari ? 256 : 1,
+      );
     };
     state.doc.head.appendChild(clone);
   }
@@ -157,8 +249,6 @@ const setup = (state = getState()) => {
   if (!state.loadingStyles) {
     flowSetup();
   }
-
-  // TODO: Margins and paddings should be configurable
 };
 
 export default setup;

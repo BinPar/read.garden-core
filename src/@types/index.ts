@@ -20,6 +20,7 @@ export type CssVariableKey =
   | 'column-count'
   | 'column-gap'
   | 'column-width'
+  | 'column-rule-width'
   | 'padding-top'
   | 'padding-bottom'
   | 'padding-left'

@@ -50,13 +50,19 @@ const preloadContents = (initialIndex?: number) => {
             const content = state.orderedContents.at(index);
             if (content && !content.html) {
               if (config.baseUrl) {
-                downloadHtml(`${config.baseUrl}/${content.file}`)
-                  .then((html) => {
-                    content.html = html;
-                    state.pendingContents.delete(content.order);
-                    resolve(1);
-                  })
-                  .catch(reject);
+                requestIdleCallback(() => {
+                  requestAnimationFrame(() => {
+                    requestIdleCallback(() => {
+                      downloadHtml(`${config.baseUrl}/${content.file}`)
+                        .then((html) => {
+                          content.html = html;
+                          state.pendingContents.delete(content.order);
+                          resolve(1);
+                        })
+                        .catch(reject);
+                    });
+                  });
+                });
                 return;
               }
             }
@@ -70,7 +76,15 @@ const preloadContents = (initialIndex?: number) => {
   )
     .then(() => {
       if (state.pendingContents.size) {
-        timeout = setTimeout(preloadContents, 100);
+        requestIdleCallback(() => {
+          timeout = setTimeout(() => {
+            requestAnimationFrame(() => {
+              requestIdleCallback(() => {
+                preloadContents();
+              });
+            });
+          }, 1);
+        });
       }
     })
     .catch(genericCatch('Exception while preloading contents'));

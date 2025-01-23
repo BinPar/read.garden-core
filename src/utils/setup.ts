@@ -9,9 +9,10 @@ import setupCssVars from '@/utils/setupCssVars';
 import { defaultState } from '@/utils/defaults';
 import loadContentBySlug from '@/utils/loadContentBySlug';
 import genericCatch from '@/tools/genericCatch';
-import flowSetup from '@/utils/flow/setup';
-import fixedSetup from '@/utils/fixed/setup';
+import flowInit, { setupSnaps } from '@/utils/flow/setup';
+import fixedInit, { fixedSetup } from '@/utils/fixed/setup';
 import setupFixedEvents from '@/utils/fixed/setupEvents';
+import waitForRender from '@/utils/waitForRender';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -56,12 +57,58 @@ const setup = (initialOptions: Options) => {
 
   const observer = new MutationObserver(() => {
     window.requestAnimationFrame(() => {
-      if (!state.initialized) {
-        if (state.layout === 'flow') {
-          flowSetup();
+      console.log('mutation');
+      const onReady = () => {
+        if (state.initialized) {
+          if (state.layout === 'flow') {
+            waitForRender(setupSnaps, state.isSafari ? 128 : 1);
+          }
+          if (state.layout === 'fixed') {
+            fixedSetup();
+          }
+        } else {
+          if (state.layout === 'flow') {
+            console.log('setup');
+            flowInit();
+          }
+          if (state.layout === 'fixed') {
+            fixedInit();
+          }
         }
-        if (state.layout === 'fixed') {
-          fixedSetup();
+      };
+
+      if (state.layout === 'fixed') {
+        onReady();
+      } else {
+        const images = Array.from(state.wrapper.querySelectorAll('img'));
+
+        if (images.length) {
+          Promise.all(
+            images.map(
+              (image) =>
+                new Promise<void>((resolve) => {
+                  const imageReady = () => {
+                    const ratio = image.naturalWidth / image.naturalHeight;
+                    const style = image.getAttribute('style') ?? '';
+                    const rules = style.split(';').map((rule) => rule.trim());
+                    rules.push(`--aspect-ratio: ${ratio}`);
+                    image.setAttribute('style', rules.join(';'));
+                    resolve();
+                  };
+
+                  if (image.complete) {
+                    imageReady();
+                  } else {
+                    image.onload = () => imageReady();
+                    image.onerror = () => imageReady();
+                  }
+                }),
+            ),
+          )
+            .then(onReady)
+            .catch(genericCatch('Error loading images'));
+        } else {
+          onReady();
         }
       }
     });

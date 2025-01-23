@@ -10,4 +10,7 @@ export interface FlowState {
   columnGap: number;
 
   snaps: Set<number>;
+  firstSnap: number;
+  lastSnap: number;
+  goToEnd: boolean;
 }

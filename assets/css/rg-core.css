@@ -45,8 +45,8 @@ body {
   height: 100svh;
   z-index: 20;
   margin-top: var(--viewer-margin-top);
-  /* pointer-events: none;
-  user-select: none; */
+  /* pointer-events: none; */
+  user-select: none;
 }
 
 #wrapper {
@@ -92,7 +92,7 @@ body {
 }
 
 .flow.ui-mode #wrapper {
-  --ui-top: calc(var(--vertical-padding-corrector) * -1);
+  --ui-top: calc(var(--vertical-padding-corrector) * 0.5);
 }
 
 .flow #wrapper {
@@ -103,9 +103,15 @@ body {
     calc(var(--padding-bottom) + calc(var(--vertical-padding-corrector) * 3));
 }
 
+.flow #content img {
+  aspect-ratio: var(--aspect-ratio);
+  max-height: fit-content;
+  max-width: 100%;
+}
+
 .flow.horizontal #wrapper {
   column-count: var(--column-count);
-  column-rule: 1px solid #eee;
+  column-rule: var(--column-rule-width, 1px) solid #eee;
   column-gap: var(--column-gap);
   column-width: var(--column-width);
   overflow-y: hidden;
@@ -119,10 +125,10 @@ body {
   touch-action: pan-y;
 }
 
-/* #content {
-  pointer-events: var(--pointer-events, auto);
-  user-select: initial;
-} */
+#content {
+  /* pointer-events: var(--pointer-events, auto); */
+  user-select: text;
+}
 
 .flow #content {
   font-size: var(--font-size);
@@ -143,7 +149,7 @@ body {
   margin: 0;
   padding: 0;
   width: 1px;
-  height: 1px;
+  height: 10px;
   background-color: transparent;
   pointer-events: none;
   scroll-snap-align: start;
@@ -154,7 +160,7 @@ body {
   position: absolute;
   top: 100svh;
   left: 0;
-  padding-top: var(--vertical-padding-corrector);
+  /* padding-top: var(--vertical-padding-corrector); */
   height: var(--vertical-padding-corrector);
   width: calc(var(--column-width) + var(--column-gap));
   display: flex;
@@ -168,24 +174,25 @@ body {
   height: 100%;
   position: relative;
   font-size: 0;
-  user-select: var(--user-select-end);
+  user-select: none;
 }
 
 #chapter-start::before,
-#chapter-start::after {
+#chapter-start::after,
+#chapter-end::before,
+#chapter-end::after {
   content: '';
   display: block;
   position: absolute;
   inset: 0;
 }
 
-#chapter-start::before {
+#chapter-start::before,
+#chapter-end::before {
   background-color: green;
 }
 
 #chapter-start::after {
-  content: '';
-  display: block;
   background: linear-gradient(
     to left,
     rgba(255, 255, 255, 1),
@@ -201,7 +208,42 @@ body {
   break-before: column;
 }
 
+#chapter-end::after {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 1),
+    rgba(255, 0, 0, 0)
+  );
+}
+
 #content span[data-page]::before {
   content: '';
   display: block;
+}
+
+#content img {
+  pointer-events: none;
+}
+
+#selection-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4rem;
+  background-color: #aaa;
+  bottom: -100%;
+  transition: bottom var(--animation-delay);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#selection-menu button {
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--highlighter-color);
+}
+
+.selection-mode #selection-menu {
+  bottom: 0;
 }

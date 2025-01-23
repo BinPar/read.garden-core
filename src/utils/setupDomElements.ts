@@ -9,9 +9,10 @@ const setupDomElements = (initialOptions: Options) => {
   document.body.appendChild(iframe);
 
   const iframeDoc = iframe.contentDocument ?? iframe.contentWindow?.document;
+  const iframeWin = iframe.contentWindow;
 
-  if (!iframeDoc) {
-    throw new Error(`Can't find iframe document`);
+  if (!iframeDoc || !iframeWin) {
+    throw new Error(`Can't find iframe document or window`);
   }
 
   const meta = document.createElement('meta');
@@ -21,21 +22,24 @@ const setupDomElements = (initialOptions: Options) => {
   window.parent.parent.document.head.appendChild(meta);
 
   const styles = iframeDoc.createElement('link');
+  styles.onload = () => {
+    console.log('styles.css loaded');
+    window.requestAnimationFrame(() => {
+      iframeDoc.body.appendChild(container);
+      updateState((current) => {
+        if (
+          current.contentCssLoaded &&
+          (current.layout === 'fixed' || current.fontsCssLoaded)
+        ) {
+          return { coreCssLoaded: true, loadingStyles: false };
+        }
+        return { coreCssLoaded: true };
+      });
+    });
+  };
   styles.rel = 'stylesheet';
   styles.type = 'text/css';
   styles.href = '/css/styles.css';
-  styles.onload = () => {
-    console.log('styles.css loaded');
-    updateState((current) => {
-      if (
-        current.contentCssLoaded &&
-        (current.layout === 'fixed' || current.fontsCssLoaded)
-      ) {
-        return { coreCssLoaded: true, loadingStyles: false };
-      }
-      return { coreCssLoaded: true };
-    });
-  };
   iframeDoc.head.appendChild(styles);
 
   if (initialOptions.ui) {
@@ -69,18 +73,33 @@ const setupDomElements = (initialOptions: Options) => {
     contentPlaceholder.id = 'content-placeholder';
     wrapper.appendChild(contentPlaceholder);
     contentPlaceholder.appendChild(content);
-  } else {
-    wrapper.appendChild(content);
   }
 
-  iframeDoc.body.appendChild(container);
+  if (initialOptions.layout === 'flow') {
+    const chapterStart = iframeDoc.createElement('div');
+    chapterStart.id = 'chapter-start';
+    wrapper.appendChild(chapterStart);
+
+    wrapper.appendChild(content);
+
+    const chapterEnd = iframeDoc.createElement('div');
+    chapterEnd.id = 'chapter-end';
+    wrapper.appendChild(chapterEnd);
+  }
+
+  const selectionMenu = iframeDoc.createElement('div');
+  selectionMenu.id = 'selection-menu';
+  viewer.appendChild(selectionMenu);
 
   return {
     doc: iframeDoc,
+    win: iframeWin,
+    iframe,
     container,
     viewer,
     wrapper,
     content,
+    selectionMenu,
   };
 };
 

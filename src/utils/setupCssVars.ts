@@ -2,7 +2,7 @@ import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
 
 const setupCssVars = (config = getConfig()) => {
-  // setCssVariable('viewer-margin-top', '200vh');
+  setCssVariable('viewer-margin-top', '200svh');
 
   if (config.layout === 'flow') {
     setCssVariable('font-family', config.fontFamily);

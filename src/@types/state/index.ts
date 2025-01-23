@@ -20,11 +20,15 @@ export interface CommonState {
   containerWidth: number;
   containerHeight: number;
 
+  iframe: HTMLIFrameElement;
+  win: Window;
   doc: Document;
   container: HTMLDivElement;
   viewer: HTMLDivElement;
   wrapper: HTMLDivElement;
   content: HTMLDivElement;
+  selectionMenu: HTMLDivElement;
+  isSafari: boolean;
 
   uiContainer?: HTMLDivElement;
 

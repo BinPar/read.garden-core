@@ -1,10 +1,13 @@
 import { getConfig } from '@/utils/config';
+import getSelection from '@/utils/getSelection';
+import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
+import showSelectionMenu from '@/utils/showSelectionMenu';
 import { getState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const threshold = 25;
+const threshold = 33;
 
 const setupDomEvents = (state = getState(), config = getConfig()) => {
   const touches = new Set<number>();
@@ -21,6 +24,7 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     if (touchX) {
       const w = state.doc.body.clientWidth;
       const pixels = w * (threshold / 100);
+      // console.log({ w, pixels, touchX, touch: config.touch });
 
       if (touchX <= pixels) {
         moveBackwards();
@@ -33,29 +37,41 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
   };
 
   const handleTouchEnd = (event: PointerEvent) => {
+    // console.log('touchend');
     touches.delete(event.pointerId);
-    if (!isLongPress && !isMultipleTouch) {
+    const selection = getSelection();
+    if (
+      !isLongPress &&
+      !isMultipleTouch &&
+      (!selection || selection.isCollapsed)
+    ) {
       checkIfScreenXBorderIsPressed(event);
     }
     if (touches.size === 0) {
       isMultipleTouch = false;
     }
     isLongPress = false;
-    state.wrapper.dispatchEvent(new Event('scrollend'));
   };
 
   const handleContextMenu = (ev: MouseEvent) => {
+    // console.log('contextmenu');
     ev.preventDefault();
-    // console.log('context menu');
     isLongPress = true;
   };
 
-  // const handleSelectionChange = () => {
-  //   console.log('selectionchange');
-  // };
+  const handleSelectionChange = () => {
+    // console.log('selectionchange');
+    const selection = getSelection();
+    const text = selection?.toString().trim();
+    if (text) {
+      showSelectionMenu();
+    } else {
+      hideSelectionMenu();
+    }
+  };
 
   state.doc.addEventListener('contextmenu', handleContextMenu, false);
-  // state.doc.addEventListener('selectionchange', handleSelectionChange);
+  state.doc.addEventListener('selectionchange', handleSelectionChange);
   state.viewer.addEventListener('pointerdown', handleTouchStart);
   state.viewer.addEventListener('pointerup', handleTouchEnd);
   state.viewer.addEventListener('pointercancel', handleTouchEnd);

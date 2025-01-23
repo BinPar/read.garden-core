@@ -1,20 +1,12 @@
+import setCssVariable from '@/tools/setCssVariable';
 import { getState } from '@/utils/state';
 
 const renderContent = (html: string, state = getState()) => {
+  setCssVariable('viewer-margin-top', '200svh');
   state.content.innerHTML = html;
 
   if (state.layout === 'flow') {
-    const chapterStart = state.doc.createElement('div');
-    chapterStart.id = 'chapter-start';
-    state.content.insertAdjacentElement('beforebegin', chapterStart);
-  
-    const inlineEnd = state.doc.createElement('div');
-    inlineEnd.id = 'inline-end';
-    state.content.insertAdjacentElement('beforeend', inlineEnd);
-  
-    const chapterEnd = state.doc.createElement('div');
-    chapterEnd.id = 'chapter-end';
-    state.content.insertAdjacentElement('afterend', chapterEnd);
+    state.wrapper.scrollTo({ left: 0, behavior: 'instant' });
   }
 };
 

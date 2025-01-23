@@ -23,6 +23,7 @@ export const init = (initialOptions: Options) => {
       initialOptions.options.uiModeMargin ?? defaultCommonConfig.uiModeMargin,
     baseUrl: initialOptions.options.baseUrl,
     jsonData: initialOptions.options.jsonData,
+    selectionMenuOptions: initialOptions.options.selectionMenuOptions,
   };
 
   if (initialOptions.layout === 'flow') {
