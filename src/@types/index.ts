@@ -4,20 +4,16 @@ declare global {
   interface Window {
     rgCore: ReturnType<typeof setup>;
     readGardenCore: typeof setup;
-    PointerEvent: typeof PointerEvent;
-    Touch: typeof Touch;
-  }
-  interface PointerEvent {
-    getCoalescedEvents(): PointerEvent[];
-  }
-  interface HTMLElementEventMap {
-    pointerrawupdate: PointerEvent;
   }
 }
 
 export interface CoreContent {
   file: string;
   html: string;
+  order: number;
+  slug: string;
+  prev?: CoreContent;
+  next?: CoreContent;
 }
 
 export type CssVariableKey =

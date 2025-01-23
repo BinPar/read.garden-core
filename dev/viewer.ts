@@ -16,7 +16,6 @@ window.onload = () => {
         .then((response) => response.json())
         .then((json) => {
           const data = json as JsonData;
-          console.log({ data });
           if (data.type === 'flow') {
             window.rgCore = window.readGardenCore({
               layout: data.type,

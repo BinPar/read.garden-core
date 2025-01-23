@@ -9,6 +9,8 @@ export interface CommonState {
   slug: string;
   productSlug: string;
   contentSlug: string;
+  contentOrder: number;
+  pendingContents: Set<number>;
 
   initialized: boolean;
   loadingStyles: boolean;
@@ -29,6 +31,7 @@ export interface CommonState {
   readMode: boolean;
 
   contentsBySlug?: Map<string, CoreContent>;
+  orderedContents?: CoreContent[];
 }
 
 export type State = CommonState & (FixedState | FlowState);

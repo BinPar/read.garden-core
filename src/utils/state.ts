@@ -57,6 +57,8 @@ export const init = (
     slug: '',
     productSlug: '',
     contentSlug: '',
+    contentOrder: -1,
+    pendingContents: new Set<number>(),
   };
 
   if (initialOptions.options.jsonData) {

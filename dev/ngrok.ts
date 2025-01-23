@@ -1,8 +1,6 @@
 import ngrok from 'ngrok';
 import chalk from 'chalk';
 
-console.log(process.env.PORT);
-
 await ngrok
   .connect({
     proto: 'http',

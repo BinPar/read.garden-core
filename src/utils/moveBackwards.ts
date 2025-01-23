@@ -1,3 +1,5 @@
+import genericCatch from '@/tools/genericCatch';
+import loadContent from '@/utils/loadContent';
 import { getState } from '@/utils/state';
 
 const moveBackwards = (state = getState()) => {
@@ -8,6 +10,15 @@ const moveBackwards = (state = getState()) => {
       left,
       behavior: 'instant',
     });
+  }
+
+  if (state.layout === 'fixed' && state.orderedContents) {
+    const content = state.orderedContents[state.contentOrder];
+    if (content?.prev) {
+      loadContent(content.prev).catch(
+        genericCatch('Exception loading next content'),
+      );
+    }
   }
 };
 

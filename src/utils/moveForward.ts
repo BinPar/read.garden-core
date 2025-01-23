@@ -1,3 +1,5 @@
+import genericCatch from '@/tools/genericCatch';
+import loadContent from '@/utils/loadContent';
 import { getState } from '@/utils/state';
 
 const moveForward = (state = getState()) => {
@@ -7,6 +9,15 @@ const moveForward = (state = getState()) => {
       left,
       behavior: 'instant',
     });
+  }
+
+  if (state.layout === 'fixed' && state.orderedContents) {
+    const content = state.orderedContents[state.contentOrder];
+    if (content?.next) {
+      loadContent(content.next).catch(
+        genericCatch('Exception loading next content'),
+      );
+    }
   }
 };
 

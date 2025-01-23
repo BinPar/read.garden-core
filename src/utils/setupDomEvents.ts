@@ -4,7 +4,7 @@ import moveForward from '@/utils/moveForward';
 import { getState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const threshold = 20;
+const threshold = 25;
 
 const setupDomEvents = (state = getState(), config = getConfig()) => {
   const touches = new Set<number>();
@@ -21,11 +21,6 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     if (touchX) {
       const w = state.doc.body.clientWidth;
       const pixels = w * (threshold / 100);
-
-      console.log({
-        pixels,
-        touchX,
-      });
 
       if (touchX <= pixels) {
         moveBackwards();
@@ -51,7 +46,7 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
 
   const handleContextMenu = (ev: MouseEvent) => {
     ev.preventDefault();
-    console.log('context menu');
+    // console.log('context menu');
     isLongPress = true;
   };
 

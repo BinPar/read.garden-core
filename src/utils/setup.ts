@@ -7,10 +7,10 @@ import { getState, init as initState } from '@/utils/state';
 import { getConfig, init as initConfig } from '@/utils/config';
 import setupCssVars from '@/utils/setupCssVars';
 import { defaultState } from '@/utils/defaults';
-import loadFirstContent from '@/utils/loadFirstContent';
+import loadContentBySlug from '@/utils/loadContentBySlug';
 import genericCatch from '@/tools/genericCatch';
-import { default as flowInit, flowSetup } from '@/utils/flow/setup';
-import { default as fixedInit, fixedSetup } from '@/utils/fixed/setup';
+import flowSetup from '@/utils/flow/setup';
+import fixedSetup from '@/utils/fixed/setup';
 import setupFixedEvents from '@/utils/fixed/setupEvents';
 
 const setup = (initialOptions: Options) => {
@@ -55,20 +55,12 @@ const setup = (initialOptions: Options) => {
   }
 
   const observer = new MutationObserver(() => {
-    console.log('content changed');
     window.requestAnimationFrame(() => {
-      console.log('animation frame');
-      if (state.layout === 'flow') {
-        if (!state.initialized) {
-          flowInit();
-        } else {
+      if (!state.initialized) {
+        if (state.layout === 'flow') {
           flowSetup();
         }
-      }
-      if (state.layout === 'fixed') {
-        if (!state.initialized) {
-          fixedInit();
-        } else {
+        if (state.layout === 'fixed') {
           fixedSetup();
         }
       }
@@ -81,7 +73,7 @@ const setup = (initialOptions: Options) => {
     subtree: true,
   });
 
-  loadFirstContent(initialContentSlug).catch(
+  loadContentBySlug(initialContentSlug).catch(
     genericCatch('Exception loading first content'),
   );
 
