@@ -7,7 +7,9 @@ import showSelectionMenu from '@/utils/showSelectionMenu';
 import { getState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const threshold = 33;
+const rightThreshold = 45;
+const leftThreshold = 20;
+// const threshold = 33;
 
 const setupDomEvents = (state = getState(), config = getConfig()) => {
   const touches = new Set<number>();
@@ -22,13 +24,13 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
   const checkIfScreenXBorderIsPressed = (event: PointerEvent) => {
     const touchX = event.x;
     if (touchX) {
-      const w = state.doc.body.clientWidth;
-      const pixels = w * (threshold / 100);
+      const width = state.doc.body.clientWidth;
+      // const pixels = width * (threshold / 100);
       // console.log({ w, pixels, touchX, touch: config.touch });
 
-      if (touchX <= pixels) {
+      if (touchX <= width * (leftThreshold / 100)) {
         moveBackwards();
-      } else if (touchX > w - pixels) {
+      } else if (touchX > width - width * (rightThreshold / 100)) {
         moveForward();
       } else if (config.touch) {
         switchMode();
