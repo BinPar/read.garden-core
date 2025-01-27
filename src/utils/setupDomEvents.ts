@@ -1,22 +1,24 @@
 import { getConfig } from '@/utils/config';
 import getSelection from '@/utils/getSelection';
-import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
+import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import showSelectionMenu from '@/utils/showSelectionMenu';
-import { getState } from '@/utils/state';
+import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const rightThreshold = 45;
-const leftThreshold = 20;
+const rightThreshold = 20; // 45
+const leftThreshold = 20; // 20
 // const threshold = 33;
 
 const setupDomEvents = (state = getState(), config = getConfig()) => {
   const touches = new Set<number>();
   let isLongPress = false;
+  let isSelection = false;
   let isMultipleTouch = false;
 
   const handleTouchStart = (event: PointerEvent) => {
+    console.log('viewer touchstart');
     touches.add(event.pointerId);
     isMultipleTouch = touches.size > 1;
   };
@@ -39,44 +41,69 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
   };
 
   const handleTouchEnd = (event: PointerEvent) => {
-    // console.log('touchend');
+    console.log('viewer touchend', {
+      isLongPress,
+      isMultipleTouch,
+      isSelection,
+    });
     touches.delete(event.pointerId);
-    const selection = getSelection();
-    if (
-      !isLongPress &&
-      !isMultipleTouch &&
-      (!selection || selection.isCollapsed)
-    ) {
+    if (!isLongPress && !isMultipleTouch && !isSelection) {
       checkIfScreenXBorderIsPressed(event);
     }
     if (touches.size === 0) {
       isMultipleTouch = false;
     }
     isLongPress = false;
+    isSelection = false;
   };
 
   const handleContextMenu = (ev: MouseEvent) => {
-    // console.log('contextmenu');
+    console.log('contextmenu');
     ev.preventDefault();
     isLongPress = true;
   };
 
   const handleSelectionChange = () => {
-    // console.log('selectionchange');
     const selection = getSelection();
-    const text = selection?.toString().trim();
+    const text = selection.toString().trim();
+    isLongPress = false;
+    console.log('selectionchange', text);
     if (text) {
+      isSelection = true;
+      const selectionRanges = new Array<Range>();
+      for (let i = 0, l = selection.rangeCount; i < l; i++) {
+        const range = selection.getRangeAt(i);
+        if (range) {
+          console.dir(range.startContainer);
+          console.dir(range.endContainer);
+          selectionRanges.push(range.cloneRange());
+        }
+      }
       showSelectionMenu();
-    } else {
-      hideSelectionMenu();
+      updateState({
+        selectedText: text,
+        selectionRanges,
+      });
+      return;
     }
+
+    updateState({
+      selectedText: '',
+      selectionRanges: null,
+    });
   };
 
-  state.doc.addEventListener('contextmenu', handleContextMenu, false);
+  state.win.addEventListener('contextmenu', handleContextMenu, true);
+  state.doc.addEventListener('contextmenu', handleContextMenu, true);
   state.doc.addEventListener('selectionchange', handleSelectionChange);
   state.viewer.addEventListener('pointerdown', handleTouchStart);
   state.viewer.addEventListener('pointerup', handleTouchEnd);
   state.viewer.addEventListener('pointercancel', handleTouchEnd);
+  state.selectionMenu.addEventListener('pointerup', preventAndStopPropagation);
+  state.selectionMenu.addEventListener(
+    'pointercancel',
+    preventAndStopPropagation,
+  );
 };
 
 export default setupDomEvents;

@@ -1,7 +1,10 @@
 import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
-import { getState } from '@/utils/state';
+import { getState, updateState } from '@/utils/state';
 
+// TODO: Min and max from config
+const minScale = 0.5;
+const maxScale = 4;
 let scale = 1;
 
 export const checkCenter = () => {
@@ -49,6 +52,23 @@ export const checkCenter = () => {
   });
 };
 
+const updateScale = () => {
+  window.requestAnimationFrame(() => {
+    setCssVariable('zoom', `${scale * 100}`);
+    updateState({ zoom: scale * 100 }, true);
+    checkCenter();
+  });
+};
+
+export const setScale = (newValue: number) => {
+  const newScale = Math.min(Math.max(newValue, minScale), maxScale);
+  if (newScale === scale) {
+    return;
+  }
+  scale = newValue;
+  updateScale();
+};
+
 const setupEvents = () => {
   const state = getState();
   const config = getConfig();
@@ -60,24 +80,13 @@ const setupEvents = () => {
   scale = config.zoom / 100;
   const element = state.content;
 
-  const minScale = 0.5;
-  const maxScale = 4;
   let startDistance = 0;
-
-  const updateScale = () => {
-    window.requestAnimationFrame(() => {
-      setCssVariable('zoom', `${scale * 100}`);
-      checkCenter();
-    });
-  };
 
   const applyScale = (factor: number) => {
     if (factor === 1) {
       return;
     }
-    scale *= factor;
-    scale = Math.min(Math.max(scale, minScale), maxScale);
-    updateScale();
+    setScale(scale * factor);
   };
 
   const handleTouchStart = (e: TouchEvent) => {

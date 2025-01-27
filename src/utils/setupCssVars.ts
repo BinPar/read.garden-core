@@ -3,6 +3,9 @@ import { getConfig } from '@/utils/config';
 
 const setupCssVars = (config = getConfig()) => {
   setCssVariable('viewer-margin-top', '200svh');
+  setCssVariable('ui-scale', `${config.uiModeScale}`);
+  setCssVariable('ui-left', `${config.uiModeLeft}px`);
+  setCssVariable('ui-top', `${config.uiModeTop}px`);
 
   if (config.layout === 'flow') {
     setCssVariable('font-family', config.fontFamily);

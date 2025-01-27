@@ -1,6 +1,8 @@
 import type { SelectionOption } from '@/@types/selection';
 import { getConfig } from '@/utils/config';
-import hideSelectionMenu from '@/utils/hideSelectionMenu';
+import dispatch from '@/utils/dispatch';
+import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
+// import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import { getState } from '@/utils/state';
 
 const showSelectionMenu = (options?: SelectionOption[]) => {
@@ -26,13 +28,28 @@ const showSelectionMenu = (options?: SelectionOption[]) => {
       if (option.style) {
         button.setAttribute('style', option.style);
       }
-      button.addEventListener('click', () => {
-        console.log('option selected');
-        hideSelectionMenu();
+      button.addEventListener('pointerdown', (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        console.log('selection button pointerdown');
+        dispatch({
+          type: 'createHighlight',
+          payload: {
+            key: option.key,
+            color: option.color,
+            clearSelection: true,
+            hideMenu: true,
+            draw: true,
+          },
+        });
+        // hideSelectionMenu();
       });
+      button.addEventListener('pointerup', preventAndStopPropagation);
+      button.addEventListener('pointercancel', preventAndStopPropagation);
       state.selectionMenu.appendChild(button);
     }
   }
+
   state.doc.body.classList.add('selection-mode');
 };
 

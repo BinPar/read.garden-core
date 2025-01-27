@@ -1,6 +1,7 @@
 import setCssVariable from '@/tools/setCssVariable';
-import { checkCenter } from '@/utils/fixed/setupEvents';
+import { checkCenter, setScale } from '@/utils/fixed/setupEvents';
 import { getState, updateState } from '@/utils/state';
+import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
 
 export const fixedSetup = () => {
   console.log('fixed setup');
@@ -13,6 +14,10 @@ export const fixedSetup = () => {
 const setup = (state = getState()) => {
   console.log('fixed init', state);
   updateState({ initialized: true });
+
+  addPropertyChangeListener<'zoom'>('zoom', ({ newValue }) => {
+    setScale(newValue / 100);
+  });
 
   if (!state.loadingStyles) {
     fixedSetup();

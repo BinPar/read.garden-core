@@ -3,7 +3,7 @@ import { type Options } from '@/@types/config';
 import render from '@/utils/buttons/render';
 import setupDomEvents from '@/utils/setupDomEvents';
 import setupDomElements from '@/utils/setupDomElements';
-import { getState, init as initState } from '@/utils/state';
+import { getState, init as initState, updateState } from '@/utils/state';
 import { getConfig, init as initConfig } from '@/utils/config';
 import setupCssVars from '@/utils/setupCssVars';
 import { defaultState } from '@/utils/defaults';
@@ -13,6 +13,7 @@ import flowInit, { setupSnaps } from '@/utils/flow/setup';
 import fixedInit, { fixedSetup } from '@/utils/fixed/setup';
 import setupFixedEvents from '@/utils/fixed/setupEvents';
 import waitForRender from '@/utils/waitForRender';
+import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -75,6 +76,12 @@ const setup = (initialOptions: Options) => {
             fixedInit();
           }
         }
+        const links = state.content.querySelectorAll('a');
+        links.forEach((link) => {
+          link.onclick = (ev) => {
+            ev.preventDefault();
+          };
+        });
       };
 
       if (state.layout === 'fixed') {
@@ -127,6 +134,28 @@ const setup = (initialOptions: Options) => {
   if (initialOptions.ui?.buttons?.length) {
     render(initialOptions.ui.buttons, state);
   }
+
+  addPropertyChangeListener<'contentSlug'>(
+    'contentSlug',
+    ({ oldValue, newValue }) => {
+      if (state.layout === 'fixed') {
+        state.highlightsLayers.set(
+          oldValue,
+          state.highlights.cloneNode(true) as HTMLDivElement,
+        );
+        let highlightsLayer = state.highlightsLayers.get(newValue);
+        console.log({ slug: newValue, layerHighlights: highlightsLayer });
+        if (!highlightsLayer) {
+          highlightsLayer = state.doc.createElement('div');
+          highlightsLayer.id = 'highlights';
+          state.highlightsLayers.set(newValue, highlightsLayer);
+        }
+        state.content.appendChild(highlightsLayer);
+        updateState({ highlights: highlightsLayer });
+      }
+      console.log('contentSlug changed', newValue);
+    },
+  );
 
   return {
     state,

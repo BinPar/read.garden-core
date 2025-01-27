@@ -18,7 +18,9 @@ export interface CommonConfig {
   touch: boolean;
   padding: MarginOrPadding;
   readModeMargin: MarginOrPadding;
-  uiModeMargin: MarginOrPadding;
+  uiModeScale: number;
+  uiModeTop: number;
+  uiModeLeft: number;
   baseUrl?: string;
   jsonData?: JsonData;
   initialContentSlug?: string;

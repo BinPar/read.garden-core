@@ -4,10 +4,10 @@ import genericCatch from '@/tools/genericCatch';
 
 type StateKey = keyof FullState;
 
-type PropertyChangeHandler<K extends StateKey> = (
-  oldValue: FullState[K],
-  newValue: FullState[K],
-) => void;
+type PropertyChangeHandler<K extends StateKey> = (props: {
+  oldValue: FullState[K];
+  newValue: FullState[K];
+}) => void;
 
 const handlers = new Map<StateKey, Set<PropertyChangeHandler<StateKey>>>();
 
@@ -43,7 +43,7 @@ export const notifyPropertyChange = <K extends StateKey>(
   if (propertySet) {
     propertySet.forEach((handler) => {
       try {
-        handler(oldValue, newValue);
+        handler({ oldValue, newValue });
       } catch (ex) {
         genericCatch('Exception in property change handler')(ex);
       }

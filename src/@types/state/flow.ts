@@ -3,6 +3,8 @@ export interface FlowState {
 
   fontsCssLoaded: boolean;
 
+  chapterStart: HTMLDivElement;
+  chapterEnd: HTMLDivElement;
   snapsContainer: HTMLDivElement;
 
   columnWidth: number;

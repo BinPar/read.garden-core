@@ -56,9 +56,13 @@ body {
   clear: both;
   cursor: var(--drag-cursor, grab);
   transition: transform var(--animation-delay);
+  will-change: transform;
+  z-index: 30;
+}
+
+.flow.ui-mode #wrapper {
   transform: scale(var(--ui-scale, 1))
     translate3d(var(--ui-left, 0), var(--ui-top, 0), 0);
-  will-change: transform;
 }
 
 .fixed.paginated #wrapper {
@@ -76,19 +80,13 @@ body {
 
 .fixed.paginated #content {
   --scale: calc(var(--zoom) / 100);
-  padding: calc(var(--padding-top, 0) / var(--scale))
-    calc(var(--padding-right, 0) / var(--scale))
-    calc(var(--padding-bottom, 0) / var(--scale))
-    calc(var(--padding-left, 0) / var(--scale));
+  --left: calc(var(--padding-left, 0) / var(--scale));
+  --top: calc(var(--padding-top, 0) / var(--scale));
+  padding: var(--top) calc(var(--padding-right, 0) / var(--scale))
+    calc(var(--padding-bottom, 0) / var(--scale)) var(--left);
   display: inline-block;
   zoom: var(--scale);
   will-change: zoom;
-}
-
-.ui-mode #wrapper {
-  --ui-scale: 0.75;
-  --ui-left: 0;
-  --ui-top: 0;
 }
 
 .flow.ui-mode #wrapper {
@@ -127,7 +125,9 @@ body {
 
 #content {
   /* pointer-events: var(--pointer-events, auto); */
+  position: relative;
   user-select: text;
+  text-rendering: optimizeLegibility;
 }
 
 .flow #content {
@@ -225,11 +225,37 @@ body {
   pointer-events: none;
 }
 
+#highlights {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.fixed.paginated #highlights {
+  left: var(--left);
+  top: var(--top);
+}
+
+#highlights > div {
+  position: absolute;
+  border: none;
+  mix-blend-mode: multiply;
+  top: var(--top);
+  left: var(--left);
+  width: var(--width);
+  height: var(--height);
+  background-color: var(--color);
+  outline: 1px solid var(--color);
+}
+
 #selection-menu {
   position: absolute;
   left: 0;
   right: 0;
   height: 4rem;
+  z-index: 40;
   background-color: #aaa;
   bottom: -100%;
   transition: bottom var(--animation-delay);

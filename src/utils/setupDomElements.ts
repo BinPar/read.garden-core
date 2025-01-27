@@ -1,7 +1,21 @@
 import type { Options } from '@/@types/config';
+import type { State } from '@/@types/state';
 import { updateState } from '@/utils/state';
 
-const setupDomElements = (initialOptions: Options) => {
+const setupDomElements = (
+  initialOptions: Options,
+): Pick<
+  State,
+  | 'iframe'
+  | 'win'
+  | 'doc'
+  | 'container'
+  | 'viewer'
+  | 'wrapper'
+  | 'highlights'
+  | 'content'
+  | 'selectionMenu'
+> => {
   const iframe = document.createElement('iframe');
   iframe.id = 'rg-iframe';
   iframe.name = 'Read Garden Viewer';
@@ -68,23 +82,18 @@ const setupDomElements = (initialOptions: Options) => {
   const content = iframeDoc.createElement('div');
   content.id = 'content';
 
+  const highlights = iframeDoc.createElement('div');
+  highlights.id = 'highlights';
+
   if (initialOptions.layout === 'fixed') {
     const contentPlaceholder = iframeDoc.createElement('div');
     contentPlaceholder.id = 'content-placeholder';
     wrapper.appendChild(contentPlaceholder);
     contentPlaceholder.appendChild(content);
-  }
-
-  if (initialOptions.layout === 'flow') {
-    const chapterStart = iframeDoc.createElement('div');
-    chapterStart.id = 'chapter-start';
-    wrapper.appendChild(chapterStart);
-
+    // content.appendChild(highlights);
+  } else {
     wrapper.appendChild(content);
-
-    const chapterEnd = iframeDoc.createElement('div');
-    chapterEnd.id = 'chapter-end';
-    wrapper.appendChild(chapterEnd);
+    // wrapper.appendChild(highlights);
   }
 
   const selectionMenu = iframeDoc.createElement('div');
@@ -96,6 +105,7 @@ const setupDomElements = (initialOptions: Options) => {
     win: iframeWin,
     iframe,
     container,
+    highlights,
     viewer,
     wrapper,
     content,

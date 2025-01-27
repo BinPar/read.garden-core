@@ -4,7 +4,7 @@ import type { CommonConfig } from '@/@types/config';
 
 export const defaultCommonConfig: Pick<
   CommonConfig,
-  'padding' | 'readModeMargin' | 'uiModeMargin'
+  'padding' | 'readModeMargin' | 'uiModeTop' | 'uiModeLeft' | 'uiModeScale'
 > = {
   padding: {
     top: 32,
@@ -18,12 +18,9 @@ export const defaultCommonConfig: Pick<
     bottom: 0,
     left: 0,
   },
-  uiModeMargin: {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 140,
-  },
+  uiModeTop: 0,
+  uiModeLeft: 0,
+  uiModeScale: 0.75,
 };
 
 export const defaultFlowConfig: Omit<FlowConfig, 'layout'> = {

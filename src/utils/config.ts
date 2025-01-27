@@ -19,8 +19,13 @@ export const init = (initialOptions: Options) => {
     readModeMargin:
       initialOptions.options.readModeMargin ??
       defaultCommonConfig.readModeMargin,
-    uiModeMargin:
-      initialOptions.options.uiModeMargin ?? defaultCommonConfig.uiModeMargin,
+
+    uiModeScale:
+      initialOptions.options.uiModeScale ?? defaultCommonConfig.uiModeScale,
+    uiModeTop:
+      initialOptions.options.uiModeTop ?? defaultCommonConfig.uiModeTop,
+    uiModeLeft:
+      initialOptions.options.uiModeLeft ?? defaultCommonConfig.uiModeLeft,
     baseUrl: initialOptions.options.baseUrl,
     jsonData: initialOptions.options.jsonData,
     selectionMenuOptions: initialOptions.options.selectionMenuOptions,

@@ -30,4 +30,7 @@ export type CssVariableKey =
   | 'font-size'
   | 'zoom'
   | 'fixed-left'
-  | 'fixed-top';
+  | 'fixed-top'
+  | 'ui-scale'
+  | 'ui-top'
+  | 'ui-left';

@@ -1,5 +1,65 @@
 import genericCatch from '@/tools/genericCatch';
 import type { JsonData } from '@/@types/rg';
+import type { SelectionOption } from '@/@types/selection';
+import type { Button } from '@/@types/buttons';
+
+const selectionOptions: SelectionOption[] = [
+  {
+    color: '#ff0000',
+    type: 'highlight',
+    key: 'red',
+    title: 'Red',
+    className: 'highlighter',
+    style: '--highlighter-color: #ff0000',
+  },
+  {
+    color: '#ff00ff',
+    type: 'highlight',
+    key: 'pink',
+    title: 'Pink',
+    className: 'highlighter',
+    style: '--highlighter-color: #ff00ff',
+  },
+  {
+    color: '#00ff00',
+    type: 'highlight',
+    key: 'green',
+    title: 'Green',
+    className: 'highlighter',
+    style: '--highlighter-color: #00ff00',
+  },
+  {
+    color: '#0000ff',
+    type: 'note',
+    key: 'notes',
+    title: 'Notes',
+    className: 'note',
+    style: '--highlighter-color: #0000ff',
+  },
+];
+
+const buttons: Button[] = [
+  {
+    type: 'backward',
+    text: '<',
+  },
+  {
+    type: 'forward',
+    text: '>',
+  },
+  {
+    type: 'switchMode',
+    text: 'UI',
+  },
+  {
+    type: 'zoomIn',
+    text: '+',
+  },
+  {
+    type: 'zoomOut',
+    text: '-',
+  },
+];
 
 window.onload = () => {
   const url = new URL(document.location.toString());
@@ -20,57 +80,15 @@ window.onload = () => {
             window.rgCore = window.readGardenCore({
               layout: data.type,
               options: {
-                initialContentSlug: '8',
+                initialContentSlug: '24',
                 direction: 'horizontal',
                 baseUrl,
                 jsonData: data,
                 fontFamily: 'Obf-Helvetica',
-                selectionMenuOptions: [
-                  {
-                    color: '#ff0000',
-                    key: 'red',
-                    title: 'Red',
-                    className: 'highlighter',
-                    style: '--highlighter-color: #ff0000',
-                  },
-                  {
-                    color: '#ff00ff',
-                    key: 'pink',
-                    title: 'Pink',
-                    className: 'highlighter',
-                    style: '--highlighter-color: #ff00ff',
-                  },
-                  {
-                    color: '#00ff00',
-                    key: 'green',
-                    title: 'Green',
-                    className: 'highlighter',
-                    style: '--highlighter-color: #00ff00',
-                  },
-                  {
-                    color: '#0000ff',
-                    key: 'notes',
-                    title: 'Notes',
-                    className: 'note',
-                    style: '--highlighter-color: #0000ff',
-                  },
-                ],
+                selectionMenuOptions: selectionOptions,
               },
               ui: {
-                buttons: [
-                  {
-                    type: 'backward',
-                    text: '<',
-                  },
-                  {
-                    type: 'forward',
-                    text: '>',
-                  },
-                  {
-                    type: 'switchMode',
-                    text: 'UI',
-                  },
-                ],
+                buttons,
               },
             });
           }
@@ -79,7 +97,7 @@ window.onload = () => {
             window.rgCore = window.readGardenCore({
               layout: data.type,
               options: {
-                initialContentSlug: '3',
+                initialContentSlug: '26',
                 direction: 'horizontal',
                 paginated: true,
                 baseUrl,
@@ -92,52 +110,11 @@ window.onload = () => {
                   left: 20,
                   right: 20,
                 },
-                selectionMenuOptions: [
-                  {
-                    color: '#ff0000',
-                    key: 'red',
-                    title: 'Red',
-                    className: 'highlighter',
-                    style: '--highlighter-color: #ff0000',
-                  },
-                  {
-                    color: '#ff00ff',
-                    key: 'pink',
-                    title: 'Pink',
-                    className: 'highlighter',
-                    style: '--highlighter-color: #ff00ff',
-                  },
-                  {
-                    color: '#00ff00',
-                    key: 'green',
-                    title: 'Green',
-                    className: 'highlighter',
-                    style: '--highlighter-color: #00ff00',
-                  },
-                  {
-                    color: '#0000ff',
-                    key: 'notes',
-                    title: 'Notes',
-                    className: 'note',
-                    style: '--highlighter-color: #0000ff',
-                  },
-                ],
+                zoom: 150,
+                selectionMenuOptions: selectionOptions,
               },
               ui: {
-                buttons: [
-                  {
-                    type: 'backward',
-                    text: '<',
-                  },
-                  {
-                    type: 'forward',
-                    text: '>',
-                  },
-                  {
-                    type: 'switchMode',
-                    text: 'UI',
-                  },
-                ],
+                buttons,
               },
             });
           }

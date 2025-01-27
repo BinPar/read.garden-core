@@ -1,14 +1,18 @@
 import { getState } from '@/utils/state';
 
-const getSelection = (): Selection | null => {
+const getSelection = (): Selection => {
   const state = getState();
+  let selection: Selection | null = null;
   if (state.win.getSelection) {
-    return state.win.getSelection();
+    selection = state.win.getSelection();
   }
-  if (state.doc.getSelection) {
-    return state.doc.getSelection();
+  if (!selection && state.doc.getSelection) {
+    selection = state.doc.getSelection();
   }
-  return null;
+  if (!selection) {
+    throw new Error('No selection');
+  }
+  return selection;
 };
 
 export default getSelection;

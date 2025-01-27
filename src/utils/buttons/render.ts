@@ -1,4 +1,6 @@
 import type { Button, ButtonType } from '@/@types/buttons';
+import zoomIn from '@/utils/fixed/zoomIn';
+import zoomOut from '@/utils/fixed/zoomOut';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import { getState, updateState } from '@/utils/state';
@@ -22,6 +24,7 @@ const render = (buttons: ButtonType[] | Button[], state = getState()) => {
         }
         domButton.classList.add('button');
         domButton.addEventListener('pointerdown', (ev) => {
+          console.log('ui button pointerdown');
           if (ev.button === 0) {
             ev.preventDefault();
             ev.stopPropagation();
@@ -36,12 +39,24 @@ const render = (buttons: ButtonType[] | Button[], state = getState()) => {
             if (type === 'switchMode') {
               switchMode();
             }
+
+            if (type === 'zoomIn') {
+              zoomIn();
+            }
+
+            if (type === 'zoomOut') {
+              zoomOut();
+            }
           }
         });
         uiContainer.append(domButton);
       }
     }
     state.container.appendChild(uiContainer);
+    uiContainer.addEventListener('pointerdown', (ev) => {
+      console.log('ui pointerdown');
+      ev.stopPropagation();
+    });
     updateState({ uiContainer });
   }
 };

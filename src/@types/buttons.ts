@@ -1,4 +1,9 @@
-export type ButtonType = 'forward' | 'backward' | 'switchMode';
+export type ButtonType =
+  | 'forward'
+  | 'backward'
+  | 'switchMode'
+  | 'zoomIn'
+  | 'zoomOut';
 
 export interface Button {
   type: ButtonType;

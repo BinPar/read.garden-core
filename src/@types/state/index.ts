@@ -27,6 +27,7 @@ export interface CommonState {
   viewer: HTMLDivElement;
   wrapper: HTMLDivElement;
   content: HTMLDivElement;
+  highlights: HTMLDivElement;
   selectionMenu: HTMLDivElement;
   isSafari: boolean;
 
@@ -36,6 +37,9 @@ export interface CommonState {
 
   contentsBySlug?: Map<string, CoreContent>;
   orderedContents?: CoreContent[];
+
+  selectedText: string;
+  selectionRanges: Range[] | null;
 }
 
 export type State = CommonState & (FixedState | FlowState);

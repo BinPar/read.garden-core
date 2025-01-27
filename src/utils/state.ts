@@ -5,6 +5,8 @@ import type { StatePropChangeHandler } from '@/utils/state/getPropertyValueListe
 import listeners from '@/utils/state/listeners';
 import processJsonData from '@/utils/processJsonData';
 import { notifyPropertyChange } from '@/utils/state/propertyChangeListener';
+import type setupDomElements from '@/utils/setupDomElements';
+import { defaultFixedConfig } from '@/utils/defaults';
 
 let state: State | undefined;
 
@@ -33,18 +35,7 @@ for (let i = 0, l = listeners.length; i < l; i++) {
 
 export const init = (
   initialOptions: Options,
-  initialState: Pick<
-    State,
-    | 'iframe'
-    | 'win'
-    | 'doc'
-    | 'container'
-    | 'viewer'
-    | 'wrapper'
-    | 'content'
-    | 'selectionMenu'
-    | 'readMode'
-  >,
+  initialState: ReturnType<typeof setupDomElements> & Pick<State, 'readMode'>,
 ) => {
   const { layout } = initialOptions;
   const { container } = initialState;
@@ -68,6 +59,8 @@ export const init = (
     contentSlug: '',
     contentOrder: -1,
     pendingContents: new Set<number>(),
+    selectedText: '',
+    selectionRanges: null,
   };
 
   if (initialOptions.options.jsonData) {
@@ -94,7 +87,6 @@ export const init = (
         console.log('content styles loaded');
         onFinish();
       };
-      // TODO: Handle error
       link.onerror = (ex) => {
         console.error('Error loading content styles', ex);
         onFinish();
@@ -112,12 +104,20 @@ export const init = (
     state = {
       ...common,
       layout: 'fixed',
-      hasHorizontalScroll: false,
-      hasVerticalScroll: false,
+      zoom: initialOptions.options.zoom ?? defaultFixedConfig.zoom,
+      highlightsLayers: new Map<string, HTMLDivElement>(),
     };
   }
 
   if (layout === 'flow') {
+    const chapterStart = initialState.doc.createElement('div');
+    chapterStart.id = 'chapter-start';
+    initialState.content.insertAdjacentElement('beforebegin', chapterStart);
+
+    const chapterEnd = initialState.doc.createElement('div');
+    chapterEnd.id = 'chapter-end';
+    initialState.content.insertAdjacentElement('afterend', chapterEnd);
+
     const snapsContainer = initialState.doc.createElement('div');
     snapsContainer.id = 'snaps-container';
     initialState.wrapper.appendChild(snapsContainer);
@@ -129,6 +129,8 @@ export const init = (
       snaps: new Set<number>(),
       firstSnap: 0,
       lastSnap: 0,
+      chapterStart,
+      chapterEnd,
       snapsContainer,
       columnWidth: 0,
       columnGap: 0,
@@ -145,7 +147,7 @@ export const getState = () => {
   return state;
 };
 
-export const update = (newState: Partial<State>) => {
+export const update = (newState: Partial<State>, avoidListeners = false) => {
   if (!state) {
     throw new Error('State is not initialized');
   }
@@ -158,31 +160,34 @@ export const update = (newState: Partial<State>) => {
       const newValue = newState[stateKey];
       if (newValue !== oldValue) {
         (state as Record<keyof State, unknown>)[stateKey] = newValue;
-        const listener = listenersMap.get(stateKey);
-        if (listener) {
-          const listenerHandler = listener.get(newValue);
-          if (listenerHandler) {
-            console.log(
-              `Calling listener for ${stateKey} and value ${newValue?.toString()}`,
-            );
-            listenerHandler();
+        if (!avoidListeners) {
+          const listener = listenersMap.get(stateKey);
+          if (listener) {
+            const listenerHandler = listener.get(newValue);
+            if (listenerHandler) {
+              console.log(
+                `Calling listener for ${stateKey} and value ${newValue?.toString()}`,
+              );
+              listenerHandler();
+            }
           }
+          notifyPropertyChange(stateKey, oldValue, newValue);
         }
-        notifyPropertyChange(stateKey, oldValue, newValue);
       }
     }
   }
 };
 
 export const updateState = (
-  newState: Partial<State> | ((current: State) => Partial<State>),
+  newState: Partial<State> | ((current: FullState) => Partial<State>),
+  avoidListeners = false,
 ) => {
   if (!state) {
     throw new Error('State is not initialized');
   }
   if (typeof newState === 'function') {
-    update(newState(state));
+    update(newState(state as FullState), avoidListeners);
   } else {
-    update(newState);
+    update(newState, avoidListeners);
   }
 };
