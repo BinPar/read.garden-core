@@ -8,8 +8,7 @@ import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
 const rightThreshold = 20; // 45
-const leftThreshold = 20; // 20
-// const threshold = 33;
+const leftThreshold = 20;
 
 const setupDomEvents = (state = getState(), config = getConfig()) => {
   const touches = new Set<number>();
@@ -27,8 +26,6 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     const touchX = event.x;
     if (touchX) {
       const width = state.doc.body.clientWidth;
-      // const pixels = width * (threshold / 100);
-      // console.log({ w, pixels, touchX, touch: config.touch });
 
       if (touchX <= width * (leftThreshold / 100)) {
         moveBackwards();
@@ -41,11 +38,6 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
   };
 
   const handleTouchEnd = (event: PointerEvent) => {
-    console.log('viewer touchend', {
-      isLongPress,
-      isMultipleTouch,
-      isSelection,
-    });
     touches.delete(event.pointerId);
     if (!isLongPress && !isMultipleTouch && !isSelection) {
       checkIfScreenXBorderIsPressed(event);
@@ -54,7 +46,6 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
       isMultipleTouch = false;
     }
     isLongPress = false;
-    isSelection = false;
   };
 
   const handleContextMenu = (ev: MouseEvent) => {
@@ -67,15 +58,14 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     const selection = getSelection();
     const text = selection.toString().trim();
     isLongPress = false;
-    console.log('selectionchange', text);
+    console.log('selectionchange');
     if (text) {
       isSelection = true;
+      state.container.classList.add('selection-mode');
       const selectionRanges = new Array<Range>();
       for (let i = 0, l = selection.rangeCount; i < l; i++) {
         const range = selection.getRangeAt(i);
         if (range) {
-          console.dir(range.startContainer);
-          console.dir(range.endContainer);
           selectionRanges.push(range.cloneRange());
         }
       }
@@ -87,6 +77,7 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
       return;
     }
 
+    isSelection = false;
     updateState({
       selectedText: '',
       selectionRanges: null,

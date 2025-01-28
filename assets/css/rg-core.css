@@ -109,7 +109,7 @@ body {
 #content {
   /* pointer-events: var(--pointer-events, auto); */
   position: relative;
-  user-select: text;
+  user-select: auto;
   text-rendering: optimizeLegibility;
 }
 
@@ -227,6 +227,7 @@ body {
 
 #content img {
   pointer-events: none;
+  user-select: none;
 }
 
 #highlights {

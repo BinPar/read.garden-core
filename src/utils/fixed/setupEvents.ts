@@ -2,21 +2,12 @@ import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
 import { getState, updateState } from '@/utils/state';
 
-interface Point {
-  clientX: number;
-  clientY: number;
-}
-
-interface Pointer extends Point {
-  id: number;
-}
-
 // TODO: Min and max from config
 const minScale = 0.5;
 const maxScale = 4;
 let scale = 1;
 
-export const checkCenter = (panPoint?: Point) => {
+export const checkCenter = () => {
   const state = getState();
   const element = state.content;
   const parent = element.parentElement;
@@ -48,16 +39,6 @@ export const checkCenter = (panPoint?: Point) => {
       );
     } else {
       setCssVariable('fixed-left', '0');
-
-      if (panPoint) {
-        const percent = panPoint.clientX / state.wrapper.clientWidth;
-
-        console.log({
-          clientX: panPoint.clientX,
-          width: parentRect.width,
-          percent,
-        });
-      }
     }
 
     if (parentRect.height > elementHeight) {
@@ -71,38 +52,27 @@ export const checkCenter = (panPoint?: Point) => {
   });
 };
 
-const updateScale = (panPoint?: Point) => {
+const updateScale = () => {
   window.requestAnimationFrame(() => {
     setCssVariable('zoom', `${scale * 100}`);
     updateState({ zoom: scale * 100 }, true);
-    checkCenter(panPoint);
+    checkCenter();
   });
 };
 
-export const setScale = (newValue: number, panPoint?: Point) => {
+export const setScale = (newValue: number) => {
   const newScale = Math.min(Math.max(newValue, minScale), maxScale);
   if (newScale === scale) {
     return;
   }
   scale = newValue;
-  updateScale(panPoint);
+  updateScale();
 };
 
 const getDistance = (p1: Touch, p2: Touch): number =>
   Math.sqrt(
     Math.pow(p2.clientX - p1.clientX, 2) + Math.pow(p2.clientY - p1.clientY, 2),
   );
-
-const getMidpoint = (a: Point, b?: Point) => {
-  if (!b) {
-    return a;
-  }
-
-  return {
-    clientX: (a.clientX + b.clientX) / 2,
-    clientY: (a.clientY + b.clientY) / 2,
-  } satisfies Point;
-};
 
 const setupEvents = () => {
   const state = getState();
@@ -115,26 +85,16 @@ const setupEvents = () => {
   scale = config.zoom / 100;
   const element = state.content;
 
-  const currentPointers = new Array<Pointer>();
-
   let startDistance = 0;
 
-  const applyScale = (factor: number, panPoint: Point) => {
+  const applyScale = (factor: number) => {
     if (factor === 1) {
       return;
     }
-    setScale(scale * factor, panPoint);
+    setScale(scale * factor);
   };
 
   const handleTouchStart = (e: TouchEvent) => {
-    for (const touch of Array.from(e.changedTouches)) {
-      currentPointers.push({
-        id: touch.identifier,
-        clientX: touch.clientX,
-        clientY: touch.clientY,
-      });
-    }
-
     if (e.touches.length === 2) {
       const [a, b] = Array.from(e.touches) as [Touch, Touch];
       startDistance = getDistance(a, b);
@@ -146,51 +106,17 @@ const setupEvents = () => {
     if (e.touches.length === 2) {
       const [a, b] = Array.from(e.touches) as [Touch, Touch];
       const distance = getDistance(a, b);
-      const scale = distance / startDistance;
-
-      let midpoint: Point = {
-        clientX: 0,
-        clientY: 0,
-      };
-
-      const changedPointers = Array.from(e.changedTouches).map<Pointer>(
-        (touch) => ({
-          id: touch.identifier,
-          clientX: touch.clientX,
-          clientY: touch.clientY,
-        }),
-      );
-      const trackedChangedPointers = [];
-
-      for (const pointer of changedPointers) {
-        const index = currentPointers.findIndex((p) => p.id === pointer.id);
-        if (index !== -1) {
-          trackedChangedPointers.push(pointer);
-          currentPointers[index] = pointer;
-        }
-      }
-
-      const [firstTracked, ...tracked] = trackedChangedPointers;
-
-      if (firstTracked) {
-        midpoint = getMidpoint(firstTracked, tracked[1]);
-      }
-
-      applyScale(scale, midpoint);
-
+      const zoomFactor = distance / startDistance;
       startDistance = distance;
+
+      applyScale(zoomFactor);
       e.preventDefault();
     }
   };
 
   const handleTouchEnd = (e: TouchEvent) => {
-    startDistance = 0;
-
-    for (const touch of Array.from(e.changedTouches)) {
-      const index = currentPointers.findIndex((p) => p.id === touch.identifier);
-      if (index !== -1) {
-        currentPointers.splice(index, 1);
-      }
+    if (e.touches.length === 0) {
+      startDistance = 0;
     }
   };
 
