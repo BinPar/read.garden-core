@@ -14,6 +14,7 @@ import fixedInit, { fixedSetup } from '@/utils/fixed/setup';
 import setupFixedEvents from '@/utils/fixed/setupEvents';
 import waitForRender from '@/utils/waitForRender';
 import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
+import preloadWorker from '@/utils/workers/preload';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -126,6 +127,20 @@ const setup = (initialOptions: Options) => {
     childList: true,
     subtree: true,
   });
+
+  const worker = new Worker(
+    URL.createObjectURL(
+      new Blob(['(' + preloadWorker.toString() + ')()'], {
+        type: 'text/javascript',
+      }),
+    ),
+  );
+
+  worker.onmessage = function (e) {
+    console.log('Received:', e.data);
+  };
+
+  worker.postMessage('message to worker!');
 
   loadContentBySlug(initialContentSlug).catch(
     genericCatch('Exception loading first content'),
