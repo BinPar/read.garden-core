@@ -70,25 +70,6 @@ body {
   overflow: auto;
 }
 
-.fixed.paginated #content-placeholder {
-  position: relative;
-  height: 100%;
-  padding-left: var(--fixed-left, 0);
-  padding-top: var(--fixed-top, 0);
-  will-change: padding-left, padding-top;
-}
-
-.fixed.paginated #content {
-  --scale: calc(var(--zoom) / 100);
-  --left: calc(var(--padding-left, 0) / var(--scale));
-  --top: calc(var(--padding-top, 0) / var(--scale));
-  padding: var(--top) calc(var(--padding-right, 0) / var(--scale))
-    calc(var(--padding-bottom, 0) / var(--scale)) var(--left);
-  display: inline-block;
-  zoom: var(--scale);
-  will-change: zoom;
-}
-
 .flow.ui-mode #wrapper {
   --ui-top: calc(var(--vertical-padding-corrector) * 0.5);
 }
@@ -99,12 +80,6 @@ body {
   user-select: initial;
   padding: var(--padding-top) calc(var(--column-gap) / 2)
     calc(var(--padding-bottom) + calc(var(--vertical-padding-corrector) * 3));
-}
-
-.flow #content img {
-  aspect-ratio: var(--aspect-ratio);
-  max-height: fit-content;
-  max-width: 100%;
 }
 
 .flow.horizontal #wrapper {
@@ -123,6 +98,14 @@ body {
   touch-action: pan-y;
 }
 
+.fixed.paginated #content-placeholder {
+  position: relative;
+  height: 100%;
+  padding-left: var(--fixed-left, 0);
+  padding-top: var(--fixed-top, 0);
+  will-change: padding-left, padding-top;
+}
+
 #content {
   /* pointer-events: var(--pointer-events, auto); */
   position: relative;
@@ -134,6 +117,27 @@ body {
   font-size: var(--font-size);
   font-family: var(--font-family);
   text-align: justify;
+}
+
+.flow #content img {
+  aspect-ratio: var(--aspect-ratio);
+  max-height: fit-content;
+  max-width: 100%;
+}
+
+.fixed.paginated #content {
+  --scale: calc(var(--zoom) / 100);
+  --left: calc(var(--padding-left, 0) / var(--scale));
+  --top: calc(var(--padding-top, 0) / var(--scale));
+  padding: var(--top) calc(var(--padding-right, 0) / var(--scale))
+    calc(var(--padding-bottom, 0) / var(--scale)) var(--left);
+  display: inline-block;
+  zoom: var(--scale);
+  will-change: zoom;
+}
+
+.fixed.paginated #content > div:first-child {
+  position: relative;
 }
 
 #snaps-container {
@@ -149,7 +153,7 @@ body {
   margin: 0;
   padding: 0;
   width: 1px;
-  height: 10px;
+  height: 1px;
   background-color: transparent;
   pointer-events: none;
   scroll-snap-align: start;

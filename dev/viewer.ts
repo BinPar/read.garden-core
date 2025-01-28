@@ -110,7 +110,7 @@ window.onload = () => {
                   left: 20,
                   right: 20,
                 },
-                zoom: 150,
+                zoom: 50,
                 selectionMenuOptions: selectionOptions,
               },
               ui: {

@@ -2,12 +2,21 @@ import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
 import { getState, updateState } from '@/utils/state';
 
+interface Point {
+  clientX: number;
+  clientY: number;
+}
+
+interface Pointer extends Point {
+  id: number;
+}
+
 // TODO: Min and max from config
 const minScale = 0.5;
 const maxScale = 4;
 let scale = 1;
 
-export const checkCenter = () => {
+export const checkCenter = (panPoint?: Point) => {
   const state = getState();
   const element = state.content;
   const parent = element.parentElement;
@@ -39,6 +48,16 @@ export const checkCenter = () => {
       );
     } else {
       setCssVariable('fixed-left', '0');
+
+      if (panPoint) {
+        const percent = panPoint.clientX / state.wrapper.clientWidth;
+
+        console.log({
+          clientX: panPoint.clientX,
+          width: parentRect.width,
+          percent,
+        });
+      }
     }
 
     if (parentRect.height > elementHeight) {
@@ -52,21 +71,37 @@ export const checkCenter = () => {
   });
 };
 
-const updateScale = () => {
+const updateScale = (panPoint?: Point) => {
   window.requestAnimationFrame(() => {
     setCssVariable('zoom', `${scale * 100}`);
     updateState({ zoom: scale * 100 }, true);
-    checkCenter();
+    checkCenter(panPoint);
   });
 };
 
-export const setScale = (newValue: number) => {
+export const setScale = (newValue: number, panPoint?: Point) => {
   const newScale = Math.min(Math.max(newValue, minScale), maxScale);
   if (newScale === scale) {
     return;
   }
   scale = newValue;
-  updateScale();
+  updateScale(panPoint);
+};
+
+const getDistance = (p1: Touch, p2: Touch): number =>
+  Math.sqrt(
+    Math.pow(p2.clientX - p1.clientX, 2) + Math.pow(p2.clientY - p1.clientY, 2),
+  );
+
+const getMidpoint = (a: Point, b?: Point) => {
+  if (!b) {
+    return a;
+  }
+
+  return {
+    clientX: (a.clientX + b.clientX) / 2,
+    clientY: (a.clientY + b.clientY) / 2,
+  } satisfies Point;
 };
 
 const setupEvents = () => {
@@ -80,19 +115,29 @@ const setupEvents = () => {
   scale = config.zoom / 100;
   const element = state.content;
 
+  const currentPointers = new Array<Pointer>();
+
   let startDistance = 0;
 
-  const applyScale = (factor: number) => {
+  const applyScale = (factor: number, panPoint: Point) => {
     if (factor === 1) {
       return;
     }
-    setScale(scale * factor);
+    setScale(scale * factor, panPoint);
   };
 
   const handleTouchStart = (e: TouchEvent) => {
+    for (const touch of Array.from(e.changedTouches)) {
+      currentPointers.push({
+        id: touch.identifier,
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      });
+    }
+
     if (e.touches.length === 2) {
       const [a, b] = Array.from(e.touches) as [Touch, Touch];
-      startDistance = calculateDistance(a, b);
+      startDistance = getDistance(a, b);
       e.preventDefault();
     }
   };
@@ -100,25 +145,57 @@ const setupEvents = () => {
   const handleTouchMove = (e: TouchEvent) => {
     if (e.touches.length === 2) {
       const [a, b] = Array.from(e.touches) as [Touch, Touch];
-      const distance = calculateDistance(a, b);
+      const distance = getDistance(a, b);
       const scale = distance / startDistance;
 
-      applyScale(scale);
+      let midpoint: Point = {
+        clientX: 0,
+        clientY: 0,
+      };
+
+      const changedPointers = Array.from(e.changedTouches).map<Pointer>(
+        (touch) => ({
+          id: touch.identifier,
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+        }),
+      );
+      const trackedChangedPointers = [];
+
+      for (const pointer of changedPointers) {
+        const index = currentPointers.findIndex((p) => p.id === pointer.id);
+        if (index !== -1) {
+          trackedChangedPointers.push(pointer);
+          currentPointers[index] = pointer;
+        }
+      }
+
+      const [firstTracked, ...tracked] = trackedChangedPointers;
+
+      if (firstTracked) {
+        midpoint = getMidpoint(firstTracked, tracked[1]);
+      }
+
+      applyScale(scale, midpoint);
 
       startDistance = distance;
       e.preventDefault();
     }
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e: TouchEvent) => {
     startDistance = 0;
+
+    for (const touch of Array.from(e.changedTouches)) {
+      const index = currentPointers.findIndex((p) => p.id === touch.identifier);
+      if (index !== -1) {
+        currentPointers.splice(index, 1);
+      }
+    }
   };
 
-  const calculateDistance = (p1: Touch, p2: Touch): number => {
-    return Math.sqrt(
-      Math.pow(p2.clientX - p1.clientX, 2) +
-        Math.pow(p2.clientY - p1.clientY, 2),
-    );
+  const handleResize = () => {
+    checkCenter();
   };
 
   updateScale();
@@ -126,7 +203,7 @@ const setupEvents = () => {
   element.addEventListener('touchstart', handleTouchStart);
   element.addEventListener('touchmove', handleTouchMove);
   element.addEventListener('touchend', handleTouchEnd);
-  window.addEventListener('resize', checkCenter);
+  window.addEventListener('resize', handleResize);
 };
 
 export default setupEvents;
