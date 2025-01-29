@@ -6,6 +6,12 @@ import { getState, updateState } from '@/utils/state';
 const minScale = 0.5;
 const maxScale = 4;
 let scale = 1;
+let startScale = 0;
+let lastScale = 0;
+let startX = 0;
+let startY = 0;
+let originX = 0;
+let originY = 0;
 
 export const checkCenter = () => {
   const state = getState();
@@ -32,6 +38,10 @@ export const checkCenter = () => {
       elementHeight = elementHeight * scale;
     }
 
+    let scrollLeft = startX;
+    let scrollTop = startY;
+    lastScale = scale / startScale;
+
     if (parentRect.width > elementWidth) {
       setCssVariable(
         'fixed-left',
@@ -39,6 +49,7 @@ export const checkCenter = () => {
       );
     } else {
       setCssVariable('fixed-left', '0');
+      scrollLeft = originX * lastScale - originX + startX;
     }
 
     if (parentRect.height > elementHeight) {
@@ -48,7 +59,23 @@ export const checkCenter = () => {
       );
     } else {
       setCssVariable('fixed-top', '0');
+      scrollTop = originY * lastScale - originY + startY;
     }
+
+    console.log({
+      scrollLeft,
+      startX,
+      originX,
+      lastScale,
+      startScale,
+      scale,
+    });
+
+    state.wrapper.scrollTo({
+      top: scrollTop,
+      left: scrollLeft,
+      behavior: 'instant',
+    });
   });
 };
 
@@ -95,9 +122,14 @@ const setupEvents = () => {
   };
 
   const handleTouchStart = (e: TouchEvent) => {
+    startX = state.wrapper.scrollLeft;
+    startY = state.wrapper.scrollTop;
     if (e.touches.length === 2) {
       const [a, b] = Array.from(e.touches) as [Touch, Touch];
       startDistance = getDistance(a, b);
+      startScale = scale;
+      originX = Math.abs(a.clientX + b.clientX) / 2 + startX;
+      originY = Math.abs(a.clientY + b.clientY) / 2 + startY;
       e.preventDefault();
     }
   };
@@ -108,7 +140,6 @@ const setupEvents = () => {
       const distance = getDistance(a, b);
       const zoomFactor = distance / startDistance;
       startDistance = distance;
-
       applyScale(zoomFactor);
       e.preventDefault();
     }
@@ -117,6 +148,7 @@ const setupEvents = () => {
   const handleTouchEnd = (e: TouchEvent) => {
     if (e.touches.length === 0) {
       startDistance = 0;
+      lastScale = scale / startScale;
     }
   };
 

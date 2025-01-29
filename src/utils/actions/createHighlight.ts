@@ -34,11 +34,9 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
       if (state.layout === 'fixed') {
         const config = getConfig();
         const contentRect = state.content.getBoundingClientRect();
-        console.log({ contentRect, scale });
 
         for (let i = 0, l = rects.length; i < l; i++) {
           const rect = rects[i];
-          console.log({ rect });
           if (rect) {
             const top =
               (rect.top - contentRect.top - config.padding.top) / scale;

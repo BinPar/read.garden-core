@@ -57,69 +57,70 @@ const setup = (initialOptions: Options) => {
     initialContentSlug = '1';
   }
 
-  const observer = new MutationObserver(() => {
-    window.requestAnimationFrame(() => {
-      console.log('mutation');
-      const onReady = () => {
-        if (state.initialized) {
-          if (state.layout === 'flow') {
-            waitForRender(setupSnaps, state.isSafari ? 128 : 1);
+  const observer = new MutationObserver((mutations) => {
+    if (mutations.some((mutation) => mutation.target === state.content)) {
+      window.requestAnimationFrame(() => {
+        const onReady = () => {
+          if (state.initialized) {
+            if (state.layout === 'flow') {
+              waitForRender(setupSnaps, state.isSafari ? 128 : 1);
+            }
+            if (state.layout === 'fixed') {
+              fixedSetup();
+            }
+          } else {
+            if (state.layout === 'flow') {
+              console.log('setup');
+              flowInit();
+            }
+            if (state.layout === 'fixed') {
+              fixedInit();
+            }
           }
-          if (state.layout === 'fixed') {
-            fixedSetup();
-          }
-        } else {
-          if (state.layout === 'flow') {
-            console.log('setup');
-            flowInit();
-          }
-          if (state.layout === 'fixed') {
-            fixedInit();
-          }
-        }
-        const links = state.content.querySelectorAll('a');
-        links.forEach((link) => {
-          link.onclick = (ev) => {
-            ev.preventDefault();
-          };
-        });
-      };
+          const links = state.content.querySelectorAll('a');
+          links.forEach((link) => {
+            link.onclick = (ev) => {
+              ev.preventDefault();
+            };
+          });
+        };
 
-      if (state.layout === 'fixed') {
-        onReady();
-      } else {
-        const images = Array.from(state.wrapper.querySelectorAll('img'));
-
-        if (images.length) {
-          Promise.all(
-            images.map(
-              (image) =>
-                new Promise<void>((resolve) => {
-                  const imageReady = () => {
-                    const ratio = image.naturalWidth / image.naturalHeight;
-                    const style = image.getAttribute('style') ?? '';
-                    const rules = style.split(';').map((rule) => rule.trim());
-                    rules.push(`--aspect-ratio: ${ratio}`);
-                    image.setAttribute('style', rules.join(';'));
-                    resolve();
-                  };
-
-                  if (image.complete) {
-                    imageReady();
-                  } else {
-                    image.onload = () => imageReady();
-                    image.onerror = () => imageReady();
-                  }
-                }),
-            ),
-          )
-            .then(onReady)
-            .catch(genericCatch('Error loading images'));
-        } else {
+        if (state.layout === 'fixed') {
           onReady();
+        } else {
+          const images = Array.from(state.wrapper.querySelectorAll('img'));
+
+          if (images.length) {
+            Promise.all(
+              images.map(
+                (image) =>
+                  new Promise<void>((resolve) => {
+                    const imageReady = () => {
+                      const ratio = image.naturalWidth / image.naturalHeight;
+                      const style = image.getAttribute('style') ?? '';
+                      const rules = style.split(';').map((rule) => rule.trim());
+                      rules.push(`--aspect-ratio: ${ratio}`);
+                      image.setAttribute('style', rules.join(';'));
+                      resolve();
+                    };
+
+                    if (image.complete) {
+                      imageReady();
+                    } else {
+                      image.onload = () => imageReady();
+                      image.onerror = () => imageReady();
+                    }
+                  }),
+              ),
+            )
+              .then(onReady)
+              .catch(genericCatch('Error loading images'));
+          } else {
+            onReady();
+          }
         }
-      }
-    });
+      });
+    }
   });
 
   observer.observe(state.content, {

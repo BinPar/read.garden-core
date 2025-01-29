@@ -1,4 +1,4 @@
-const preventAndStopPropagation = (ev: MouseEvent | PointerEvent) => {
+const preventAndStopPropagation = (ev: Event) => {
   ev.preventDefault();
   ev.stopPropagation();
 };
