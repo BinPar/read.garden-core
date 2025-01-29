@@ -137,9 +137,9 @@ const setupEvents = () => {
   };
 
   const handleTouchStart = (e: TouchEvent) => {
-    startX = state.wrapper.scrollLeft;
-    startY = state.wrapper.scrollTop;
     if (e.touches.length === 2) {
+      startX = state.wrapper.scrollLeft;
+      startY = state.wrapper.scrollTop;
       const [a, b] = Array.from(e.touches) as [Touch, Touch];
       startDistance = getDistance(a, b);
       verticalStartScale = scale;
