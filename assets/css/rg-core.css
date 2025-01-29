@@ -46,7 +46,7 @@ body {
   z-index: 20;
   margin-top: var(--viewer-margin-top);
   /* pointer-events: none; */
-  user-select: none;
+  /* user-select: none; */
 }
 
 #wrapper {
@@ -54,7 +54,7 @@ body {
   height: 100%;
   padding: var(--padding-top) 0 var(--padding-bottom) 0;
   clear: both;
-  cursor: var(--drag-cursor, grab);
+  /* cursor: var(--drag-cursor, grab); */
   transition: transform var(--animation-delay);
   will-change: transform;
   z-index: 30;
@@ -83,7 +83,6 @@ body {
 .flow #wrapper {
   height: calc(100% + 100px);
   pointer-events: var(--pointer-events, auto);
-  user-select: initial;
   padding: var(--padding-top) calc(var(--column-gap) / 2)
     calc(var(--padding-bottom) + calc(var(--vertical-padding-corrector) * 3));
 }
@@ -117,12 +116,19 @@ body {
   position: relative;
   user-select: auto;
   text-rendering: optimizeLegibility;
+  cursor: auto;
 }
 
 .flow #content {
   font-size: var(--font-size);
   font-family: var(--font-family);
   text-align: justify;
+}
+
+#content img {
+  pointer-events: none;
+  user-select: none;
+  cursor: default;
 }
 
 .flow #content img {
@@ -226,15 +232,12 @@ body {
   );
 }
 
+/* TODO: Is this necessary? */
 #content span[data-page]::before {
   content: '';
   display: block;
 }
-
-#content img {
-  pointer-events: none;
-  user-select: none;
-}
+/**/
 
 #highlights {
   position: absolute;

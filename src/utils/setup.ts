@@ -154,27 +154,27 @@ const setup = (initialOptions: Options) => {
     render(initialOptions.ui.buttons, state);
   }
 
-  addPropertyChangeListener<'contentSlug'>(
-    'contentSlug',
-    ({ oldValue, newValue }) => {
-      if (state.layout === 'fixed') {
-        state.highlightsLayers.set(
-          oldValue,
-          state.highlights.cloneNode(true) as HTMLDivElement,
-        );
-        let highlightsLayer = state.highlightsLayers.get(newValue);
-        console.log({ slug: newValue, layerHighlights: highlightsLayer });
-        if (!highlightsLayer) {
-          highlightsLayer = state.doc.createElement('div');
-          highlightsLayer.id = 'highlights';
-          state.highlightsLayers.set(newValue, highlightsLayer);
-        }
-        state.content.appendChild(highlightsLayer);
-        updateState({ highlights: highlightsLayer });
-      }
-      console.log('contentSlug changed', newValue);
-    },
-  );
+  addPropertyChangeListener('contentOrder', ({ oldValue, newValue }) => {
+    console.log('contentOrder changed');
+    state.highlightsLayers.set(
+      oldValue,
+      state.highlights.cloneNode(true) as HTMLDivElement,
+    );
+    let highlightsLayer = state.highlightsLayers.get(newValue);
+    if (!highlightsLayer) {
+      highlightsLayer = state.doc.createElement('div');
+      highlightsLayer.id = 'highlights';
+      state.highlightsLayers.set(newValue, highlightsLayer);
+    }
+    if (state.layout === 'fixed') {
+      state.content.appendChild(highlightsLayer);
+    }
+    if (state.layout === 'flow') {
+      state.highlights.remove();
+      state.wrapper.appendChild(highlightsLayer);
+    }
+    updateState({ highlights: highlightsLayer });
+  });
 
   return {
     state,

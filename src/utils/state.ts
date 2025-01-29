@@ -61,6 +61,7 @@ export const init = (
     pendingContents: new Set<number>(),
     selectedText: '',
     selectionRanges: null,
+    highlightsLayers: new Map<number, HTMLDivElement>(),
   };
 
   if (initialOptions.options.jsonData) {
@@ -105,7 +106,6 @@ export const init = (
       ...common,
       layout: 'fixed',
       zoom: initialOptions.options.zoom ?? defaultFixedConfig.zoom,
-      highlightsLayers: new Map<string, HTMLDivElement>(),
     };
   }
 

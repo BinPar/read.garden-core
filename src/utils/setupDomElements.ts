@@ -83,17 +83,14 @@ const setupDomElements = (
   content.id = 'content';
 
   const highlights = iframeDoc.createElement('div');
-  highlights.id = 'highlights';
 
   if (initialOptions.layout === 'fixed') {
     const contentPlaceholder = iframeDoc.createElement('div');
     contentPlaceholder.id = 'content-placeholder';
     wrapper.appendChild(contentPlaceholder);
     contentPlaceholder.appendChild(content);
-    // content.appendChild(highlights);
   } else {
     wrapper.appendChild(content);
-    // wrapper.appendChild(highlights);
   }
 
   const selectionMenu = iframeDoc.createElement('div');

@@ -2,7 +2,6 @@ import type { SelectionOption } from '@/@types/selection';
 import { getConfig } from '@/utils/config';
 import dispatch from '@/utils/dispatch';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
-// import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import { getState } from '@/utils/state';
 
 const showSelectionMenu = (options?: SelectionOption[]) => {
@@ -42,7 +41,6 @@ const showSelectionMenu = (options?: SelectionOption[]) => {
             draw: true,
           },
         });
-        // hideSelectionMenu();
       });
       button.addEventListener('pointerup', preventAndStopPropagation);
       button.addEventListener('pointercancel', preventAndStopPropagation);
@@ -50,7 +48,7 @@ const showSelectionMenu = (options?: SelectionOption[]) => {
     }
   }
 
-  state.doc.body.classList.add('selection-mode');
+  state.container.classList.add('selection-mode');
 };
 
 export default showSelectionMenu;

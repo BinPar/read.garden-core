@@ -40,6 +40,7 @@ export interface CommonState {
 
   selectedText: string;
   selectionRanges: Range[] | null;
+  highlightsLayers: Map<number, HTMLDivElement>;
 }
 
 export type State = CommonState & (FixedState | FlowState);

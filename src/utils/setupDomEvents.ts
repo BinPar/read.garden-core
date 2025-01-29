@@ -1,5 +1,6 @@
 import { getConfig } from '@/utils/config';
 import getSelection from '@/utils/getSelection';
+import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
@@ -7,7 +8,7 @@ import showSelectionMenu from '@/utils/showSelectionMenu';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const rightThreshold = 20; // 45
+const rightThreshold = 42.5;
 const leftThreshold = 20;
 
 const setupDomEvents = (state = getState(), config = getConfig()) => {
@@ -58,10 +59,9 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     const selection = getSelection();
     const text = selection.toString().trim();
     isLongPress = false;
-    console.log('selectionchange');
+    console.log('selectionchange', text);
     if (text) {
       isSelection = true;
-      state.container.classList.add('selection-mode');
       const selectionRanges = new Array<Range>();
       for (let i = 0, l = selection.rangeCount; i < l; i++) {
         const range = selection.getRangeAt(i);
@@ -78,6 +78,7 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     }
 
     isSelection = false;
+    hideSelectionMenu();
     updateState({
       selectedText: '',
       selectionRanges: null,
@@ -86,6 +87,8 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
 
   state.win.addEventListener('contextmenu', handleContextMenu, true);
   state.doc.addEventListener('contextmenu', handleContextMenu, true);
+  state.win.addEventListener('contextmenu', handleContextMenu);
+  state.doc.addEventListener('contextmenu', handleContextMenu);
   state.doc.addEventListener('selectionchange', handleSelectionChange);
   state.viewer.addEventListener('pointerdown', handleTouchStart);
   state.viewer.addEventListener('pointerup', handleTouchEnd);
