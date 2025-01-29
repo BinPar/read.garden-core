@@ -58,7 +58,10 @@ const setup = (initialOptions: Options) => {
   }
 
   const observer = new MutationObserver((mutations) => {
-    if (mutations.some((mutation) => mutation.target === state.content)) {
+    if (
+      state.layout === 'flow' ||
+      mutations.some((mutation) => mutation.target === state.content)
+    ) {
       window.requestAnimationFrame(() => {
         const onReady = () => {
           if (state.initialized) {

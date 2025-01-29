@@ -68,6 +68,12 @@ body {
 .fixed.paginated #wrapper {
   padding: 0;
   overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.fixed.paginated #wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .flow.ui-mode #wrapper {

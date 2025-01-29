@@ -5,13 +5,20 @@ import { getState, updateState } from '@/utils/state';
 // TODO: Min and max from config
 const minScale = 0.5;
 const maxScale = 4;
+
+let parentWidth = 0;
+let parentHeight = 0;
+
 let scale = 1;
-let startScale = 0;
-let lastScale = 0;
+let verticalStartScale = 0;
+let horizontalStartScale = 0;
 let startX = 0;
 let startY = 0;
 let originX = 0;
 let originY = 0;
+
+let previousFixedLeft = 0;
+let previousFixedTop = 0;
 
 export const checkCenter = () => {
   const state = getState();
@@ -23,7 +30,12 @@ export const checkCenter = () => {
   }
 
   window.requestAnimationFrame(() => {
-    const parentRect = parent.getBoundingClientRect();
+    if (!parentWidth || !parentHeight) {
+      const parentRect = parent.getBoundingClientRect();
+      parentWidth = parentRect.width;
+      parentHeight = parentRect.height;
+    }
+
     const elementRect = element.getBoundingClientRect();
 
     let elementWidth = elementRect.width;
@@ -38,44 +50,47 @@ export const checkCenter = () => {
       elementHeight = elementHeight * scale;
     }
 
-    let scrollLeft = startX;
-    let scrollTop = startY;
-    lastScale = scale / startScale;
+    let fixedLeft = 0;
+    let fixedTop = 0;
+    let scrollLeft = 0;
+    let scrollTop = 0;
 
-    if (parentRect.width > elementWidth) {
-      setCssVariable(
-        'fixed-left',
-        `${(parentRect.width - elementWidth) / 2}px`,
-      );
+    if (parentWidth > elementWidth) {
+      fixedLeft = (parentWidth - elementWidth) / 2;
     } else {
-      setCssVariable('fixed-left', '0');
-      scrollLeft = originX * lastScale - originX + startX;
+      if (previousFixedLeft) {
+        horizontalStartScale = scale;
+      }
+      scrollLeft = originX * (scale / horizontalStartScale) - originX + startX;
     }
 
-    if (parentRect.height > elementHeight) {
-      setCssVariable(
-        'fixed-top',
-        `${(parentRect.height - elementHeight) / 2}px`,
-      );
+    if (parentHeight > elementHeight) {
+      fixedTop = (parentHeight - elementHeight) / 2;
     } else {
-      setCssVariable('fixed-top', '0');
-      scrollTop = originY * lastScale - originY + startY;
+      if (previousFixedTop) {
+        verticalStartScale = scale;
+      }
+      scrollTop = originY * (scale / verticalStartScale) - originY + startY;
     }
 
-    console.log({
-      scrollLeft,
-      startX,
-      originX,
-      lastScale,
-      startScale,
-      scale,
-    });
+    if (fixedLeft !== previousFixedLeft) {
+      setCssVariable('fixed-left', `${fixedLeft}px`);
+    }
 
-    state.wrapper.scrollTo({
-      top: scrollTop,
-      left: scrollLeft,
-      behavior: 'instant',
-    });
+    if (fixedTop !== previousFixedTop) {
+      setCssVariable('fixed-top', `${fixedTop}px`);
+    }
+
+    if (scrollLeft || scrollTop) {
+      state.wrapper.scrollTo({
+        top: scrollTop,
+        left: scrollLeft,
+        behavior: 'instant',
+      });
+    }
+
+    previousFixedLeft = fixedLeft;
+    previousFixedTop = fixedTop;
   });
 };
 
@@ -127,7 +142,8 @@ const setupEvents = () => {
     if (e.touches.length === 2) {
       const [a, b] = Array.from(e.touches) as [Touch, Touch];
       startDistance = getDistance(a, b);
-      startScale = scale;
+      verticalStartScale = scale;
+      horizontalStartScale = scale;
       originX = Math.abs(a.clientX + b.clientX) / 2 + startX;
       originY = Math.abs(a.clientY + b.clientY) / 2 + startY;
       e.preventDefault();
@@ -148,7 +164,6 @@ const setupEvents = () => {
   const handleTouchEnd = (e: TouchEvent) => {
     if (e.touches.length === 0) {
       startDistance = 0;
-      lastScale = scale / startScale;
     }
   };
 
