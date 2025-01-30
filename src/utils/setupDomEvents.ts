@@ -86,10 +86,16 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     });
   };
 
+  window.addEventListener('contextmenu', handleContextMenu, true);
+  document.addEventListener('contextmenu', handleContextMenu, true);
+  window.addEventListener('contextmenu', handleContextMenu);
+  document.addEventListener('contextmenu', handleContextMenu);
+
   state.win.addEventListener('contextmenu', handleContextMenu, true);
   state.doc.addEventListener('contextmenu', handleContextMenu, true);
   state.win.addEventListener('contextmenu', handleContextMenu);
   state.doc.addEventListener('contextmenu', handleContextMenu);
+
   state.doc.addEventListener('selectionchange', handleSelectionChange);
   state.viewer.addEventListener('pointerdown', handleTouchStart);
   state.viewer.addEventListener('pointerup', handleTouchEnd);

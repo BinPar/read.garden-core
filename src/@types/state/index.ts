@@ -28,7 +28,9 @@ export interface CommonState {
   wrapper: HTMLDivElement;
   content: HTMLDivElement;
   highlights: HTMLDivElement;
+  preload: HTMLDivElement;
   selectionMenu: HTMLDivElement;
+
   isSafari: boolean;
 
   uiContainer?: HTMLDivElement;

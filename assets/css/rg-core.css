@@ -19,6 +19,10 @@ body {
   background-color: sandybrown;
 }
 
+#preload {
+  margin-top: 200svh;
+}
+
 /* #container::-webkit-scrollbar {
   display: none;
 } */
@@ -45,7 +49,7 @@ body {
   height: 100svh;
   z-index: 20;
   margin-top: var(--viewer-margin-top);
-  -webkit-touch-callout: none;
+  /* -webkit-touch-callout: none; */
   /* pointer-events: none; */
   /* user-select: none; */
 }

@@ -14,6 +14,7 @@ const setupDomElements = (
   | 'wrapper'
   | 'highlights'
   | 'content'
+  | 'preload'
   | 'selectionMenu'
 > => {
   const iframe = document.createElement('iframe');
@@ -97,6 +98,10 @@ const setupDomElements = (
   selectionMenu.id = 'selection-menu';
   viewer.appendChild(selectionMenu);
 
+  const preload = iframeDoc.createElement('div');
+  preload.id = 'preload';
+  container.appendChild(preload);
+
   return {
     doc: iframeDoc,
     win: iframeWin,
@@ -107,6 +112,7 @@ const setupDomElements = (
     wrapper,
     content,
     selectionMenu,
+    preload,
   };
 };
 

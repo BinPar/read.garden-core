@@ -1,32 +1,34 @@
-import replaceUrls from '@/utils/replaceUrls';
+import preloadImages from '@/utils/preloadImages';
+import {
+  getWorker,
+  type DownloadWorkerResponse,
+} from '@/utils/workers/download';
 
-const downloadHtml = async (url: string) => {
-  const response = await fetch(url, {
-    credentials: 'include',
-  });
-  const html = await response.text();
-  const processedHtml = replaceUrls(html);
-  new Promise<void>((resolve) => {
+const downloadHtml = async (url: string, baseUrl?: string) =>
+  new Promise<string>((resolve, reject) => {
     try {
-      const images = Array.from(
-        processedHtml.matchAll(/<img[^>]+src="([^">]+)"/g),
-      );
-      if (images.length) {
-        for (let i = 0, l = images.length; i < l; i++) {
-          const image = images[i];
-          if (image) {
-            const src = image[1];
-            if (src) {
-              const img = new Image();
-              img.src = src;
-            }
-          }
-        }
+      const worker = getWorker();
+
+      worker.onmessage = (ev) => {
+        const { html, images } = ev.data as DownloadWorkerResponse;
+        resolve(html);
+        preloadImages(images);
+      };
+
+      worker.onerror = reject;
+
+      const replacements = new Array<[string, string]>();
+
+      if (baseUrl) {
+        const { protocol, host } = new URL(baseUrl);
+        const domain = `${protocol}//${host}`;
+        replacements.push(['%%CDN%%', domain]);
       }
-    } catch {}
-    resolve();
-  }).catch(console.error);
-  return processedHtml;
-};
+
+      worker.postMessage({ url, replacements });
+    } catch (ex) {
+      reject(ex as Error);
+    }
+  });
 
 export default downloadHtml;

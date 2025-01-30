@@ -1,7 +1,7 @@
 import type { CoreContent } from '@/@types';
 import { getConfig } from '@/utils/config';
 import downloadHtml from '@/utils/downloadHtml';
-import preloadContents from '@/utils/preloadContents';
+import preloadInBackground from '@/utils/preloadInBackground';
 import renderContent from '@/utils/renderContent';
 import { getState, updateState } from '@/utils/state';
 
@@ -12,7 +12,10 @@ const loadContent = async (content: CoreContent) => {
   if (content.html) {
     renderContent(content.html, state);
   } else if (config.baseUrl) {
-    const html = await downloadHtml(`${config.baseUrl}/${content.file}`);
+    const html = await downloadHtml(
+      `${config.baseUrl}/${content.file}`,
+      config.baseUrl,
+    );
     state.pendingContents.delete(content.order);
     renderContent(html, state);
     content.html = html;
@@ -24,7 +27,7 @@ const loadContent = async (content: CoreContent) => {
   });
 
   if (state.pendingContents) {
-    preloadContents(content.order);
+    preloadInBackground();
   }
 };
 
