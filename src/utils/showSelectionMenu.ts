@@ -27,9 +27,9 @@ const showSelectionMenu = (options?: SelectionOption[]) => {
       if (option.style) {
         button.setAttribute('style', option.style);
       }
-      button.addEventListener('pointerdown', (ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
+      button.addEventListener('pointerdown', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         console.log('selection button pointerdown');
         dispatch({
           type: 'createHighlight',

@@ -3,7 +3,9 @@ export type ButtonType =
   | 'backward'
   | 'switchMode'
   | 'zoomIn'
-  | 'zoomOut';
+  | 'zoomOut'
+  | 'increaseFont'
+  | 'decreaseFont';
 
 export interface Button {
   type: ButtonType;

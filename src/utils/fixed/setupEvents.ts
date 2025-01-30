@@ -136,33 +136,33 @@ const setupEvents = () => {
     setScale(scale * factor);
   };
 
-  const handleTouchStart = (e: TouchEvent) => {
-    if (e.touches.length === 2) {
+  const handleTouchStart = (event: TouchEvent) => {
+    if (event.touches.length === 2) {
       startX = state.wrapper.scrollLeft;
       startY = state.wrapper.scrollTop;
-      const [a, b] = Array.from(e.touches) as [Touch, Touch];
+      const [a, b] = Array.from(event.touches) as [Touch, Touch];
       startDistance = getDistance(a, b);
       verticalStartScale = scale;
       horizontalStartScale = scale;
       originX = Math.abs(a.clientX + b.clientX) / 2 + startX;
       originY = Math.abs(a.clientY + b.clientY) / 2 + startY;
-      e.preventDefault();
+      event.preventDefault();
     }
   };
 
-  const handleTouchMove = (e: TouchEvent) => {
-    if (e.touches.length === 2) {
-      const [a, b] = Array.from(e.touches) as [Touch, Touch];
+  const handleTouchMove = (event: TouchEvent) => {
+    if (event.touches.length === 2) {
+      const [a, b] = Array.from(event.touches) as [Touch, Touch];
       const distance = getDistance(a, b);
       const zoomFactor = distance / startDistance;
       startDistance = distance;
       applyScale(zoomFactor);
-      e.preventDefault();
+      event.preventDefault();
     }
   };
 
-  const handleTouchEnd = (e: TouchEvent) => {
-    if (e.touches.length === 0) {
+  const handleTouchEnd = (event: TouchEvent) => {
+    if (event.touches.length === 0) {
       startDistance = 0;
     }
   };

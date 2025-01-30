@@ -82,8 +82,8 @@ const setup = (initialOptions: Options) => {
           }
           const links = state.content.querySelectorAll('a');
           links.forEach((link) => {
-            link.onclick = (ev) => {
-              ev.preventDefault();
+            link.onclick = (event) => {
+              event.preventDefault();
             };
           });
         };

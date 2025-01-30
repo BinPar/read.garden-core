@@ -23,11 +23,11 @@ const render = (buttons: ButtonType[] | Button[], state = getState()) => {
           domButton.title = title;
         }
         domButton.classList.add('button');
-        domButton.addEventListener('pointerdown', (ev) => {
+        domButton.addEventListener('pointerdown', (event) => {
           console.log('ui button pointerdown');
-          if (ev.button === 0) {
-            ev.preventDefault();
-            ev.stopPropagation();
+          if (event.button === 0) {
+            event.preventDefault();
+            event.stopPropagation();
             if (type === 'forward') {
               moveForward();
             }

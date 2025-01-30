@@ -1,6 +1,6 @@
-const preventAndStopPropagation = (ev: Event) => {
-  ev.preventDefault();
-  ev.stopPropagation();
+const preventAndStopPropagation = (event: Event) => {
+  event.preventDefault();
+  event.stopPropagation();
 };
 
 export default preventAndStopPropagation;

@@ -47,11 +47,12 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
       isMultipleTouch = false;
     }
     isLongPress = false;
+    event.preventDefault();
   };
 
-  const handleContextMenu = (ev: MouseEvent) => {
+  const handleContextMenu = (event: MouseEvent) => {
     console.log('contextmenu');
-    ev.preventDefault();
+    event.preventDefault();
     isLongPress = true;
   };
 
