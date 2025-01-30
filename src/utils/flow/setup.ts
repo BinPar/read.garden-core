@@ -49,15 +49,6 @@ const updateColumnNumber = (state = getState(), config = getConfig()) => {
     );
     const columnWidth = totalColumnWidth - columnGap;
 
-    console.log({
-      containerWidth,
-      minColumnWidth,
-      maxColumnWidth,
-      columnCount,
-      columnGap,
-      columnWidth,
-    });
-
     setCssVariable('column-count', `${columnCount}`);
     setCssVariable('column-width', `${columnWidth}px`);
     setCssVariable('column-gap', `${columnGap}px`);
@@ -73,83 +64,110 @@ const updateColumnNumber = (state = getState(), config = getConfig()) => {
 
 export const setupSnaps = () => {
   const state = getState();
-  if (state.layout !== 'flow') {
+  const config = getConfig();
+
+  if (state.layout !== 'flow' || config.layout !== 'flow') {
     return;
   }
 
-  const totalColumnWidth = state.columnWidth + state.columnGap;
   const chapterEnd = state.wrapper.querySelector('#chapter-end');
 
   if (!chapterEnd) {
     return;
   }
 
-  const width =
-    chapterEnd.getBoundingClientRect().left +
-    state.wrapper.scrollLeft -
-    state.columnGap;
+  const totalColumnWidth = state.columnWidth + state.columnGap;
+  const wrapperLeft = state.wrapper.getBoundingClientRect().left;
+  const wrapperScrollLeft = state.wrapper.scrollLeft;
+  const scale = state.readMode ? 1 : config.uiModeScale;
+  const chapterEndLeft = chapterEnd.getBoundingClientRect().left;
+
+  const maxLeft =
+    (chapterEndLeft - wrapperLeft) / scale +
+    wrapperScrollLeft -
+    state.columnGap / 2;
 
   state.snapsContainer.innerHTML = '';
   state.snaps.clear();
 
-  const labels = Array.from(
-    state.content.querySelectorAll<HTMLSpanElement>('[data-page]'),
-  );
-
-  let lastPage = '';
-
   let lastSnap = totalColumnWidth;
   let left = totalColumnWidth;
-  while (left < width) {
+  const snapByLeft = new Map<number, HTMLDivElement>();
+  while (left < maxLeft) {
     state.snaps.add(left);
     const snap = state.doc.createElement('div');
     snap.style.left = `${left}px`;
+    snapByLeft.set(left, snap);
     state.snapsContainer.appendChild(snap);
-    if (lastPage) {
-      const firstLabel = labels.shift();
-      if (firstLabel) {
-        const page = firstLabel.dataset.page ?? '';
-        const label = state.doc.createElement('div');
-        label.classList.add('page-label');
-        label.textContent = page;
-        snap.appendChild(label);
-        lastPage = page;
-      }
-    } else {
-      const labelIndex = labels.findIndex(
-        (el) => el.getBoundingClientRect().left >= left,
-      );
-      const label = labelIndex >= 0 ? labels[labelIndex] : undefined;
-      const page = label?.dataset.page ?? lastPage;
-      if (page) {
-        const label = state.doc.createElement('div');
-        label.classList.add('page-label');
-        label.textContent = page;
-        snap.appendChild(label);
-        lastPage = page;
-      }
-    }
     lastSnap = left;
     left += totalColumnWidth;
   }
 
-  console.log({
-    labels,
-    totalColumnWidth,
-    width,
-    left: state.wrapper.scrollLeft,
-  });
+  const addLabel = (label: string, left: number) => {
+    const snap = snapByLeft.get(left);
+    if (snap) {
+      const labelContainer = state.doc.createElement('div');
+      labelContainer.classList.add('page-label');
+      labelContainer.textContent = label;
+      snap.appendChild(labelContainer);
+    }
+  };
+
+  const lefts = Array.from(snapByLeft.keys());
+  let lastLabel = '';
+  const labels = Array.from(
+    state.content.querySelectorAll<HTMLSpanElement>('[data-page]'),
+  );
+
+  for (let i = 0, l = labels.length; i < l; i++) {
+    const label = labels[i];
+    if (label) {
+      const page = label.dataset.page ?? '';
+      const labelLeft =
+        (label.getBoundingClientRect().left - wrapperLeft) / scale +
+        totalColumnWidth;
+      const snapLeft = lefts.find((snapLeft) => snapLeft < labelLeft);
+      if (snapLeft) {
+        const snapIndex = lefts.indexOf(snapLeft);
+        if (snapIndex !== -1) {
+          if (snapIndex !== 0) {
+            for (let j = 0; j < snapIndex; j++) {
+              const missingLeft = lefts[j];
+              if (missingLeft) {
+                addLabel(lastLabel, missingLeft);
+              }
+            }
+          }
+          addLabel(page, snapLeft);
+          lefts.splice(0, snapIndex + 1);
+        }
+      }
+      lastLabel = page;
+    }
+  }
+
+  if (lefts.length && lastLabel) {
+    for (let i = 0, l = lefts.length; i < l; i++) {
+      const snapLeft = lefts[i];
+      if (snapLeft) {
+        addLabel(lastLabel, snapLeft);
+      }
+    }
+  }
 
   state.wrapper.scrollTo({
     left: state.goToEnd ? lastSnap : totalColumnWidth,
     behavior: 'instant',
   });
 
-  updateState({
-    firstSnap: totalColumnWidth,
-    lastSnap,
-    goToEnd: false,
-  });
+  updateState(
+    {
+      firstSnap: totalColumnWidth,
+      lastSnap,
+      goToEnd: false,
+    },
+    true,
+  );
 
   window.requestAnimationFrame(() => {
     setCssVariable('viewer-margin-top', '0');
@@ -157,7 +175,7 @@ export const setupSnaps = () => {
 };
 
 export const flowSetup = () => {
-  console.log('flow setup');
+  console.log('Flow setup');
   window.requestAnimationFrame(() => {
     updateColumnNumber();
     window.requestAnimationFrame(() => {
@@ -167,10 +185,6 @@ export const flowSetup = () => {
 };
 
 const setup = (state = getState()) => {
-  console.log('flow init', state, state.loadingStyles, [
-    ...Array.from(state.doc.styleSheets),
-  ]);
-
   const fontsStyles =
     window.parent.parent.document.querySelector<HTMLStyleElement>('#fonts-css');
 
