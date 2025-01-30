@@ -16,6 +16,7 @@ export interface CommonConfig {
   layout: Layout;
   direction: Direction;
   touch: boolean;
+  cssHref: string;
   padding: MarginOrPadding;
   readModeMargin: MarginOrPadding;
   uiModeScale: number;
@@ -27,7 +28,7 @@ export interface CommonConfig {
   selectionMenuOptions?: SelectionOption[];
 }
 
-export type RequiredOptions = Required<Pick<CommonConfig, 'direction'>>;
+export type RequiredOptions = Required<Pick<CommonConfig, 'direction' | 'cssHref'>>;
 export type OptionalOptions = Partial<
   Omit<CommonConfig, 'direction' | 'layout'>
 >;

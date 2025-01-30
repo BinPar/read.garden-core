@@ -9,12 +9,13 @@ import {
 let config: Config | undefined;
 
 export const init = (initialOptions: Options) => {
-  const { direction } = initialOptions.options;
+  const { direction, cssHref } = initialOptions.options;
   const touch = initialOptions.options.touch ?? isTouchDevice();
 
   const common: Omit<CommonConfig, 'layout'> = {
-    direction,
     touch,
+    direction,
+    cssHref,
     padding: initialOptions.options.padding ?? defaultCommonConfig.padding,
     readModeMargin:
       initialOptions.options.readModeMargin ??

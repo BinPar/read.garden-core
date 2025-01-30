@@ -80,8 +80,9 @@ window.onload = () => {
             window.rgCore = window.readGardenCore({
               layout: data.type,
               options: {
-                initialContentSlug: '24',
                 direction: 'horizontal',
+                cssHref: '/css/styles.css',
+                initialContentSlug: '24',
                 baseUrl,
                 touch: true,
                 jsonData: data,
@@ -98,8 +99,9 @@ window.onload = () => {
             window.rgCore = window.readGardenCore({
               layout: data.type,
               options: {
-                initialContentSlug: '26',
                 direction: 'horizontal',
+                cssHref: '/css/styles.css',
+                initialContentSlug: '26',
                 paginated: true,
                 baseUrl,
                 touch: true,

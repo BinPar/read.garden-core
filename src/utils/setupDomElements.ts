@@ -54,7 +54,7 @@ const setupDomElements = (
   };
   styles.rel = 'stylesheet';
   styles.type = 'text/css';
-  styles.href = '/css/styles.css';
+  styles.href = initialOptions.options.cssHref;
   iframeDoc.head.appendChild(styles);
 
   if (initialOptions.ui) {
