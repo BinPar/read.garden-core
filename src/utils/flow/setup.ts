@@ -255,6 +255,7 @@ const setup = (state = getState()) => {
         state.isSafari ? 256 : 1,
       );
     };
+    
     state.doc.head.appendChild(clone);
   }
 

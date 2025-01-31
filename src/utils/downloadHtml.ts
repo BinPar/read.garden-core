@@ -7,14 +7,23 @@ import {
 
 const downloadHtml = async (url: string, baseUrl?: string) =>
   new Promise<string>((resolve, reject) => {
+    console.log(`Downloading ${url}`);
     if (url.startsWith('file://')) {
-      const state = getState();
-      const iframe = state.doc.createElement('iframe');
-      iframe.onload = () => {
-        console.log('iframe loaded', iframe.contentDocument?.body.innerHTML);
-        resolve(iframe.contentDocument?.body.innerHTML ?? '');
-      };
-      iframe.src = url;
+      try {
+        console.log('Using iframe');
+        const state = getState();
+        const iframe = state.doc.createElement('iframe');
+        iframe.onload = () => {
+          console.log(
+            `iframe loaded content: ${iframe.contentDocument?.body.innerHTML}`,
+          );
+          resolve(iframe.contentDocument?.body.innerHTML ?? '');
+        };
+        iframe.onerror = reject;
+        iframe.src = url;
+      } catch (ex) {
+        reject(ex as Error);
+      }
       return;
     }
 
