@@ -84,6 +84,9 @@ const preloadInBackground = () => {
     }
     loadContentFromIframe(url, replacements)
       .then((res) => {
+        console.log(
+          `Loaded from iframe content ${content.order} html: ${res.html}`,
+        );
         content.html = res.html;
         state.pendingContents.delete(content.order);
         preloadInBackground();

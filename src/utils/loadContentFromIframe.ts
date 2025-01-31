@@ -14,7 +14,7 @@ const loadContentFromIframe = (
       const iframe = state.doc.createElement('iframe');
       iframe.onload = () => {
         let html = iframe.contentDocument?.body.innerHTML ?? '';
-        if (html && replacements.length) {
+        if (replacements.length) {
           for (let i = 0, l = replacements.length; i < l; i++) {
             const replacement = replacements[i];
             if (replacement) {
