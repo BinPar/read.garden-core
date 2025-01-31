@@ -2,14 +2,28 @@ import nonNullable from '@/tools/nonNullable';
 import { getState } from '@/utils/state';
 import type { DownloadWorkerResponse } from '@/utils/workers/download';
 
-const loadContentFromIframe = (url: string, withoutImages?: boolean) =>
+const loadContentFromIframe = (
+  url: string,
+  replacements: [string, string][],
+  withoutImages?: boolean,
+) =>
   new Promise<DownloadWorkerResponse>((resolve, reject) => {
     try {
       console.log('Using iframe');
       const state = getState();
       const iframe = state.doc.createElement('iframe');
       iframe.onload = () => {
-        const html = iframe.contentDocument?.body.innerHTML ?? '';
+        let html = iframe.contentDocument?.body.innerHTML ?? '';
+        if (html && replacements.length) {
+          for (let i = 0, l = replacements.length; i < l; i++) {
+            const replacement = replacements[i];
+            if (replacement) {
+              const [replaceThis, forThis] = replacement;
+              console.log(`Replacing ${replaceThis} with ${forThis}`);
+              html = html.split(replaceThis).join(forThis);
+            }
+          }
+        }
         resolve({
           html,
           images: withoutImages

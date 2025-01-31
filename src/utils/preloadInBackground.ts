@@ -82,21 +82,9 @@ const preloadInBackground = () => {
     if (domain) {
       replacements.push(['%%CDN%%', domain]);
     }
-    loadContentFromIframe(url)
+    loadContentFromIframe(url, replacements)
       .then((res) => {
-        let html = res.html;
-        // TODO: extract replacements to a function
-        if (html && replacements.length) {
-          for (let i = 0, l = replacements.length; i < l; i++) {
-            const replacement = replacements[i];
-            if (replacement) {
-              const [replaceThis, forThis] = replacement;
-              console.log(`Replacing ${replaceThis} with ${forThis}`);
-              html = html.split(replaceThis).join(forThis);
-            }
-          }
-        }
-        content.html = html;
+        content.html = res.html;
         state.pendingContents.delete(content.order);
         preloadInBackground();
         preloadImages(res.images);
