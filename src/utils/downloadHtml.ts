@@ -25,9 +25,10 @@ const downloadHtml = async (url: string, baseUrl?: string) =>
     console.log(`Downloading ${url}`);
     if (url.startsWith('file://')) {
       loadContentFromIframe(url, replacements, true)
-        .then(({ html }) => {
+        .then(({ html, images }) => {
           console.log(`Iframe loaded with HTML: ${html}`);
           resolve(html);
+          preloadImages(images);
         })
         .catch(reject);
       return;

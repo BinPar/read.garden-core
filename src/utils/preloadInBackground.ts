@@ -83,14 +83,14 @@ const preloadInBackground = () => {
       replacements.push(['%%CDN%%', domain]);
     }
     loadContentFromIframe(url, replacements)
-      .then((res) => {
+      .then(({ html, images }) => {
         console.log(
-          `Loaded from iframe content ${content.order} html: ${res.html}`,
+          `Loaded from iframe content ${content.order} html: ${html}`,
         );
-        content.html = res.html;
+        content.html = html;
         state.pendingContents.delete(content.order);
         preloadInBackground();
-        preloadImages(res.images);
+        preloadImages(images);
       })
       .catch(genericCatch('Exception loading preloading content from iframe'));
     return;
