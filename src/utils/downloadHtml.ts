@@ -10,9 +10,16 @@ const downloadHtml = async (url: string, baseUrl?: string) =>
     const replacements = new Array<[string, string]>();
 
     if (baseUrl) {
-      const { protocol, host } = new URL(baseUrl);
-      const domain = `${protocol}//${host}`;
-      replacements.push(['%%CDN%%', domain]);
+      if (baseUrl.startsWith('file://')) {
+        const [domain] = baseUrl.split('/contents');
+        if (domain) {
+          replacements.push(['%%CDN%%', domain]);
+        }
+      } else {
+        const { protocol, host } = new URL(baseUrl);
+        const domain = `${protocol}//${host}`;
+        replacements.push(['%%CDN%%', domain]);
+      }
     }
 
     console.log(`Downloading ${url}`);
@@ -28,10 +35,12 @@ const downloadHtml = async (url: string, baseUrl?: string) =>
               const replacement = replacements[i];
               if (replacement) {
                 const [replaceThis, forThis] = replacement;
+                console.log(`Replacing ${replaceThis} with ${forThis}`);
                 html = html.split(replaceThis).join(forThis);
               }
             }
           }
+          console.log(`Iframe loaded with HTML: ${html}`);
           resolve(html);
           iframe.remove();
         };
