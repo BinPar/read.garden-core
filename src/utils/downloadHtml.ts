@@ -1,4 +1,5 @@
 import preloadImages from '@/utils/preloadImages';
+import { getState } from '@/utils/state';
 import {
   getWorker,
   type DownloadWorkerResponse,
@@ -6,6 +7,17 @@ import {
 
 const downloadHtml = async (url: string, baseUrl?: string) =>
   new Promise<string>((resolve, reject) => {
+    if (url.startsWith('file://')) {
+      const state = getState();
+      const iframe = state.doc.createElement('iframe');
+      iframe.onload = () => {
+        console.log('iframe loaded', iframe.contentDocument?.body.innerHTML);
+        resolve(iframe.contentDocument?.body.innerHTML ?? '');
+      };
+      iframe.src = url;
+      return;
+    }
+
     try {
       const worker = getWorker();
 
