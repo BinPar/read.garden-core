@@ -7,6 +7,14 @@ import {
 
 const downloadHtml = async (url: string, baseUrl?: string) =>
   new Promise<string>((resolve, reject) => {
+    const replacements = new Array<[string, string]>();
+
+    if (baseUrl) {
+      const { protocol, host } = new URL(baseUrl);
+      const domain = `${protocol}//${host}`;
+      replacements.push(['%%CDN%%', domain]);
+    }
+
     console.log(`Downloading ${url}`);
     if (url.startsWith('file://')) {
       try {
@@ -14,12 +22,21 @@ const downloadHtml = async (url: string, baseUrl?: string) =>
         const state = getState();
         const iframe = state.doc.createElement('iframe');
         iframe.onload = () => {
-          console.log(
-            `iframe loaded content: ${iframe.contentDocument?.body.innerHTML}`,
-          );
-          resolve(iframe.contentDocument?.body.innerHTML ?? '');
+          let html = iframe.contentDocument?.body.innerHTML ?? '';
+          if (html && replacements.length) {
+            for (let i = 0, l = replacements.length; i < l; i++) {
+              const replacement = replacements[i];
+              if (replacement) {
+                const [replaceThis, forThis] = replacement;
+                html = html.split(replaceThis).join(forThis);
+              }
+            }
+          }
+          resolve(html);
+          iframe.remove();
         };
         iframe.onerror = reject;
+        state.preload.appendChild(iframe);
         iframe.src = url;
       } catch (ex) {
         reject(ex as Error);
@@ -37,14 +54,6 @@ const downloadHtml = async (url: string, baseUrl?: string) =>
       };
 
       worker.onerror = reject;
-
-      const replacements = new Array<[string, string]>();
-
-      if (baseUrl) {
-        const { protocol, host } = new URL(baseUrl);
-        const domain = `${protocol}//${host}`;
-        replacements.push(['%%CDN%%', domain]);
-      }
 
       worker.postMessage({ url, replacements });
     } catch (ex) {

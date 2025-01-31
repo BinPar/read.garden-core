@@ -205,6 +205,9 @@ const setup = (state = getState()) => {
   };
 
   if (fontsStyles) {
+    // TODO: store fontStyles element
+    // TODO: create Set with loaded fonts
+    // TODO: move to a method so it can be called when changing font family
     const config = getConfig();
     const clone = fontsStyles.cloneNode(true) as HTMLStyleElement;
     clone.onload = () => {
@@ -255,7 +258,7 @@ const setup = (state = getState()) => {
         state.isSafari ? 256 : 1,
       );
     };
-    
+
     state.doc.head.appendChild(clone);
   }
 
