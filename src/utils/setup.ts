@@ -14,6 +14,7 @@ import fixedInit, { fixedSetup } from '@/utils/fixed/setup';
 import setupFixedEvents from '@/utils/fixed/setupEvents';
 import waitForRender from '@/utils/waitForRender';
 import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
+import dispatch from '@/utils/dispatch';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -167,6 +168,7 @@ const setup = (initialOptions: Options) => {
   return {
     state,
     config,
+    dispatch,
   };
 };
 
