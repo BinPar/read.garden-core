@@ -1,4 +1,6 @@
+import genericCatch from '@/tools/genericCatch';
 import { getConfig } from '@/utils/config';
+import loadContentFromIframe from '@/utils/loadContentFromIframe';
 import preloadImages from '@/utils/preloadImages';
 import { getState } from '@/utils/state';
 import {
@@ -61,9 +63,50 @@ const preloadInBackground = () => {
     return preloadInBackground();
   }
 
+  const replacements = new Array<[string, string]>();
+  const url = `${config.baseUrl}/${content.file}`;
+
+  if (config.baseUrl.startsWith('file://')) {
+    const [domain] = config.baseUrl.split('/contents');
+    if (domain) {
+      replacements.push(['%%CDN%%', domain]);
+    }
+  } else {
+    const { protocol, host } = new URL(config.baseUrl);
+    const domain = `${protocol}//${host}`;
+    replacements.push(['%%CDN%%', domain]);
+  }
+
+  if (url.startsWith('file://')) {
+    const [domain] = config.baseUrl.split('/contents');
+    if (domain) {
+      replacements.push(['%%CDN%%', domain]);
+    }
+    loadContentFromIframe(url)
+      .then((res) => {
+        let html = res.html;
+        // TODO: extract replacements to a function
+        if (html && replacements.length) {
+          for (let i = 0, l = replacements.length; i < l; i++) {
+            const replacement = replacements[i];
+            if (replacement) {
+              const [replaceThis, forThis] = replacement;
+              console.log(`Replacing ${replaceThis} with ${forThis}`);
+              html = html.split(replaceThis).join(forThis);
+            }
+          }
+        }
+        content.html = html;
+        state.pendingContents.delete(content.order);
+        preloadInBackground();
+        preloadImages(res.images);
+      })
+      .catch(genericCatch('Exception loading preloading content from iframe'));
+    return;
+  }
+
   const { protocol, host } = new URL(config.baseUrl);
   const domain = `${protocol}//${host}`;
-  const url = `${config.baseUrl}/${content.file}`;
 
   const worker = getWorker();
 

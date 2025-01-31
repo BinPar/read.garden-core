@@ -1,3 +1,4 @@
+import loadContentFromIframe from '@/utils/loadContentFromIframe';
 import preloadImages from '@/utils/preloadImages';
 import { getState } from '@/utils/state';
 import {
@@ -24,6 +25,23 @@ const downloadHtml = async (url: string, baseUrl?: string) =>
 
     console.log(`Downloading ${url}`);
     if (url.startsWith('file://')) {
+      loadContentFromIframe(url, true)
+        .then((res) => {
+          let html = res.html;
+          if (html && replacements.length) {
+            for (let i = 0, l = replacements.length; i < l; i++) {
+              const replacement = replacements[i];
+              if (replacement) {
+                const [replaceThis, forThis] = replacement;
+                console.log(`Replacing ${replaceThis} with ${forThis}`);
+                html = html.split(replaceThis).join(forThis);
+              }
+            }
+          }
+          console.log(`Iframe loaded with HTML: ${html}`);
+          resolve(html);
+        })
+        .catch(reject);
       try {
         console.log('Using iframe');
         const state = getState();
