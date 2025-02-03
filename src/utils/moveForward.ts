@@ -1,5 +1,4 @@
-import genericCatch from '@/tools/genericCatch';
-import loadContent from '@/utils/loadContent';
+import goToNextContent from '@/utils/goToNextContent';
 import { getState, updateState } from '@/utils/state';
 
 const moveForward = (state = getState()) => {
@@ -12,12 +11,7 @@ const moveForward = (state = getState()) => {
     );
     const left = state.wrapper.scrollLeft + state.columnWidth + state.columnGap;
     if (left > state.lastSnap) {
-      const content = state.orderedContents?.[state.contentOrder];
-      if (content?.next) {
-        loadContent(content.next).catch(
-          genericCatch('Exception loading next chapter'),
-        );
-      }
+      goToNextContent();
     } else {
       state.wrapper.scrollTo({
         left,
@@ -26,13 +20,8 @@ const moveForward = (state = getState()) => {
     }
   }
 
-  if (state.layout === 'fixed' && state.orderedContents) {
-    const content = state.orderedContents[state.contentOrder];
-    if (content?.next) {
-      loadContent(content.next).catch(
-        genericCatch('Exception loading next content'),
-      );
-    }
+  if (state.layout === 'fixed') {
+    goToNextContent();
   }
 };
 

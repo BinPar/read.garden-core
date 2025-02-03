@@ -7,9 +7,9 @@ const renderContent = (html: string, state = getState()) => {
 
   state.content.innerHTML = html;
 
-  if (state.layout === 'flow') {
-    state.wrapper.scrollTo({ left: 0, behavior: 'instant' });
-  }
+  // if (state.layout === 'flow') {
+  //   state.wrapper.scrollTo({ left: 0, behavior: 'instant' });
+  // }
 };
 
 export default renderContent;

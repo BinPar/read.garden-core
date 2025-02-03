@@ -6,6 +6,7 @@ const setupCssVars = (config = getConfig()) => {
   setCssVariable('ui-scale', `${config.uiModeScale}`);
   setCssVariable('ui-left', `${config.uiModeLeft}px`);
   setCssVariable('ui-top', `${config.uiModeTop}px`);
+  setCssVariable('flow-left-threshold', '0');
 
   if (config.layout === 'flow') {
     setCssVariable('font-family', config.fontFamily);

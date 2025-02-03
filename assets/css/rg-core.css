@@ -68,6 +68,36 @@ body {
   /* user-select: none; */
 }
 
+.flow #viewer::before,
+.flow #viewer::after {
+  position: absolute;
+  display: block;
+  content: '';
+  top: 0;
+  height: 100%;
+  width: 71px;
+  background-repeat: no-repeat;
+  background-position: 0 50%;
+  background-image: url('../img/navigation-arrow.png');
+  transform: translateX(var(--transform)) rotate(var(--rotate, 0));
+  opacity: var(--opacity, 0);
+  z-index: 60;
+  will-change: opacity, transform;
+}
+
+.flow #viewer::before {
+  --opacity: calc(var(--flow-left-threshold, 0) / 100);
+  --transform: calc(-100% - calc(var(--flow-left-threshold) * -1%));
+  left: 0;
+}
+
+.flow #viewer::after {
+  --rotate: 180deg;
+  --opacity: calc(var(--flow-right-threshold, 0) / 100);
+  --transform: calc(calc(var(--flow-right-threshold) * -1%));
+  left: 100%;
+}
+
 #wrapper {
   position: relative;
   height: 100%;
@@ -114,8 +144,8 @@ body {
   overflow-y: hidden;
   overflow-x: auto;
   touch-action: pan-x;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
+  scroll-snap-type: var(--scroll-snap-type, x mandatory);
+  scroll-behavior: var(--scroll-behavior, smooth);
 }
 
 .flow.vertical #wrapper {
@@ -212,7 +242,7 @@ body {
   user-select: none;
 }
 
-#chapter-start::before,
+/* #chapter-start::before,
 #chapter-start::after,
 #chapter-end::before,
 #chapter-end::after {
@@ -233,7 +263,7 @@ body {
     rgba(255, 255, 255, 1),
     rgba(255, 0, 0, 0)
   );
-}
+} */
 
 #chapter-start {
   break-after: column;

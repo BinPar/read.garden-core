@@ -85,9 +85,12 @@ export const setupSnaps = () => {
   const chapterEndLeft = chapterEnd.getBoundingClientRect().left;
 
   const maxLeft =
-    (chapterEndLeft - wrapperLeft) / scale +
-    wrapperScrollLeft -
-    state.columnGap / 2;
+    Math.floor(
+      ((chapterEndLeft - wrapperLeft) / scale +
+        wrapperScrollLeft -
+        state.columnGap / 2) /
+        totalColumnWidth,
+    ) * totalColumnWidth;
 
   state.snapsContainer.innerHTML = '';
   state.snaps.clear();

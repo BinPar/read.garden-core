@@ -35,4 +35,8 @@ export type CssVariableKey =
   | 'fixed-top'
   | 'ui-scale'
   | 'ui-top'
-  | 'ui-left';
+  | 'ui-left'
+  | 'flow-left-threshold'
+  | 'flow-right-threshold'
+  | 'scroll-behavior'
+  | 'scroll-snap-type';

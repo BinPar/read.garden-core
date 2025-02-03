@@ -101,10 +101,6 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     }
   };
 
-  state.wrapper.addEventListener('scrollend', () => {
-    console.log('scrollend');
-  });
-
   window.addEventListener('contextmenu', handleContextMenu, true);
   document.addEventListener('contextmenu', handleContextMenu, true);
   window.addEventListener('contextmenu', handleContextMenu);
