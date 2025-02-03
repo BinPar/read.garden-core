@@ -39,7 +39,7 @@ const preloadFonts = (fontFamily?: string, callback?: () => void) => {
 
   console.log(`Preloading ${fontsUrls.length} fonts for ${font}`);
 
-  requestIdleCallback(() => {
+  window.requestIdleCallback(() => {
     Promise.all(
       fontsUrls.map(
         (fontUrl) =>

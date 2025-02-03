@@ -1,6 +1,7 @@
 import type { FlowConfig } from '@/@types/config/flow';
 import type { FixedConfig } from '@/@types/config/fixed';
 import type { CommonConfig } from '@/@types/config';
+import type { FullState } from '@/@types/state';
 
 export const defaultCommonConfig: Pick<
   CommonConfig,
@@ -9,7 +10,7 @@ export const defaultCommonConfig: Pick<
   padding: {
     top: 32,
     right: 0,
-    bottom: 32,
+    bottom: 56,
     left: 0,
   },
   readModeMargin: {
@@ -57,6 +58,7 @@ export const defaultFixedConfig: Omit<FixedConfig, 'layout'> = {
   gapSize: 16,
 };
 
-export const defaultState = {
+export const defaultState: Pick<FullState, 'readMode' | 'progressMode'> = {
   readMode: true,
+  progressMode: 'percent',
 };

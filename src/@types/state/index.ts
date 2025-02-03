@@ -28,6 +28,7 @@ export interface CommonState {
   wrapper: HTMLDivElement;
   content: HTMLDivElement;
   highlights: HTMLDivElement;
+  progress: HTMLDivElement;
   preload: HTMLDivElement;
   selectionMenu: HTMLDivElement;
 
@@ -39,6 +40,9 @@ export interface CommonState {
 
   contentsBySlug?: Map<string, CoreContent>;
   orderedContents?: CoreContent[];
+  orderedContentSlugs?: string[];
+  labelBySlug?: Map<string, string>;
+  progressMode: 'percent' | 'label' | 'none';
 
   selectedText: string;
   selectionRanges: Range[] | null;

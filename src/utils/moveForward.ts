@@ -1,9 +1,15 @@
 import genericCatch from '@/tools/genericCatch';
 import loadContent from '@/utils/loadContent';
-import { getState } from '@/utils/state';
+import { getState, updateState } from '@/utils/state';
 
 const moveForward = (state = getState()) => {
   if (state.layout === 'flow') {
+    updateState(
+      {
+        previousContent: null,
+      },
+      true,
+    );
     const left = state.wrapper.scrollLeft + state.columnWidth + state.columnGap;
     if (left > state.lastSnap) {
       const content = state.orderedContents?.[state.contentOrder];

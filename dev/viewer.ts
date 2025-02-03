@@ -38,19 +38,7 @@ const selectionOptions: SelectionOption[] = [
   },
 ];
 
-const buttons: (Button | Button<'fontFamily'>)[] = [
-  // {
-  //   type: 'backward',
-  //   text: '<',
-  // },
-  // {
-  //   type: 'forward',
-  //   text: '>',
-  // },
-  // {
-  //   type: 'switchMode',
-  //   text: 'UI',
-  // },
+const flowButtons: (Button | Button<'fontFamily'>)[] = [
   {
     type: 'increaseFont',
     text: 'A+',
@@ -71,14 +59,17 @@ const buttons: (Button | Button<'fontFamily'>)[] = [
     prop: 'fontFamily',
     value: 'Obf-Helvetica',
   },
-  // {
-  //   type: 'zoomIn',
-  //   text: '+',
-  // },
-  // {
-  //   type: 'zoomOut',
-  //   text: '-',
-  // },
+];
+
+const fixedButtons: (Button | Button<'fontFamily'>)[] = [
+  {
+    type: 'zoomIn',
+    text: '+',
+  },
+  {
+    type: 'zoomOut',
+    text: '-',
+  },
 ];
 
 window.onload = () => {
@@ -110,7 +101,7 @@ window.onload = () => {
                 selectionMenuOptions: selectionOptions,
               },
               ui: {
-                buttons,
+                buttons: flowButtons,
               },
             });
           }
@@ -138,7 +129,7 @@ window.onload = () => {
                 selectionMenuOptions: selectionOptions,
               },
               ui: {
-                buttons,
+                buttons: fixedButtons,
               },
             });
           }

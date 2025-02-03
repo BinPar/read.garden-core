@@ -14,6 +14,7 @@ const setupDomElements = (
   | 'wrapper'
   | 'highlights'
   | 'content'
+  | 'progress'
   | 'preload'
   | 'selectionMenu'
 > => {
@@ -102,6 +103,10 @@ const setupDomElements = (
   preload.id = 'preload';
   container.appendChild(preload);
 
+  const progress = iframeDoc.createElement('div');
+  progress.id = 'progress';
+  container.appendChild(progress);
+
   return {
     doc: iframeDoc,
     win: iframeWin,
@@ -111,6 +116,7 @@ const setupDomElements = (
     viewer,
     wrapper,
     content,
+    progress,
     selectionMenu,
     preload,
   };

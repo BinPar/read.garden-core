@@ -6,7 +6,7 @@ import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener'
 export const fixedSetup = () => {
   console.log('fixed setup');
   checkCenter();
-  requestAnimationFrame(() => {
+  window.requestAnimationFrame(() => {
     setCssVariable('viewer-margin-top', '0');
   });
 };

@@ -5,6 +5,7 @@ import { getConfig } from '@/utils/config';
 import waitForRender from '@/utils/waitForRender';
 import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
 import preloadFonts from '@/utils/flow/preloadFonts';
+import updateProgress from '@/utils/updateProgress';
 
 const charWidthFactor = 1.65;
 
@@ -170,12 +171,18 @@ export const setupSnaps = () => {
     ? snapByContent.get(state.previousContent)
     : null;
 
-  console.log({
-    previousContent,
-    state: state.previousContent,
-    snapByContent,
-    contentBySnap,
-  });
+  updateState(
+    {
+      firstSnap: totalColumnWidth,
+      lastSnap,
+      snapByContent,
+      contentBySnap,
+      contentSlug: state.goToEnd
+        ? lastLabel
+        : (state.previousContent ?? state.contentSlug),
+    },
+    true,
+  );
 
   state.wrapper.scrollTo({
     left: state.goToEnd ? lastSnap : (previousContent ?? totalColumnWidth),
@@ -184,19 +191,15 @@ export const setupSnaps = () => {
 
   updateState(
     {
-      firstSnap: totalColumnWidth,
-      lastSnap,
-      previousContent: null,
       goToEnd: false,
-      contentSlug: state.goToEnd
-        ? lastLabel
-        : (state.previousContent ?? state.contentSlug),
+      previousContent: null,
     },
     true,
   );
 
   window.requestAnimationFrame(() => {
     setCssVariable('viewer-margin-top', '0');
+    updateProgress();
   });
 };
 

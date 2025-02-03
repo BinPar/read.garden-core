@@ -13,26 +13,28 @@ const loadContentFromIframe = (
       const state = getState();
       const iframe = state.doc.createElement('iframe');
       iframe.onload = () => {
-        let html = iframe.contentDocument?.body.innerHTML ?? '';
-        if (replacements.length) {
-          for (let i = 0, l = replacements.length; i < l; i++) {
-            const replacement = replacements[i];
-            if (replacement) {
-              const [replaceThis, forThis] = replacement;
-              console.log(`Replacing ${replaceThis} with ${forThis}`);
-              html = html.split(replaceThis).join(forThis);
+        window.requestAnimationFrame(() => {
+          let html = iframe.contentDocument?.body.innerHTML ?? '';
+          if (replacements.length) {
+            for (let i = 0, l = replacements.length; i < l; i++) {
+              const replacement = replacements[i];
+              if (replacement) {
+                const [replaceThis, forThis] = replacement;
+                console.log(`Replacing ${replaceThis} with ${forThis}`);
+                html = html.split(replaceThis).join(forThis);
+              }
             }
           }
-        }
-        resolve({
-          html,
-          images: withoutImages
-            ? []
-            : Array.from(html.matchAll(/<img[^>]+src="([^">]+)"/g))
-                .map((img) => img[1])
-                .filter(nonNullable),
+          resolve({
+            html,
+            images: withoutImages
+              ? []
+              : Array.from(html.matchAll(/<img[^>]+src="([^">]+)"/g))
+                  .map((img) => img[1])
+                  .filter(nonNullable),
+          });
+          iframe.remove();
         });
-        iframe.remove();
       };
       iframe.onerror = reject;
       state.preload.appendChild(iframe);

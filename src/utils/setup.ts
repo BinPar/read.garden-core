@@ -6,24 +6,23 @@ import setupDomElements from '@/utils/setupDomElements';
 import { getState, init as initState, updateState } from '@/utils/state';
 import { getConfig, init as initConfig } from '@/utils/config';
 import setupCssVars from '@/utils/setupCssVars';
-import { defaultState } from '@/utils/defaults';
 import loadContentBySlug from '@/utils/loadContentBySlug';
 import genericCatch from '@/tools/genericCatch';
 import flowInit, { setupSnaps } from '@/utils/flow/setup';
 import fixedInit, { fixedSetup } from '@/utils/fixed/setup';
 import setupFixedEvents from '@/utils/fixed/setupEvents';
+import setupFlowEvents from '@/utils/flow/setupEvents';
 import waitForRender from '@/utils/waitForRender';
 import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
 import dispatch from '@/utils/dispatch';
+import updateProgress from '@/utils/updateProgress';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
 
-  const readMode = initialOptions.options.readMode ?? defaultState.readMode;
-
   const domElements = setupDomElements(initialOptions);
   initConfig(initialOptions);
-  initState(initialOptions, { readMode, ...domElements });
+  initState(initialOptions, domElements);
 
   const config = getConfig();
   const state = getState();
@@ -43,10 +42,10 @@ const setup = (initialOptions: Options) => {
     setupFixedEvents();
   }
 
-  // if (config.layout === 'flow') {
-  //   setupFlowVars();
-  //   setupFlowEvents();
-  // }
+  if (config.layout === 'flow') {
+    // setupFlowVars();
+    setupFlowEvents();
+  }
 
   let initialContentSlug = initialOptions.options.initialContentSlug;
   if (initialOptions.options.jsonData) {
@@ -143,6 +142,11 @@ const setup = (initialOptions: Options) => {
     render(initialOptions.ui.buttons, state);
   }
 
+  addPropertyChangeListener('contentSlug', ({ newValue }) => {
+    console.log({ newValue });
+    updateProgress();
+  });
+
   addPropertyChangeListener('contentOrder', ({ oldValue, newValue }) => {
     console.log('contentOrder changed');
     state.highlightsLayers.set(
@@ -163,6 +167,10 @@ const setup = (initialOptions: Options) => {
       state.wrapper.appendChild(highlightsLayer);
     }
     updateState({ highlights: highlightsLayer });
+  });
+
+  addPropertyChangeListener('progressMode', () => {
+    updateProgress();
   });
 
   return {

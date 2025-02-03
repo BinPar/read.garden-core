@@ -5,6 +5,8 @@ const processJsonData = (data: JsonData) => {
   const contentsBySlug = new Map<string, CoreContent>();
   const orderedContents = new Array<CoreContent>();
   const pendingContents = new Set<number>();
+  const orderedContentSlugs = new Array<string>();
+  const labelBySlug = new Map<string, string>();
   let lastContent: CoreContent | null = null;
 
   for (let i = 0, l = data.contents.length; i < l; i++) {
@@ -26,6 +28,9 @@ const processJsonData = (data: JsonData) => {
         const label = content.labels[j];
         if (label) {
           const slug = label.toLowerCase();
+          orderedContentSlugs.push(slug);
+          labelBySlug.set(slug, label);
+          // TODO: Should be unique (might not be the case in fixed)
           if (!coreContent.slug) {
             coreContent.slug = slug;
           }
@@ -40,6 +45,7 @@ const processJsonData = (data: JsonData) => {
     contentsBySlug,
     orderedContents,
     pendingContents,
+    orderedContentSlugs,
   };
 };
 

@@ -1,3 +1,4 @@
+import type { FullState } from '@/@types/state';
 import { getConfig } from '@/utils/config';
 import getSelection from '@/utils/getSelection';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
@@ -10,6 +11,7 @@ import switchMode from '@/utils/switchMode';
 
 const rightThreshold = 42.5;
 const leftThreshold = 20;
+const progressModes: FullState['progressMode'][] = ['percent', 'label', 'none'];
 
 const setupDomEvents = (state = getState(), config = getConfig()) => {
   const touches = new Set<number>();
@@ -86,6 +88,23 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     });
   };
 
+  const handleProgressClick = (event: PointerEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const progressIndex = progressModes.indexOf(state.progressMode);
+    const progressMode =
+      progressModes[(progressIndex + 1) % progressModes.length];
+    if (progressMode) {
+      updateState({
+        progressMode,
+      });
+    }
+  };
+
+  state.wrapper.addEventListener('scrollend', () => {
+    console.log('scrollend');
+  });
+
   window.addEventListener('contextmenu', handleContextMenu, true);
   document.addEventListener('contextmenu', handleContextMenu, true);
   window.addEventListener('contextmenu', handleContextMenu);
@@ -95,6 +114,8 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
   state.doc.addEventListener('contextmenu', handleContextMenu, true);
   state.win.addEventListener('contextmenu', handleContextMenu);
   state.doc.addEventListener('contextmenu', handleContextMenu);
+
+  state.progress.addEventListener('pointerdown', handleProgressClick);
 
   state.doc.addEventListener('selectionchange', handleSelectionChange);
   state.viewer.addEventListener('pointerdown', handleTouchStart);

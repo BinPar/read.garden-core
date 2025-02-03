@@ -22,9 +22,15 @@ const loadContent = async (content: CoreContent) => {
   }
 
   updateState({
-    contentSlug: content.slug,
     contentOrder: content.order,
   });
+
+  if (state.layout === 'fixed') {
+    updateState({
+      contentSlug: content.slug,
+    });
+    // In flow, contentSlug is handled by wrapper scroll
+  }
 
   if (state.pendingContents) {
     preloadInBackground();

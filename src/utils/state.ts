@@ -6,7 +6,7 @@ import listeners from '@/utils/state/listeners';
 import processJsonData from '@/utils/processJsonData';
 import { notifyPropertyChange } from '@/utils/state/propertyChangeListener';
 import type setupDomElements from '@/utils/setupDomElements';
-import { defaultFixedConfig } from '@/utils/defaults';
+import { defaultFixedConfig, defaultState } from '@/utils/defaults';
 import { getConfig } from '@/utils/config';
 
 let state: State | undefined;
@@ -36,7 +36,7 @@ for (let i = 0, l = listeners.length; i < l; i++) {
 
 export const init = (
   initialOptions: Options,
-  initialState: ReturnType<typeof setupDomElements> & Pick<State, 'readMode'>,
+  initialState: ReturnType<typeof setupDomElements>,
 ) => {
   const { layout } = initialOptions;
   const { container } = initialState;
@@ -45,8 +45,12 @@ export const init = (
   const containerWidth = Math.floor(containerRect.width);
   const containerHeight = Math.floor(containerRect.height);
 
+  const readMode = initialOptions.options.readMode ?? defaultState.readMode;
+
   let common: CommonState = {
+    ...defaultState,
     ...initialState,
+    readMode,
     isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
     initialized: false,
     coreCssLoaded: false,

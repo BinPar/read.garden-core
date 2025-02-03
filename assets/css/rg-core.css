@@ -7,6 +7,7 @@ html {
 
 body {
   height: 100%;
+  width: 100%;
   overflow: hidden;
   background-color: gray;
   scrollbar-width: none; /* Firefox */
@@ -15,8 +16,21 @@ body {
 
 #container {
   height: 100%;
+  width: 100%;
   overflow: hidden;
   background-color: sandybrown;
+}
+
+#progress {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 50;
+  padding: var(--column-gap, 1rem);
+}
+
+#progress.hidden {
+  color: transparent;
 }
 
 #preload {
