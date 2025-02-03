@@ -6,9 +6,13 @@ export interface FlowConfig {
   minColumnGap: number;
 
   fontSize: number;
+  minFontSize: number;
+  maxFontSize: number;
+  fontSizeStep: number;
   fontFamily: string;
-  lineHeight: number;
-  textAlign: number | null;
+  fontFamilies: string[];
+  lineHeight: 1 | 1.5 | 2;
+  textAlign: 'start' | 'justify' | null;
 }
 
 export type RequiredFlowConfig = Required<Pick<FlowConfig, 'fontFamily'>>;

@@ -10,6 +10,10 @@ const setupCssVars = (config = getConfig()) => {
   if (config.layout === 'flow') {
     setCssVariable('font-family', config.fontFamily);
     setCssVariable('font-size', `${config.fontSize}px`);
+    setCssVariable('line-height', `${config.lineHeight}`);
+    if (config.textAlign) {
+      setCssVariable('text-align', config.textAlign);
+    }
   }
 
   if (config.padding) {

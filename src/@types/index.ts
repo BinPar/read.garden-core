@@ -28,6 +28,8 @@ export type CssVariableKey =
   | 'viewer-margin-top'
   | 'font-family'
   | 'font-size'
+  | 'line-height'
+  | 'text-align'
   | 'zoom'
   | 'fixed-left'
   | 'fixed-top'

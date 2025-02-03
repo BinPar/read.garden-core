@@ -1,12 +1,17 @@
-import type { Button, ButtonType } from '@/@types/buttons';
+import type { UIOptions } from '@/@types/config';
 import zoomIn from '@/utils/fixed/zoomIn';
 import zoomOut from '@/utils/fixed/zoomOut';
+import decreaseFont from '@/utils/flow/decreaseFont';
+import increaseFont from '@/utils/flow/increaseFont';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const render = (buttons: ButtonType[] | Button[], state = getState()) => {
+const render = (
+  buttons: Required<UIOptions>['buttons'],
+  state = getState(),
+) => {
   if (buttons.length) {
     const uiContainer = state.doc.createElement('div');
     uiContainer.id = 'ui-container';
@@ -22,30 +27,45 @@ const render = (buttons: ButtonType[] | Button[], state = getState()) => {
         if (title) {
           domButton.title = title;
         }
+        const prop = typeof button === 'string' ? undefined : button.prop;
+        const value = typeof button === 'string' ? undefined : button.value;
         domButton.classList.add('button');
         domButton.addEventListener('pointerdown', (event) => {
           console.log('ui button pointerdown');
           if (event.button === 0) {
             event.preventDefault();
             event.stopPropagation();
-            if (type === 'forward') {
-              moveForward();
-            }
+            if (prop) {
+              console.log({ prop, value });
+              updateState({ [prop]: value });
+            } else {
+              if (type === 'forward') {
+                moveForward();
+              }
 
-            if (type === 'backward') {
-              moveBackwards();
-            }
+              if (type === 'backward') {
+                moveBackwards();
+              }
 
-            if (type === 'switchMode') {
-              switchMode();
-            }
+              if (type === 'switchMode') {
+                switchMode();
+              }
 
-            if (type === 'zoomIn') {
-              zoomIn();
-            }
+              if (type === 'zoomIn') {
+                zoomIn();
+              }
 
-            if (type === 'zoomOut') {
-              zoomOut();
+              if (type === 'zoomOut') {
+                zoomOut();
+              }
+
+              if (type === 'increaseFont') {
+                increaseFont();
+              }
+
+              if (type === 'decreaseFont') {
+                decreaseFont();
+              }
             }
           }
         });

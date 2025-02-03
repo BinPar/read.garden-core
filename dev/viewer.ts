@@ -38,27 +38,47 @@ const selectionOptions: SelectionOption[] = [
   },
 ];
 
-const buttons: Button[] = [
+const buttons: (Button | Button<'fontFamily'>)[] = [
+  // {
+  //   type: 'backward',
+  //   text: '<',
+  // },
+  // {
+  //   type: 'forward',
+  //   text: '>',
+  // },
+  // {
+  //   type: 'switchMode',
+  //   text: 'UI',
+  // },
   {
-    type: 'backward',
-    text: '<',
+    type: 'increaseFont',
+    text: 'A+',
   },
   {
-    type: 'forward',
-    text: '>',
+    type: 'decreaseFont',
+    text: 'A-',
   },
   {
-    type: 'switchMode',
-    text: 'UI',
+    type: 'setFontFamily',
+    text: 'Roboto',
+    prop: 'fontFamily',
+    value: 'Obf-RobotoSlab',
   },
   {
-    type: 'zoomIn',
-    text: '+',
+    type: 'setFontFamily',
+    text: 'Helvetica',
+    prop: 'fontFamily',
+    value: 'Obf-Helvetica',
   },
-  {
-    type: 'zoomOut',
-    text: '-',
-  },
+  // {
+  //   type: 'zoomIn',
+  //   text: '+',
+  // },
+  // {
+  //   type: 'zoomOut',
+  //   text: '-',
+  // },
 ];
 
 window.onload = () => {

@@ -4,6 +4,7 @@ import type { FixedConfig, RequiredFixedConfig } from '@/@types/config/fixed';
 import type { FlowConfig, RequiredFlowConfig } from '@/@types/config/flow';
 import type { JsonData } from '@/@types/rg';
 import type { SelectionOption } from '@/@types/selection';
+import type { FullState } from '@/@types/state';
 
 export interface MarginOrPadding {
   top: number;
@@ -28,7 +29,9 @@ export interface CommonConfig {
   selectionMenuOptions?: SelectionOption[];
 }
 
-export type RequiredOptions = Required<Pick<CommonConfig, 'direction' | 'cssHref'>>;
+export type RequiredOptions = Required<
+  Pick<CommonConfig, 'direction' | 'cssHref'>
+>;
 export type OptionalOptions = Partial<
   Omit<CommonConfig, 'direction' | 'layout'>
 >;
@@ -39,7 +42,7 @@ export type Config = CommonConfig &
   (({ layout: 'flow' } & FlowConfig) | ({ layout: 'fixed' } & FixedConfig));
 
 export interface UIOptions {
-  buttons?: ButtonType[] | Button[];
+  buttons?: (ButtonType | Button | Button<keyof FullState>)[];
 }
 
 export interface CommonOptions {

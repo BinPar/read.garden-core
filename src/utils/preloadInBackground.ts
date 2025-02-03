@@ -9,111 +9,115 @@ import {
 } from '@/utils/workers/download';
 
 const preloadInBackground = () => {
-  const state = getState();
-  const config = getConfig();
+  window.requestIdleCallback(() => {
+    const state = getState();
+    const config = getConfig();
 
-  if (!state.pendingContents.size || !config.baseUrl) {
-    return;
-  }
+    if (!state.pendingContents.size || !config.baseUrl) {
+      return;
+    }
 
-  if (!state.orderedContents) {
-    throw new Error('Missing contents by order map');
-  }
+    if (!state.orderedContents) {
+      throw new Error('Missing contents by order map');
+    }
 
-  const currentContent = state.contentOrder;
-  let direction = 1;
-  let forward = 1;
-  let backward = 0;
+    const currentContent = state.contentOrder;
+    let direction = 1;
+    let forward = 1;
+    let backward = 0;
 
-  let orderToLoad = currentContent + forward;
+    let orderToLoad = currentContent + forward;
 
-  // console.log({ orderToLoad });
+    // console.log({ orderToLoad });
 
-  while (
-    !state.pendingContents.has(orderToLoad) &&
-    orderToLoad >= 0 &&
-    orderToLoad < state.orderedContents.length
-  ) {
-    if (direction % 2) {
-      forward++;
-      orderToLoad = currentContent + forward;
-      if (currentContent - backward > 0) {
-        direction++;
+    while (
+      !state.pendingContents.has(orderToLoad) &&
+      orderToLoad >= 0 &&
+      orderToLoad < state.orderedContents.length
+    ) {
+      if (direction % 2) {
+        forward++;
+        orderToLoad = currentContent + forward;
+        if (currentContent - backward > 0) {
+          direction++;
+        }
+      } else {
+        backward++;
+        orderToLoad = currentContent - backward;
+        if (currentContent + forward < state.orderedContents.length) {
+          direction++;
+        }
+      }
+    }
+
+    if (!state.pendingContents.has(orderToLoad)) {
+      return;
+    }
+
+    const content = state.orderedContents.at(orderToLoad);
+    if (!content) {
+      return;
+    }
+
+    if (content.html) {
+      state.pendingContents.delete(content.order);
+      return preloadInBackground();
+    }
+
+    const replacements = new Array<[string, string]>();
+    const url = `${config.baseUrl}/${content.file}`;
+
+    if (config.baseUrl.startsWith('file://')) {
+      const [domain] = config.baseUrl.split('/contents');
+      if (domain) {
+        replacements.push(['%%CDN%%', domain]);
       }
     } else {
-      backward++;
-      orderToLoad = currentContent - backward;
-      if (currentContent + forward < state.orderedContents.length) {
-        direction++;
-      }
-    }
-  }
-
-  if (!state.pendingContents.has(orderToLoad)) {
-    return;
-  }
-
-  const content = state.orderedContents.at(orderToLoad);
-  if (!content) {
-    return;
-  }
-
-  if (content.html) {
-    state.pendingContents.delete(content.order);
-    return preloadInBackground();
-  }
-
-  const replacements = new Array<[string, string]>();
-  const url = `${config.baseUrl}/${content.file}`;
-
-  if (config.baseUrl.startsWith('file://')) {
-    const [domain] = config.baseUrl.split('/contents');
-    if (domain) {
+      const { protocol, host } = new URL(config.baseUrl);
+      const domain = `${protocol}//${host}`;
       replacements.push(['%%CDN%%', domain]);
     }
-  } else {
+
+    if (url.startsWith('file://')) {
+      const [domain] = config.baseUrl.split('/contents');
+      if (domain) {
+        replacements.push(['%%CDN%%', domain]);
+      }
+      loadContentFromIframe(url, replacements)
+        .then(({ html, images }) => {
+          console.log(
+            `Loaded from iframe content ${content.order} html: ${html}`,
+          );
+          content.html = html;
+          state.pendingContents.delete(content.order);
+          preloadInBackground();
+          preloadImages(images);
+        })
+        .catch(
+          genericCatch('Exception loading preloading content from iframe'),
+        );
+      return;
+    }
+
     const { protocol, host } = new URL(config.baseUrl);
     const domain = `${protocol}//${host}`;
-    replacements.push(['%%CDN%%', domain]);
-  }
 
-  if (url.startsWith('file://')) {
-    const [domain] = config.baseUrl.split('/contents');
-    if (domain) {
-      replacements.push(['%%CDN%%', domain]);
-    }
-    loadContentFromIframe(url, replacements)
-      .then(({ html, images }) => {
-        console.log(
-          `Loaded from iframe content ${content.order} html: ${html}`,
-        );
-        content.html = html;
-        state.pendingContents.delete(content.order);
-        preloadInBackground();
-        preloadImages(images);
-      })
-      .catch(genericCatch('Exception loading preloading content from iframe'));
-    return;
-  }
+    const worker = getWorker();
 
-  const { protocol, host } = new URL(config.baseUrl);
-  const domain = `${protocol}//${host}`;
+    worker.onmessage = function (e) {
+      const { html, images } = e.data as DownloadWorkerResponse;
+      content.html = html;
+      state.pendingContents.delete(content.order);
+      preloadInBackground();
+      preloadImages(images);
+    };
 
-  const worker = getWorker();
+    worker.onerror = function (e) {
+      console.error('Error at download worker: ', e);
+    };
 
-  worker.onmessage = function (e) {
-    const { html, images } = e.data as DownloadWorkerResponse;
-    content.html = html;
-    state.pendingContents.delete(content.order);
-    preloadInBackground();
-    preloadImages(images);
-  };
-
-  worker.onerror = function (e) {
-    console.error('Error at download worker: ', e);
-  };
-
-  worker.postMessage({ url, replacements: [['%%CDN%%', domain]] });
+    worker.postMessage({ url, replacements: [['%%CDN%%', domain]] });
+  });
 };
 
 export default preloadInBackground;

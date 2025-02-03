@@ -24,8 +24,20 @@ export const defaultCommonConfig: Pick<
 };
 
 export const defaultFlowConfig: Omit<FlowConfig, 'layout'> = {
-  fontSize: 16,
-  fontFamily: '',
+  fontSize: 18,
+  fontSizeStep: 2,
+  minFontSize: 12,
+  maxFontSize: 36,
+  fontFamily: 'Obf-Helvetica',
+  fontFamilies: [
+    'Obf-Helvetica',
+    'Obf-TimesNewRoman',
+    'Obf-AmericanTypewriter',
+    'Obf-Baskerville',
+    'Obf-OpenDyslexic',
+    'Obf-RobotoSlab',
+    'Obf-Tahoma',
+  ],
   lineHeight: 1.5,
   maxColumns: 4,
   minCharsPerColumn: 60,

@@ -3,6 +3,7 @@
     "isbn",
     "outdir",
     "preinstall",
+    "Tahoma",
     "tspc"
   ],
   "typescript.preferences.preferTypeOnlyAutoImports": true,

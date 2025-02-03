@@ -6,12 +6,6 @@ const renderContent = (html: string, state = getState()) => {
 
   state.content.innerHTML = html;
 
-  // const firstElementChild = state.content.firstElementChild;
-  // if (firstElementChild && firstElementChild.id !== 'highlights') {
-  //   firstElementChild.remove();
-  // }
-  // state.content.insertAdjacentHTML('afterbegin', html);
-
   if (state.layout === 'flow') {
     state.wrapper.scrollTo({ left: 0, behavior: 'instant' });
   }

@@ -7,6 +7,7 @@ import processJsonData from '@/utils/processJsonData';
 import { notifyPropertyChange } from '@/utils/state/propertyChangeListener';
 import type setupDomElements from '@/utils/setupDomElements';
 import { defaultFixedConfig } from '@/utils/defaults';
+import { getConfig } from '@/utils/config';
 
 let state: State | undefined;
 
@@ -110,6 +111,11 @@ export const init = (
   }
 
   if (layout === 'flow') {
+    const config = getConfig();
+    if (config.layout !== 'flow') {
+      throw new Error('Not flow config in flow layout');
+    }
+
     const chapterStart = initialState.doc.createElement('div');
     chapterStart.id = 'chapter-start';
     initialState.content.insertAdjacentElement('beforebegin', chapterStart);
@@ -125,8 +131,16 @@ export const init = (
     state = {
       ...common,
       layout: 'flow',
+      fontSize: config.fontSize,
+      fontFamily: config.fontFamily,
+      lineHeight: config.lineHeight,
+      textAlign: config.textAlign,
+      previousContent: initialOptions.options.initialContentSlug ?? null,
       fontsCssLoaded: false,
       snaps: new Set<number>(),
+      snapByContent: new Map<string, number>(),
+      contentBySnap: new Map<number, string>(),
+      fontsUrls: new Map<string, string[]>(),
       firstSnap: 0,
       lastSnap: 0,
       chapterStart,

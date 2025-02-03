@@ -124,7 +124,7 @@ body {
   cursor: auto;
 }
 
-.flow #content {
+.flow #content > div:first-child {
   font-size: var(--font-size);
   font-family: var(--font-family);
   text-align: justify;

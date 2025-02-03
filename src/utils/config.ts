@@ -54,8 +54,16 @@ export const init = (initialOptions: Options) => {
         initialOptions.options.minColumnGap ?? defaultFlowConfig.minColumnGap,
 
       fontSize: initialOptions.options.fontSize ?? defaultFlowConfig.fontSize,
+      fontSizeStep:
+        initialOptions.options.fontSizeStep ?? defaultFlowConfig.fontSizeStep,
+      minFontSize:
+        initialOptions.options.minFontSize ?? defaultFlowConfig.minFontSize,
+      maxFontSize:
+        initialOptions.options.maxFontSize ?? defaultFlowConfig.maxFontSize,
       fontFamily:
         initialOptions.options.fontFamily ?? defaultFlowConfig.fontFamily,
+      fontFamilies:
+        initialOptions.options.fontFamilies ?? defaultFlowConfig.fontFamilies,
       lineHeight:
         initialOptions.options.lineHeight ?? defaultFlowConfig.lineHeight,
       textAlign:
