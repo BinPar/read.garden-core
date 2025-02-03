@@ -2,6 +2,7 @@ import type { Button, ButtonType } from '@/@types/buttons';
 import type { Direction, Layout } from '@/@types/common';
 import type { FixedConfig, RequiredFixedConfig } from '@/@types/config/fixed';
 import type { FlowConfig, RequiredFlowConfig } from '@/@types/config/flow';
+import type { EventHandler } from '@/@types/events';
 import type { JsonData } from '@/@types/rg';
 import type { SelectionOption } from '@/@types/selection';
 import type { FullState } from '@/@types/state';
@@ -27,14 +28,27 @@ export interface CommonConfig {
   jsonData?: JsonData;
   initialContentSlug?: string;
   selectionMenuOptions?: SelectionOption[];
+  slug: string;
+  productSlug?: string;
+  eventHandler?: EventHandler;
 }
 
-export type RequiredOptions = Required<
-  Pick<CommonConfig, 'direction' | 'cssHref'>
->;
+export type RequiredOptionsKeys = 'direction';
+export type RequiredInitialConfigKeys = 'layout' | 'slug' | 'cssHref';
+export type OptionsMainKeys =
+  | 'productSlug'
+  | 'eventHandler'
+  | 'baseUrl'
+  | 'jsonData';
+
+export type RequiredOptions = Required<Pick<CommonConfig, RequiredOptionsKeys>>;
 export type OptionalOptions = Partial<
-  Omit<CommonConfig, 'direction' | 'layout'>
+  Omit<
+    CommonConfig,
+    RequiredOptionsKeys | OptionsMainKeys | RequiredInitialConfigKeys
+  >
 >;
+
 export type InitialOptions = RequiredOptions &
   OptionalOptions & { readMode?: boolean };
 
@@ -45,13 +59,14 @@ export interface UIOptions {
   buttons?: (ButtonType | Button | Button<keyof FullState>)[];
 }
 
-export interface CommonOptions {
-  layout: Layout;
-  ui?: UIOptions;
-}
+export type CommonOptions = Pick<CommonConfig, OptionsMainKeys>;
+
+export type RequiredInitialConfig = Required<
+  Pick<CommonConfig, RequiredInitialConfigKeys>
+>;
 
 export type Options = CommonOptions &
-  (
+  RequiredInitialConfig & { ui?: UIOptions } & (
     | {
         layout: 'flow';
         options: InitialOptions & Partial<FlowConfig> & RequiredFlowConfig;

@@ -6,8 +6,6 @@ import type { FlowState } from '@/@types/state/flow';
 export interface CommonState {
   layout: Layout;
 
-  slug: string;
-  productSlug: string;
   contentSlug: string;
   contentOrder: number;
   pendingContents: Set<number>;
@@ -54,3 +52,10 @@ export type State = CommonState & (FixedState | FlowState);
 export type FullState = CommonState &
   Omit<FixedState, 'layout'> &
   Omit<FlowState, 'layout'>;
+
+export type StateKey = keyof FullState;
+
+export type PropertyChangeHandler<K extends StateKey> = (props: {
+  oldValue: FullState[K];
+  newValue: FullState[K];
+}) => void;

@@ -1,6 +1,6 @@
 import type { Config } from '@/@types/config';
 import type { Highlight } from '@/@types/selection';
-import type { State } from '@/@types/state';
+import type { PropertyChangeHandler, State, StateKey } from '@/@types/state';
 
 export interface DrawHighlights {
   type: 'drawHighlights';
@@ -28,7 +28,19 @@ export interface MoveNext {
   type: 'moveNext';
 }
 
-export type Action = DrawHighlights | CreateHighlight | MovePrev | MoveNext;
+export interface AddOnChangeEvent<T extends StateKey = StateKey> {
+  type: 'addOnChangeEvent';
+  propertyName: T;
+  event: PropertyChangeHandler<T>;
+  returnValue?: boolean;
+}
+
+export type Action =
+  | DrawHighlights
+  | CreateHighlight
+  | MovePrev
+  | MoveNext
+  | AddOnChangeEvent;
 
 export type Actions = {
   [K in Action['type']]: (params: {
@@ -49,5 +61,3 @@ export type ActionHandler<T extends Action> = (params: {
   state: State;
   config: Config;
 }) => void;
-
-export type Dispatcher = (action: Action) => void;

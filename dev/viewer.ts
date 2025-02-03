@@ -2,6 +2,7 @@ import genericCatch from '@/tools/genericCatch';
 import type { JsonData } from '@/@types/rg';
 import type { SelectionOption } from '@/@types/selection';
 import type { Button } from '@/@types/buttons';
+import type { EventHandler } from '@/@types/events';
 
 const selectionOptions: SelectionOption[] = [
   {
@@ -72,6 +73,10 @@ const fixedButtons: (Button | Button<'fontFamily'>)[] = [
   },
 ];
 
+const eventHandler: EventHandler = (event) => {
+  console.log('Core event dispatched!', event);
+};
+
 window.onload = () => {
   const url = new URL(document.location.toString());
   const key = url.searchParams.get('key');
@@ -90,13 +95,15 @@ window.onload = () => {
           if (data.type === 'flow') {
             window.rgCore = window.readGardenCore({
               layout: data.type,
+              slug: data.slug,
+              cssHref: '/css/styles.css',
+              baseUrl,
+              jsonData: data,
+              eventHandler,
               options: {
                 direction: 'horizontal',
-                cssHref: '/css/styles.css',
                 initialContentSlug: '24',
-                baseUrl,
                 touch: true,
-                jsonData: data,
                 fontFamily: 'Obf-Helvetica',
                 selectionMenuOptions: selectionOptions,
               },
@@ -109,14 +116,16 @@ window.onload = () => {
           if (data.type === 'fixed') {
             window.rgCore = window.readGardenCore({
               layout: data.type,
+              slug: data.slug,
+              cssHref: '/css/styles.css',
+              baseUrl,
+              jsonData: data,
+              eventHandler,
               options: {
                 direction: 'horizontal',
-                cssHref: '/css/styles.css',
                 initialContentSlug: '26',
                 paginated: true,
-                baseUrl,
                 touch: true,
-                jsonData: data,
                 minimumZoomValue: 0.25,
                 maximumZoomValue: 4,
                 padding: {

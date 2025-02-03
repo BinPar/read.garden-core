@@ -9,13 +9,16 @@ import {
 let config: Config | undefined;
 
 export const init = (initialOptions: Options) => {
-  const { direction, cssHref } = initialOptions.options;
+  const { direction } = initialOptions.options;
   const touch = initialOptions.options.touch ?? isTouchDevice();
 
   const common: Omit<CommonConfig, 'layout'> = {
     touch,
     direction,
-    cssHref,
+    eventHandler: initialOptions.eventHandler,
+    slug: initialOptions.slug,
+    productSlug: initialOptions.productSlug,
+    cssHref: initialOptions.cssHref,
     padding: initialOptions.options.padding ?? defaultCommonConfig.padding,
     readModeMargin:
       initialOptions.options.readModeMargin ??
@@ -27,8 +30,8 @@ export const init = (initialOptions: Options) => {
       initialOptions.options.uiModeTop ?? defaultCommonConfig.uiModeTop,
     uiModeLeft:
       initialOptions.options.uiModeLeft ?? defaultCommonConfig.uiModeLeft,
-    baseUrl: initialOptions.options.baseUrl,
-    jsonData: initialOptions.options.jsonData,
+    baseUrl: initialOptions.baseUrl,
+    jsonData: initialOptions.jsonData,
     selectionMenuOptions: initialOptions.options.selectionMenuOptions,
   };
 

@@ -26,7 +26,7 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
       }
     }
 
-    // TODO: Deduplicate if fixed
+    // TODO: Deduplicate if fixed?? Is it really needed?
 
     if (rects.length) {
       const scale = getScale();
@@ -51,7 +51,6 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
               `--top: ${top}px; --left: ${left}px; --width: ${width}px; --height: ${height}px; --color: ${action.payload.color}`,
             );
             highlight.dataset.key = action.payload.key;
-            highlight.dataset.content = state.contentSlug;
 
             state.highlights.appendChild(highlight);
           }

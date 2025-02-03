@@ -1,4 +1,6 @@
 import type { Actions } from '@/@types/actions';
+
+import addOnChangeEvent from '@/utils/actions/addOnChangeEvent';
 import createHighlight from '@/utils/actions/createHighlight';
 import drawHighlights from '@/utils/actions/drawHighlights';
 import moveNext from '@/utils/actions/moveNext';
@@ -9,6 +11,7 @@ const actions: Actions = {
   drawHighlights,
   moveNext,
   movePrev,
+  addOnChangeEvent,
 };
 
 export default actions;

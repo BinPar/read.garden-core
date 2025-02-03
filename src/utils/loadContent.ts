@@ -1,6 +1,7 @@
 import type { CoreContent } from '@/@types';
 import { getConfig } from '@/utils/config';
 import downloadHtml from '@/utils/downloadHtml';
+import dispatchEvent from '@/utils/events/dispatchEvent';
 import preloadInBackground from '@/utils/preloadInBackground';
 import renderContent from '@/utils/renderContent';
 import { getState, updateState } from '@/utils/state';
@@ -29,12 +30,19 @@ const loadContent = async (content: CoreContent) => {
     updateState({
       contentSlug: content.slug,
     });
-    // In flow, contentSlug is handled by wrapper scroll
+    // FYI: in flow, contentSlug depends on scroll position
   }
 
   if (state.pendingContents) {
     preloadInBackground();
   }
+
+  window.requestAnimationFrame(() => {
+    dispatchEvent({
+      type: 'contentLoaded',
+      contentSlug: content.slug,
+    });
+  });
 };
 
 export default loadContent;

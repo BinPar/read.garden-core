@@ -1,13 +1,10 @@
-import type { FullState } from '@/@types/state';
+import type {
+  FullState,
+  PropertyChangeHandler,
+  StateKey,
+} from '@/@types/state';
 
 import genericCatch from '@/tools/genericCatch';
-
-type StateKey = keyof FullState;
-
-type PropertyChangeHandler<K extends StateKey> = (props: {
-  oldValue: FullState[K];
-  newValue: FullState[K];
-}) => void;
 
 const handlers = new Map<StateKey, Set<PropertyChangeHandler<StateKey>>>();
 

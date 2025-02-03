@@ -48,9 +48,9 @@ const setup = (initialOptions: Options) => {
   }
 
   let initialContentSlug = initialOptions.options.initialContentSlug;
-  if (initialOptions.options.jsonData) {
+  if (initialOptions.jsonData) {
     if (!initialContentSlug) {
-      initialContentSlug = initialOptions.options.jsonData.initialContentSlug;
+      initialContentSlug = initialOptions.jsonData.initialContentSlug;
     }
   }
 

@@ -59,8 +59,6 @@ export const init = (
     layout,
     containerWidth,
     containerHeight,
-    slug: '',
-    productSlug: '',
     contentSlug: '',
     contentOrder: -1,
     pendingContents: new Set<number>(),
@@ -69,15 +67,15 @@ export const init = (
     highlightsLayers: new Map<number, HTMLDivElement>(),
   };
 
-  if (initialOptions.options.jsonData) {
+  if (initialOptions.jsonData) {
     if (
-      initialOptions.options.jsonData.cssURL &&
-      initialOptions.options.baseUrl
+      initialOptions.jsonData.cssURL &&
+      initialOptions.baseUrl
     ) {
       const link = initialState.doc.createElement('link');
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = `${initialOptions.options.baseUrl}/${initialOptions.options.jsonData.cssURL}`;
+      link.href = `${initialOptions.baseUrl}/${initialOptions.jsonData.cssURL}`;
       const onFinish = () => {
         updateState((current) => {
           if (
@@ -102,7 +100,7 @@ export const init = (
 
     common = {
       ...common,
-      ...processJsonData(initialOptions.options.jsonData),
+      ...processJsonData(initialOptions.jsonData),
     };
   }
 
