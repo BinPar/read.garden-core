@@ -30,6 +30,7 @@ const preloadInBackground = () => {
 
     while (
       !state.pendingContents.has(orderToLoad) &&
+      state.loadingContents.has(orderToLoad) &&
       orderToLoad >= 0 &&
       orderToLoad < state.orderedContents.length
     ) {

@@ -9,7 +9,7 @@ const loadContentFromIframe = (
 ) =>
   new Promise<DownloadWorkerResponse>((resolve, reject) => {
     try {
-      console.log('Using iframe');
+      console.log(`Using iframe for ${url}`);
       const state = getState();
       const iframe = state.doc.createElement('iframe');
       iframe.setAttribute('crossOrigin', 'anonymous');
