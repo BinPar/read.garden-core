@@ -39,4 +39,5 @@ export type CssVariableKey =
   | 'flow-left-threshold'
   | 'flow-right-threshold'
   | 'scroll-behavior'
-  | 'scroll-snap-type';
+  | 'scroll-snap-type'
+  | 'overflow-x';

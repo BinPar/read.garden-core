@@ -3,10 +3,18 @@ import type { FixedConfig } from '@/@types/config/fixed';
 import type { CommonConfig } from '@/@types/config';
 import type { FullState } from '@/@types/state';
 
-export const defaultCommonConfig: Pick<
-  CommonConfig,
-  'padding' | 'readModeMargin' | 'uiModeTop' | 'uiModeLeft' | 'uiModeScale'
+export const defaultCommonConfig: Required<
+  Pick<
+    CommonConfig,
+    | 'padding'
+    | 'readModeMargin'
+    | 'uiModeTop'
+    | 'uiModeLeft'
+    | 'uiModeScale'
+    | 'lang'
+  >
 > = {
+  lang: 'es',
   padding: {
     top: 32,
     right: 0,

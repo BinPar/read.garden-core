@@ -5,10 +5,12 @@ import type { FlowState } from '@/@types/state/flow';
 
 export interface CommonState {
   layout: Layout;
+  readMode: boolean;
 
   contentSlug: string;
   contentOrder: number;
   pendingContents: Set<number>;
+  loadingContents: Set<number>;
 
   initialized: boolean;
   loadingStyles: boolean;
@@ -29,12 +31,9 @@ export interface CommonState {
   progress: HTMLDivElement;
   preload: HTMLDivElement;
   selectionMenu: HTMLDivElement;
-
-  isSafari: boolean;
-
   uiContainer?: HTMLDivElement;
 
-  readMode: boolean;
+  isSafari: boolean;
 
   contentsBySlug?: Map<string, CoreContent>;
   orderedContents?: CoreContent[];

@@ -28,8 +28,6 @@ const preloadInBackground = () => {
 
     let orderToLoad = currentContent + forward;
 
-    // console.log({ orderToLoad });
-
     while (
       !state.pendingContents.has(orderToLoad) &&
       orderToLoad >= 0 &&
@@ -50,7 +48,10 @@ const preloadInBackground = () => {
       }
     }
 
-    if (!state.pendingContents.has(orderToLoad)) {
+    if (
+      !state.pendingContents.has(orderToLoad) ||
+      state.loadingContents.has(orderToLoad)
+    ) {
       return;
     }
 
@@ -63,6 +64,8 @@ const preloadInBackground = () => {
       state.pendingContents.delete(content.order);
       return preloadInBackground();
     }
+
+    state.loadingContents.add(content.order);
 
     const replacements = new Array<[string, string]>();
     const url = `${config.baseUrl}/${content.file}`;
@@ -88,6 +91,7 @@ const preloadInBackground = () => {
           console.log(
             `Loaded from iframe content ${content.order} html: ${html}`,
           );
+          state.loadingContents.delete(content.order);
           content.html = html;
           state.pendingContents.delete(content.order);
           preloadInBackground();
@@ -106,6 +110,7 @@ const preloadInBackground = () => {
 
     worker.onmessage = function (e) {
       const { html, images } = e.data as DownloadWorkerResponse;
+      state.loadingContents.delete(content.order);
       content.html = html;
       state.pendingContents.delete(content.order);
       preloadInBackground();

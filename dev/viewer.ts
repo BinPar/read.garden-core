@@ -102,7 +102,7 @@ window.onload = () => {
               eventHandler,
               options: {
                 direction: 'horizontal',
-                initialContentSlug: '14',
+                initialContentSlug: '15',
                 touch: true,
                 fontFamily: 'Obf-Helvetica',
                 selectionMenuOptions: selectionOptions,

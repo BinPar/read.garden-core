@@ -62,6 +62,7 @@ export const init = (
     contentSlug: '',
     contentOrder: -1,
     pendingContents: new Set<number>(),
+    loadingContents: new Set<number>(),
     selectedText: '',
     selectionRanges: null,
     highlightsLayers: new Map<number, HTMLDivElement>(),
@@ -181,9 +182,6 @@ export const update = (newState: Partial<State>, avoidListeners = false) => {
           if (listener) {
             const listenerHandler = listener.get(newValue);
             if (listenerHandler) {
-              console.log(
-                `Calling listener for ${stateKey} and value ${newValue?.toString()}`,
-              );
               listenerHandler();
             }
           }

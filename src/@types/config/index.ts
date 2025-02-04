@@ -18,6 +18,7 @@ export interface CommonConfig {
   layout: Layout;
   direction: Direction;
   touch: boolean;
+  lang?: string;
   cssHref: string;
   padding: MarginOrPadding;
   readModeMargin: MarginOrPadding;
@@ -39,7 +40,8 @@ export type OptionsMainKeys =
   | 'productSlug'
   | 'eventHandler'
   | 'baseUrl'
-  | 'jsonData';
+  | 'jsonData'
+  | 'lang';
 
 export type RequiredOptions = Required<Pick<CommonConfig, RequiredOptionsKeys>>;
 export type OptionalOptions = Partial<

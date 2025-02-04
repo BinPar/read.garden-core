@@ -13,7 +13,6 @@ const cssLoaderListener: StatePropChangeHandler<'loadingStyles'> = {
   property: 'loadingStyles',
   value: false,
   handler: () => {
-    console.log('loadingStyles handler');
     resolver();
     const state = getState();
     if (state.layout === 'flow') {

@@ -10,7 +10,7 @@ import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
 const rightThreshold = 42.5;
-const leftThreshold = 20;
+const leftThreshold = 17.5;
 const progressModes: FullState['progressMode'][] = ['percent', 'label', 'none'];
 
 const setupDomEvents = (state = getState(), config = getConfig()) => {
@@ -20,7 +20,6 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
   let isMultipleTouch = false;
 
   const handleTouchStart = (event: PointerEvent) => {
-    console.log('viewer touchstart');
     touches.add(event.pointerId);
     isMultipleTouch = touches.size > 1;
   };
@@ -49,11 +48,9 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
       isMultipleTouch = false;
     }
     isLongPress = false;
-    event.preventDefault();
   };
 
   const handleContextMenu = (event: MouseEvent) => {
-    console.log('contextmenu');
     event.preventDefault();
     isLongPress = true;
   };
@@ -62,7 +59,6 @@ const setupDomEvents = (state = getState(), config = getConfig()) => {
     const selection = getSelection();
     const text = selection.toString().trim();
     isLongPress = false;
-    console.log('selectionchange', text);
     if (text) {
       isSelection = true;
       const selectionRanges = new Array<Range>();

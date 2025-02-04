@@ -6,9 +6,12 @@ const setupCssVars = (config = getConfig()) => {
   setCssVariable('ui-scale', `${config.uiModeScale}`);
   setCssVariable('ui-left', `${config.uiModeLeft}px`);
   setCssVariable('ui-top', `${config.uiModeTop}px`);
-  setCssVariable('flow-left-threshold', '0');
 
   if (config.layout === 'flow') {
+    setCssVariable('scroll-behavior', 'auto');
+    setCssVariable('scroll-snap-type', 'x mandatory');
+    setCssVariable('flow-left-threshold', '0');
+    setCssVariable('flow-right-threshold', '0');
     setCssVariable('font-family', config.fontFamily);
     setCssVariable('font-size', `${config.fontSize}px`);
     setCssVariable('line-height', `${config.lineHeight}`);

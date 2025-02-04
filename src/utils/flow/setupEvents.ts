@@ -4,11 +4,12 @@ import goToPreviousContent from '@/utils/goToPreviousContent';
 import { getState, updateState } from '@/utils/state';
 import waitForRender from '@/utils/waitForRender';
 
-const scrollThreshold = 128;
+const scrollThreshold = 256;
 const flowThreshold = 0.25;
 
 let leftThreshold = 0;
 let rightThreshold = 0;
+let wasNotSmooth = false;
 let handledScrollEnd = false;
 
 const setupEvents = () => {
@@ -22,16 +23,46 @@ const setupEvents = () => {
 
   let scrollEndTimeout: NodeJS.Timeout | undefined = undefined;
 
+  const chapterNavigation = (direction: 'prev' | 'next') => {
+    setCssVariable('viewer-margin-top', '200svh');
+    // setCssVariable('overflow-x', 'hidden');
+    leftThreshold = 0;
+    rightThreshold = 0;
+    setCssVariable('flow-left-threshold', `${leftThreshold}`);
+    setCssVariable('flow-right-threshold', `${rightThreshold}`);
+
+    if (direction === 'prev') {
+      waitForRender(goToPreviousContent, 1);
+    }
+
+    if (direction === 'next') {
+      waitForRender(goToNextContent, 1);
+    }
+
+    wasNotSmooth = false;
+  };
+
+  const checkNavigation = () => {
+    if (!pointers.size) {
+      if (leftThreshold === 100) {
+        chapterNavigation('prev');
+      }
+      if (rightThreshold === 100) {
+        chapterNavigation('next');
+      }
+    }
+  };
+
   const handleScrollEnd = () => {
     if (!pointers.size && !handledScrollEnd) {
-      console.log('scrollend');
+      handledScrollEnd = true;
+      checkNavigation();
       const contentSlug = state.contentBySnap.get(state.wrapper.scrollLeft);
       if (contentSlug) {
         updateState({
           contentSlug,
         });
       }
-      handledScrollEnd = true;
     }
   };
 
@@ -68,71 +99,38 @@ const setupEvents = () => {
     setCssVariable('flow-left-threshold', `${leftThreshold}`);
     setCssVariable('flow-right-threshold', `${rightThreshold}`);
 
-    if (leftThreshold >= 100 || rightThreshold >= 100) {
+    if (leftThreshold === 100 || rightThreshold === 100) {
+      wasNotSmooth = true;
       setCssVariable('scroll-behavior', 'auto');
       setCssVariable('scroll-snap-type', 'none');
-    } else {
+    } else if (wasNotSmooth) {
+      wasNotSmooth = false;
       setCssVariable('scroll-behavior', 'smooth');
       setCssVariable('scroll-snap-type', 'x mandatory');
     }
   };
 
-  const chapterNavigation = (direction: 'prev' | 'next') => {
-    leftThreshold = 0;
-    rightThreshold = 0;
-    setCssVariable('viewer-margin-top', '200svh');
-    setCssVariable('flow-left-threshold', `${leftThreshold}`);
-    setCssVariable('flow-right-threshold', `${rightThreshold}`);
-
-    waitForRender(() => {
-      if (direction === 'prev') {
-        state.wrapper.scrollTo({
-          left: state.firstSnap,
-          behavior: 'instant',
-        });
-        waitForRender(goToPreviousContent);
-      }
-
-      if (direction === 'next') {
-        state.wrapper.scrollTo({
-          left: state.lastSnap,
-          behavior: 'instant',
-        });
-        waitForRender(goToNextContent);
-      }
-    });
+  const handleTouchEnd = () => {
+    checkNavigation();
   };
 
-  const handleTouchEnd = (event: TouchEvent) => {
-    for (let i = 0, l = event.changedTouches.length; i < l; i++) {
-      const touch = event.changedTouches[i];
-      if (touch) {
-        pointers.delete(touch.identifier);
-      }
-    }
-    if (!pointers.size) {
-      if (leftThreshold >= 100) {
-        chapterNavigation('prev');
-      }
-      if (rightThreshold >= 100) {
-        chapterNavigation('next');
-      }
-    }
-  };
-
-  const handleTouchStart = (event: TouchEvent) => {
-    for (let i = 0, l = event.changedTouches.length; i < l; i++) {
-      const touch = event.changedTouches[i];
-      if (touch) {
-        pointers.add(touch.identifier);
-      }
-    }
+  const handlePointerDown = (event: PointerEvent) => {
+    pointers.add(event.pointerId);
+    wasNotSmooth = false;
     handledScrollEnd = false;
+  };
+
+  const handlePointerUp = (event: PointerEvent) => {
+    pointers.delete(event.pointerId);
   };
 
   state.wrapper.addEventListener('scroll', handleScroll);
   state.viewer.addEventListener('touchend', handleTouchEnd);
-  state.viewer.addEventListener('touchstart', handleTouchStart);
+  // state.viewer.addEventListener('touchstart', handleTouchStart);
+
+  state.viewer.addEventListener('pointerdown', handlePointerDown);
+  state.viewer.addEventListener('pointerup', handlePointerUp);
+  state.viewer.addEventListener('pointercancel', handlePointerUp);
 };
 
 export default setupEvents;

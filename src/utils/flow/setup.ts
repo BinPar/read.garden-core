@@ -72,17 +72,11 @@ export const setupSnaps = () => {
     return;
   }
 
-  const chapterEnd = state.wrapper.querySelector('#chapter-end');
-
-  if (!chapterEnd) {
-    return;
-  }
-
   const totalColumnWidth = state.columnWidth + state.columnGap;
   const wrapperLeft = state.wrapper.getBoundingClientRect().left;
   const wrapperScrollLeft = state.wrapper.scrollLeft;
   const scale = state.readMode ? 1 : config.uiModeScale;
-  const chapterEndLeft = chapterEnd.getBoundingClientRect().left;
+  const chapterEndLeft = state.chapterEnd.getBoundingClientRect().left;
 
   const maxLeft =
     Math.floor(
@@ -123,40 +117,39 @@ export const setupSnaps = () => {
   };
 
   const lefts = Array.from(snapByLeft.keys());
-  let lastLabel = '';
   const labels = Array.from(
     state.content.querySelectorAll<HTMLSpanElement>('[data-page]'),
   );
-  let lastLabelSnap = 0;
+  let lastLabel = '';
+
+  let currentLeft = lefts.shift();
 
   for (let i = 0, l = labels.length; i < l; i++) {
     const label = labels[i];
-    if (label) {
+    if (label && currentLeft) {
       const page = label.dataset.page ?? '';
+      const labelRectLeft = label.getBoundingClientRect().left;
+
       const labelLeft =
-        (label.getBoundingClientRect().left - wrapperLeft) / scale +
+        (labelRectLeft - wrapperLeft) / scale +
         totalColumnWidth +
         Math.max(wrapperScrollLeft - totalColumnWidth, 0);
-      const snapLeft = lefts.find((snapLeft) => snapLeft < labelLeft);
-      if (snapLeft) {
-        snapByContent.set(page, snapLeft);
-        const snapIndex = lefts.indexOf(snapLeft);
-        if (snapIndex !== -1) {
-          if (snapIndex !== 0) {
-            for (let j = 0; j < snapIndex; j++) {
-              const missingLeft = lefts[j];
-              if (missingLeft) {
-                addLabel(lastLabel, missingLeft);
-              }
-            }
-          }
-          addLabel(page, snapLeft);
-          lefts.splice(0, snapIndex + 1);
-        }
-        lastLabelSnap = snapLeft;
-      } else if (lastLabelSnap) {
-        snapByContent.set(page, lastLabelSnap);
+      const labelSnap =
+        Math.round(labelLeft / totalColumnWidth) * totalColumnWidth;
+      snapByContent.set(page, currentLeft);
+
+      while (currentLeft && currentLeft < labelSnap) {
+        addLabel(lastLabel, currentLeft);
+        currentLeft = lefts.shift();
       }
+
+      if (currentLeft) {
+        do {
+          addLabel(page, currentLeft);
+          currentLeft = lefts.shift();
+        } while (currentLeft && currentLeft < labelSnap);
+      }
+
       lastLabel = page;
     }
   }
@@ -174,40 +167,46 @@ export const setupSnaps = () => {
     ? snapByContent.get(state.previousContent)
     : null;
 
+  const contentSlug = state.goToEnd
+    ? lastLabel
+    : (state.previousContent ?? state.contentSlug);
+
+  const scrollLeft = state.goToEnd
+    ? lastSnap
+    : (previousContent ?? totalColumnWidth);
+
   updateState(
     {
       firstSnap: totalColumnWidth,
       lastSnap,
       snapByContent,
       contentBySnap,
-      contentSlug: state.goToEnd
-        ? lastLabel
-        : (state.previousContent ?? state.contentSlug),
-    },
-    true,
-  );
-
-  state.wrapper.scrollTo({
-    left: state.goToEnd ? lastSnap : (previousContent ?? totalColumnWidth),
-    behavior: 'instant',
-  });
-
-  updateState(
-    {
+      contentSlug,
       goToEnd: false,
       previousContent: null,
     },
     true,
   );
 
+  setCssVariable('overflow-x', 'hidden');
+  setCssVariable('scroll-behavior', 'auto');
+  setCssVariable('scroll-snap-type', 'none');
+
   window.requestAnimationFrame(() => {
-    setCssVariable('viewer-margin-top', '0');
-    updateProgress();
+    state.wrapper.scrollLeft = scrollLeft;
+    window.requestAnimationFrame(() => {
+      setCssVariable('viewer-margin-top', '0');
+      window.requestAnimationFrame(() => {
+        setCssVariable('overflow-x', 'auto');
+        setCssVariable('scroll-behavior', 'smooth');
+        setCssVariable('scroll-snap-type', 'x mandatory');
+        updateProgress();
+      });
+    });
   });
 };
 
 export const flowSetup = () => {
-  console.log('Flow setup');
   window.requestAnimationFrame(() => {
     updateColumnNumber();
     window.requestAnimationFrame(() => {
@@ -223,12 +222,9 @@ const setup = (state = getState()) => {
 
   // TODO: what if fontsStyles is null?
   if (fontsStyles) {
-    // TODO: store fontStyles element
-    // TODO: move to a method so it can be called when changing font family
     const config = getConfig();
     if (config.layout === 'flow') {
       const onFinish = () => {
-        console.log(`Finish flow init`);
         waitForRender(() => {
           updateState((current) => {
             if (current.coreCssLoaded && current.contentCssLoaded) {

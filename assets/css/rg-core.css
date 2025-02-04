@@ -110,6 +110,7 @@ body {
 }
 
 .flow.ui-mode #wrapper {
+  --ui-top: calc(var(--vertical-padding-corrector) * 0.5);
   transform: scale(var(--ui-scale, 1))
     translate3d(var(--ui-left, 0), var(--ui-top, 0), 0);
 }
@@ -125,10 +126,6 @@ body {
   display: none;
 }
 
-.flow.ui-mode #wrapper {
-  --ui-top: calc(var(--vertical-padding-corrector) * 0.5);
-}
-
 .flow #wrapper {
   height: calc(100% + 100px);
   pointer-events: var(--pointer-events, auto);
@@ -142,7 +139,7 @@ body {
   column-gap: var(--column-gap);
   column-width: var(--column-width);
   overflow-y: hidden;
-  overflow-x: auto;
+  overflow-x: var(--overflow-x, auto);
   touch-action: pan-x;
   scroll-snap-type: var(--scroll-snap-type, x mandatory);
   scroll-behavior: var(--scroll-behavior, smooth);
@@ -171,7 +168,7 @@ body {
 .flow #content > div:first-child {
   font-size: var(--font-size);
   font-family: var(--font-family);
-  text-align: justify;
+  text-align: var(--text-align);
 }
 
 #content img {

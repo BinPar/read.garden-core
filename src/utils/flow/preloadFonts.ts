@@ -1,4 +1,5 @@
 import genericCatch from '@/tools/genericCatch';
+import requestIdleCallback from '@/utils/requestIdleCallback';
 import { getState } from '@/utils/state';
 
 const preloadFonts = (fontFamily?: string, callback?: () => void) => {
@@ -39,7 +40,7 @@ const preloadFonts = (fontFamily?: string, callback?: () => void) => {
 
   console.log(`Preloading ${fontsUrls.length} fonts for ${font}`);
 
-  window.requestIdleCallback(() => {
+  requestIdleCallback(() => {
     Promise.all(
       fontsUrls.map(
         (fontUrl) =>
@@ -51,7 +52,7 @@ const preloadFonts = (fontFamily?: string, callback?: () => void) => {
             link.href = fontUrl;
             link.as = 'font';
             link.crossOrigin = 'anonymous';
-            window.requestIdleCallback(() => {
+            requestIdleCallback(() => {
               state.doc.head.appendChild(link);
             });
           }),
@@ -62,7 +63,9 @@ const preloadFonts = (fontFamily?: string, callback?: () => void) => {
         if (callback) {
           callback();
         } else {
-          preloadFonts();
+          requestIdleCallback(() => {
+            preloadFonts();
+          });
         }
       })
       .catch(genericCatch('Exception while preloading fonts'));

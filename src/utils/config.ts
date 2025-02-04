@@ -18,6 +18,7 @@ export const init = (initialOptions: Options) => {
     eventHandler: initialOptions.eventHandler,
     slug: initialOptions.slug,
     productSlug: initialOptions.productSlug,
+    lang: initialOptions.lang,
     cssHref: initialOptions.cssHref,
     padding: initialOptions.options.padding ?? defaultCommonConfig.padding,
     readModeMargin:

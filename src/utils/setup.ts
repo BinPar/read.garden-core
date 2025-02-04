@@ -16,6 +16,7 @@ import waitForRender from '@/utils/waitForRender';
 import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
 import dispatch from '@/utils/dispatch';
 import updateProgress from '@/utils/updateProgress';
+import { defaultCommonConfig } from '@/utils/defaults';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -33,6 +34,11 @@ const setup = (initialOptions: Options) => {
   if (config.layout === 'fixed' && config.paginated) {
     domElements.container.classList.add('paginated');
   }
+
+  domElements.doc.documentElement.setAttribute(
+    'lang',
+    config.lang ?? defaultCommonConfig.lang,
+  );
 
   setupCssVars();
   setupDomEvents();
@@ -75,7 +81,6 @@ const setup = (initialOptions: Options) => {
             }
           } else {
             if (state.layout === 'flow') {
-              console.log('setup');
               flowInit();
             }
             if (state.layout === 'fixed') {
@@ -142,13 +147,11 @@ const setup = (initialOptions: Options) => {
     render(initialOptions.ui.buttons, state);
   }
 
-  addPropertyChangeListener('contentSlug', ({ newValue }) => {
-    console.log({ newValue });
+  addPropertyChangeListener('contentSlug', () => {
     updateProgress();
   });
 
   addPropertyChangeListener('contentOrder', ({ oldValue, newValue }) => {
-    console.log('contentOrder changed');
     state.highlightsLayers.set(
       oldValue,
       state.highlights.cloneNode(true) as HTMLDivElement,
