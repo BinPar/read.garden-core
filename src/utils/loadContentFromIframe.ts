@@ -12,6 +12,8 @@ const loadContentFromIframe = (
       console.log('Using iframe');
       const state = getState();
       const iframe = state.doc.createElement('iframe');
+      iframe.setAttribute('crossOrigin', 'anonymous');
+      iframe.referrerPolicy = 'no-referrer';
       iframe.onload = () => {
         window.requestAnimationFrame(() => {
           let html = iframe.contentDocument?.body.innerHTML ?? '';
@@ -31,14 +33,6 @@ const loadContentFromIframe = (
               }
             }
           }
-          setTimeout(() => {
-            console.log(`Iframe timeout for url ${url}`);
-            console.log(
-              !!iframe.contentDocument,
-              !!iframe.contentDocument?.body,
-              iframe.contentDocument?.body.innerHTML,
-            );
-          }, 1000);
           resolve({
             html,
             images: withoutImages
