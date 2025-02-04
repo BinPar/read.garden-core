@@ -15,6 +15,12 @@ const loadContentFromIframe = (
       iframe.onload = () => {
         window.requestAnimationFrame(() => {
           let html = iframe.contentDocument?.body.innerHTML ?? '';
+          console.log(`Iframe onload for url ${url}`);
+          console.log(
+            !!iframe.contentDocument,
+            !!iframe.contentDocument?.body,
+            iframe.contentDocument?.body.innerHTML,
+          );
           if (replacements.length) {
             for (let i = 0, l = replacements.length; i < l; i++) {
               const replacement = replacements[i];
@@ -25,6 +31,14 @@ const loadContentFromIframe = (
               }
             }
           }
+          setTimeout(() => {
+            console.log(`Iframe timeout for url ${url}`);
+            console.log(
+              !!iframe.contentDocument,
+              !!iframe.contentDocument?.body,
+              iframe.contentDocument?.body.innerHTML,
+            );
+          }, 1000);
           resolve({
             html,
             images: withoutImages
