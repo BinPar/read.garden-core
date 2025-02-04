@@ -92,10 +92,12 @@ const preloadInBackground = () => {
             `Loaded from iframe content ${content.order} html: ${html}`,
           );
           state.loadingContents.delete(content.order);
-          content.html = html;
-          state.pendingContents.delete(content.order);
-          preloadInBackground();
-          preloadImages(images);
+          if (html) {
+            content.html = html;
+            state.pendingContents.delete(content.order);
+            preloadInBackground();
+            preloadImages(images);
+          }
         })
         .catch(
           genericCatch('Exception loading preloading content from iframe'),

@@ -15,34 +15,28 @@ const loadContentFromIframe = (
       iframe.setAttribute('crossOrigin', 'anonymous');
       iframe.referrerPolicy = 'no-referrer';
       iframe.onload = () => {
-        window.requestAnimationFrame(() => {
-          let html = iframe.contentDocument?.body.innerHTML ?? '';
-          console.log(`Iframe onload for url ${url}`);
-          console.log(
-            !!iframe.contentDocument,
-            !!iframe.contentDocument?.body,
-            iframe.contentDocument?.body.innerHTML,
-          );
-          if (replacements.length) {
-            for (let i = 0, l = replacements.length; i < l; i++) {
-              const replacement = replacements[i];
-              if (replacement) {
-                const [replaceThis, forThis] = replacement;
-                console.log(`Replacing ${replaceThis} with ${forThis}`);
-                html = html.split(replaceThis).join(forThis);
-              }
+        let html =
+          (iframe.contentDocument ?? iframe.contentWindow?.document)?.body
+            .innerHTML ?? '';
+        console.log(`Loaded iframe from ${url} with html: ${!!html}`);
+        if (replacements.length) {
+          for (let i = 0, l = replacements.length; i < l; i++) {
+            const replacement = replacements[i];
+            if (replacement) {
+              const [replaceThis, forThis] = replacement;
+              html = html.split(replaceThis).join(forThis);
             }
           }
-          resolve({
-            html,
-            images: withoutImages
-              ? []
-              : Array.from(html.matchAll(/<img[^>]+src="([^">]+)"/g))
-                  .map((img) => img[1])
-                  .filter(nonNullable),
-          });
-          iframe.remove();
+        }
+        resolve({
+          html,
+          images: withoutImages
+            ? []
+            : Array.from(html.matchAll(/<img[^>]+src="([^">]+)"/g))
+                .map((img) => img[1])
+                .filter(nonNullable),
         });
+        // iframe.remove();
       };
       iframe.onerror = reject;
       state.preload.appendChild(iframe);
