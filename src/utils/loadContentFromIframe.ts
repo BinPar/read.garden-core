@@ -14,30 +14,32 @@ const loadContentFromIframe = (
       const iframe = state.doc.createElement('iframe');
       iframe.setAttribute('crossOrigin', 'anonymous');
       iframe.referrerPolicy = 'no-referrer';
-      iframe.onload = () => {
+      iframe.addEventListener('load', () => {
         let html =
           (iframe.contentDocument ?? iframe.contentWindow?.document)?.body
             .innerHTML ?? '';
         console.log(`Loaded iframe from ${url} with html: ${!!html}`);
-        if (replacements.length) {
-          for (let i = 0, l = replacements.length; i < l; i++) {
-            const replacement = replacements[i];
-            if (replacement) {
-              const [replaceThis, forThis] = replacement;
-              html = html.split(replaceThis).join(forThis);
+        if (html) {
+          if (replacements.length) {
+            for (let i = 0, l = replacements.length; i < l; i++) {
+              const replacement = replacements[i];
+              if (replacement) {
+                const [replaceThis, forThis] = replacement;
+                html = html.split(replaceThis).join(forThis);
+              }
             }
           }
+          resolve({
+            html,
+            images: withoutImages
+              ? []
+              : Array.from(html.matchAll(/<img[^>]+src="([^">]+)"/g))
+                  .map((img) => img[1])
+                  .filter(nonNullable),
+          });
+          // iframe.remove();
         }
-        resolve({
-          html,
-          images: withoutImages
-            ? []
-            : Array.from(html.matchAll(/<img[^>]+src="([^">]+)"/g))
-                .map((img) => img[1])
-                .filter(nonNullable),
-        });
-        // iframe.remove();
-      };
+      });
       iframe.onerror = reject;
       state.preload.appendChild(iframe);
       iframe.src = url;
