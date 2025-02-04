@@ -1,3 +1,4 @@
+import { getConfig } from '@/utils/config';
 import loadContent from '@/utils/loadContent';
 import { getState } from '@/utils/state';
 
@@ -8,7 +9,17 @@ const loadContentBySlug = async (contentSlug: string) => {
     throw new Error('Missing contents by slug map');
   }
 
-  const content = state.contentsBySlug.get(contentSlug);
+  let content = state.contentsBySlug.get(contentSlug);
+
+  if (!content) {
+    console.warn(
+      `No content found for content slug: ${contentSlug}, trying to use initialContentSlug`,
+    );
+    const config = getConfig();
+    if (config.jsonData?.initialContentSlug) {
+      content = state.contentsBySlug.get(config.jsonData.initialContentSlug);
+    }
+  }
 
   if (content) {
     await loadContent(content);
