@@ -39,7 +39,9 @@ const loadContentFromIframe = (
                   .map((img) => img[1])
                   .filter(nonNullable),
           });
-          // iframe.remove();
+          setTimeout(() => {
+            iframe.remove();
+          }, 1000);
         }
       };
       iframe.onerror = reject;
