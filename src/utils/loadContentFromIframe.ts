@@ -12,9 +12,11 @@ const loadContentFromIframe = (
       console.log(`Using iframe for ${url}`);
       const state = getState();
       const iframe = state.doc.createElement('iframe');
+      state.preload.appendChild(iframe);
       iframe.setAttribute('crossOrigin', 'anonymous');
       iframe.referrerPolicy = 'no-referrer';
-      iframe.addEventListener('load', () => {
+      iframe.src = url;
+      iframe.onload = () => {
         let html =
           (iframe.contentDocument ?? iframe.contentWindow?.document)?.body
             .innerHTML ?? '';
@@ -39,10 +41,8 @@ const loadContentFromIframe = (
           });
           // iframe.remove();
         }
-      });
+      };
       iframe.onerror = reject;
-      state.preload.appendChild(iframe);
-      iframe.src = url;
     } catch (ex) {
       reject(ex as Error);
     }
