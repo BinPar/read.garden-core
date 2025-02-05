@@ -1,6 +1,8 @@
+import type { FitMode, GapMode } from '@/@types/common';
+
 export interface FixedConfig {
-  fit?: 'width' | 'height' | 'page';
-  gapMode: 'all' | 'pairs' | 'none';
+  fitMode?: FitMode;
+  gapMode: GapMode;
   paginated: boolean;
   gapSize: number;
   maximumZoomValue: number;

@@ -62,7 +62,7 @@ const flowButtons: (Button | Button<'fontFamily'>)[] = [
   },
 ];
 
-const fixedButtons: (Button | Button<'fontFamily'>)[] = [
+const fixedButtons: (Button | Button<'fitMode'>)[] = [
   {
     type: 'zoomIn',
     text: '+',
@@ -70,6 +70,21 @@ const fixedButtons: (Button | Button<'fontFamily'>)[] = [
   {
     type: 'zoomOut',
     text: '-',
+  },
+  {
+    type: 'setFitMode',
+    text: 'Fit W',
+    value: 'width',
+  },
+  {
+    type: 'setFitMode',
+    text: 'Fit H',
+    value: 'height',
+  },
+  {
+    type: 'setFitMode',
+    text: 'Fit P',
+    value: 'page',
   },
 ];
 

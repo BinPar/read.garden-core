@@ -8,6 +8,11 @@ export type ButtonType =
   | 'zoomOut'
   | 'increaseFont'
   | 'decreaseFont'
+  | 'setFitMode'
+  // | 'navigateToPage'
+  // | 'setTextAlign'
+  | 'drawHighlights'
+  | 'removeHighlights'
   | 'setFontFamily';
 
 export interface Button<T extends keyof FullState = never> {

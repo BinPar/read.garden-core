@@ -92,7 +92,7 @@ export const init = (initialOptions: Options) => {
         initialOptions.options.minimumZoomValue ??
         defaultFixedConfig.minimumZoomValue,
       zoom: initialOptions.options.zoom ?? defaultFixedConfig.zoom,
-      fit: initialOptions.options.fit ?? defaultFixedConfig.fit,
+      fitMode: initialOptions.options.fitMode ?? defaultFixedConfig.fitMode,
     };
   }
 };

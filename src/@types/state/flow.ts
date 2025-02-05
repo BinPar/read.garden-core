@@ -1,4 +1,4 @@
-import type { FlowConfig } from '@/@types/config/flow';
+import type { LineHeight, TextAlign } from '@/@types/common';
 
 export interface FlowState {
   layout: 'flow';
@@ -18,8 +18,8 @@ export interface FlowState {
 
   fontFamily: string;
   fontSize: number;
-  lineHeight: FlowConfig['lineHeight'];
-  textAlign: FlowConfig['textAlign'];
+  lineHeight: LineHeight;
+  textAlign: TextAlign;
   fontsUrls: Map<string, string[]>;
 
   snaps: Set<number>;

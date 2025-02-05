@@ -1,7 +1,9 @@
 import goToNextContent from '@/utils/goToNextContent';
 import { getState, updateState } from '@/utils/state';
 
-const moveForward = (state = getState()) => {
+const moveForward = () => {
+  const state = getState();
+  
   if (state.layout === 'flow') {
     updateState(
       {

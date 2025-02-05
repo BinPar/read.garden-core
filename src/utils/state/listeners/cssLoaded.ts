@@ -1,5 +1,5 @@
-import { fixedSetup } from '@/utils/fixed/setup';
-import { flowSetup } from '@/utils/flow/setup';
+import fixedSetup from '@/utils/fixed/setup';
+import flowSetup from '@/utils/flow/setup';
 import { getState } from '@/utils/state';
 import getPropertyValueListener, {
   type StatePropChangeHandler,
@@ -16,7 +16,7 @@ const cssLoaderListener: StatePropChangeHandler<'loadingStyles'> = {
     resolver();
     const state = getState();
     if (state.layout === 'flow') {
-      flowSetup();
+      flowSetup(true);
     }
     if (state.layout === 'fixed') {
       fixedSetup();

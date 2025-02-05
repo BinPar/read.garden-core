@@ -1,4 +1,6 @@
+import type { FitMode } from '@/@types/common';
 import type { UIOptions } from '@/@types/config';
+import setFitMode from '@/utils/fixed/setFitMode';
 import zoomIn from '@/utils/fixed/zoomIn';
 import zoomOut from '@/utils/fixed/zoomOut';
 import decreaseFont from '@/utils/flow/decreaseFont';
@@ -35,7 +37,7 @@ const render = (
           if (event.button === 0) {
             event.preventDefault();
             event.stopPropagation();
-            if (prop) {
+            if (prop && value) {
               updateState({ [prop]: value });
             } else {
               if (type === 'forward') {
@@ -64,6 +66,10 @@ const render = (
 
               if (type === 'decreaseFont') {
                 decreaseFont();
+              }
+
+              if (type === 'setFitMode') {
+                setFitMode(value as FitMode);
               }
             }
           }

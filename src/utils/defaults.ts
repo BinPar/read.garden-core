@@ -32,7 +32,7 @@ export const defaultCommonConfig: Required<
   uiModeScale: 0.75,
 };
 
-export const defaultFlowConfig: Omit<FlowConfig, 'layout'> = {
+export const defaultFlowConfig: Required<Omit<FlowConfig, 'layout'>> = {
   fontSize: 18,
   fontSizeStep: 2,
   minFontSize: 12,
@@ -56,17 +56,19 @@ export const defaultFlowConfig: Omit<FlowConfig, 'layout'> = {
   minColumnGap: 16,
 };
 
-export const defaultFixedConfig: Omit<FixedConfig, 'layout'> = {
+export const defaultFixedConfig: Required<Omit<FixedConfig, 'layout'>> = {
   maximumZoomValue: 4,
   minimumZoomValue: 0.5,
   paginated: true,
-  fit: 'page',
+  fitMode: 'page',
   zoom: 100,
   gapMode: 'pairs',
   gapSize: 16,
 };
 
-export const defaultState: Pick<FullState, 'readMode' | 'progressMode'> = {
+export const defaultState: Required<
+  Pick<FullState, 'readMode' | 'progressMode'>
+> = {
   readMode: true,
   progressMode: 'percent',
 };

@@ -8,6 +8,7 @@ import { notifyPropertyChange } from '@/utils/state/propertyChangeListener';
 import type setupDomElements from '@/utils/setupDomElements';
 import { defaultFixedConfig, defaultState } from '@/utils/defaults';
 import { getConfig } from '@/utils/config';
+import setupFlowElements from '@/utils/flow/setupElements';
 
 let state: State | undefined;
 
@@ -69,36 +70,6 @@ export const init = (
   };
 
   if (initialOptions.jsonData) {
-    if (
-      initialOptions.jsonData.cssURL &&
-      initialOptions.baseUrl
-    ) {
-      const link = initialState.doc.createElement('link');
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = `${initialOptions.baseUrl}/${initialOptions.jsonData.cssURL}`;
-      const onFinish = () => {
-        updateState((current) => {
-          if (
-            current.coreCssLoaded &&
-            (current.layout === 'fixed' || current.fontsCssLoaded)
-          ) {
-            return { contentCssLoaded: true, loadingStyles: false };
-          }
-          return { contentCssLoaded: true };
-        });
-      };
-      link.onload = () => {
-        console.log('content styles loaded');
-        onFinish();
-      };
-      link.onerror = (ex) => {
-        console.error('Error loading content styles', ex);
-        onFinish();
-      };
-      initialState.doc.head.appendChild(link);
-    }
-
     common = {
       ...common,
       ...processJsonData(initialOptions.jsonData),
@@ -110,6 +81,7 @@ export const init = (
       ...common,
       layout: 'fixed',
       zoom: initialOptions.options.zoom ?? defaultFixedConfig.zoom,
+      fitMode: initialOptions.options.fitMode ?? defaultFixedConfig.fitMode,
     };
   }
 
@@ -119,20 +91,11 @@ export const init = (
       throw new Error('Not flow config in flow layout');
     }
 
-    const chapterStart = initialState.doc.createElement('div');
-    chapterStart.id = 'chapter-start';
-    initialState.content.insertAdjacentElement('beforebegin', chapterStart);
-
-    const chapterEnd = initialState.doc.createElement('div');
-    chapterEnd.id = 'chapter-end';
-    initialState.content.insertAdjacentElement('afterend', chapterEnd);
-
-    const snapsContainer = initialState.doc.createElement('div');
-    snapsContainer.id = 'snaps-container';
-    initialState.wrapper.appendChild(snapsContainer);
+    const flowElements = setupFlowElements(initialState);
 
     state = {
       ...common,
+      ...flowElements,
       layout: 'flow',
       fontSize: config.fontSize,
       fontFamily: config.fontFamily,
@@ -146,9 +109,6 @@ export const init = (
       fontsUrls: new Map<string, string[]>(),
       firstSnap: 0,
       lastSnap: 0,
-      chapterStart,
-      chapterEnd,
-      snapsContainer,
       columnWidth: 0,
       columnGap: 0,
       columnCount: 0,

@@ -1,3 +1,5 @@
+import type { LineHeight, TextAlign } from '@/@types/common';
+
 export interface FlowConfig {
   maxColumns: number;
   minCharsPerColumn: number;
@@ -11,8 +13,8 @@ export interface FlowConfig {
   fontSizeStep: number;
   fontFamily: string;
   fontFamilies: string[];
-  lineHeight: 1 | 1.5 | 2;
-  textAlign: 'start' | 'justify' | null;
+  lineHeight: LineHeight;
+  textAlign: TextAlign;
 }
 
 export type RequiredFlowConfig = Required<Pick<FlowConfig, 'fontFamily'>>;

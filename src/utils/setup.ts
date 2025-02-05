@@ -8,11 +8,10 @@ import { getConfig, init as initConfig } from '@/utils/config';
 import setupCssVars from '@/utils/setupCssVars';
 import loadContentBySlug from '@/utils/loadContentBySlug';
 import genericCatch from '@/tools/genericCatch';
-import flowInit, { setupSnaps } from '@/utils/flow/setup';
-import fixedInit, { fixedSetup } from '@/utils/fixed/setup';
+import flowSetup from '@/utils/flow/setup';
+import fixedSetup from '@/utils/fixed/setup';
 import setupFixedEvents from '@/utils/fixed/setupEvents';
 import setupFlowEvents from '@/utils/flow/setupEvents';
-import waitForRender from '@/utils/waitForRender';
 import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
 import dispatch from '@/utils/dispatch';
 import updateProgress from '@/utils/updateProgress';
@@ -27,6 +26,35 @@ const setup = (initialOptions: Options) => {
 
   const config = getConfig();
   const state = getState();
+
+  if (initialOptions.jsonData?.cssURL && initialOptions.baseUrl) {
+    const link = domElements.doc.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = `${initialOptions.baseUrl}/${initialOptions.jsonData.cssURL}`;
+    const onFinish = () => {
+      updateState((current) => {
+        if (
+          current.coreCssLoaded &&
+          (current.layout === 'fixed' || current.fontsCssLoaded)
+        ) {
+          return { contentCssLoaded: true, loadingStyles: false };
+        }
+        return { contentCssLoaded: true };
+      });
+    };
+
+    link.onload = () => {
+      console.log('content styles loaded');
+      onFinish();
+    };
+    link.onerror = (ex) => {
+      console.error('Error loading content styles', ex);
+      onFinish();
+    };
+
+    domElements.doc.head.appendChild(link);
+  }
 
   domElements.container.classList.add(config.layout);
   domElements.container.classList.add(config.direction);
@@ -72,22 +100,15 @@ const setup = (initialOptions: Options) => {
     ) {
       window.requestAnimationFrame(() => {
         const onReady = () => {
-          if (state.initialized) {
-            if (state.layout === 'flow') {
-              waitForRender(setupSnaps, state.isSafari ? 128 : 1);
-            }
-            if (state.layout === 'fixed') {
-              fixedSetup();
-            }
-          } else {
-            if (state.layout === 'flow') {
-              flowInit();
-            }
-            if (state.layout === 'fixed') {
-              fixedInit();
-            }
+          if (state.layout === 'flow') {
+            flowSetup();
           }
+          if (state.layout === 'fixed') {
+            fixedSetup();
+          }
+
           const links = state.content.querySelectorAll('a');
+          // TODO: links events (loaded and clicked)
           links.forEach((link) => {
             link.onclick = (event) => {
               event.preventDefault();
@@ -97,38 +118,39 @@ const setup = (initialOptions: Options) => {
 
         if (state.layout === 'fixed') {
           onReady();
-        } else {
-          const images = Array.from(state.wrapper.querySelectorAll('img'));
-
-          if (images.length) {
-            Promise.all(
-              images.map(
-                (image) =>
-                  new Promise<void>((resolve) => {
-                    const imageReady = () => {
-                      const ratio = image.naturalWidth / image.naturalHeight;
-                      const style = image.getAttribute('style') ?? '';
-                      const rules = style.split(';').map((rule) => rule.trim());
-                      rules.push(`--aspect-ratio: ${ratio}`);
-                      image.setAttribute('style', rules.join(';'));
-                      resolve();
-                    };
-
-                    if (image.complete) {
-                      imageReady();
-                    } else {
-                      image.onload = () => imageReady();
-                      image.onerror = () => imageReady();
-                    }
-                  }),
-              ),
-            )
-              .then(onReady)
-              .catch(genericCatch('Error loading images'));
-          } else {
-            onReady();
-          }
+          return;
         }
+
+        const images = Array.from(state.wrapper.querySelectorAll('img'));
+        if (!images.length) {
+          onReady();
+          return;
+        }
+
+        Promise.all(
+          images.map(
+            (image) =>
+              new Promise<void>((resolve) => {
+                const imageReady = () => {
+                  const ratio = image.naturalWidth / image.naturalHeight;
+                  const style = image.getAttribute('style') ?? '';
+                  const rules = style.split(';').map((rule) => rule.trim());
+                  rules.push(`--aspect-ratio: ${ratio}`);
+                  image.setAttribute('style', rules.join(';'));
+                  resolve();
+                };
+
+                if (image.complete) {
+                  imageReady();
+                } else {
+                  image.onload = () => imageReady();
+                  image.onerror = () => imageReady();
+                }
+              }),
+          ),
+        )
+          .then(onReady)
+          .catch(genericCatch('Error loading images'));
       });
     }
   });

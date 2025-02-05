@@ -1,7 +1,9 @@
 import goToPreviousContent from '@/utils/goToPreviousContent';
 import { getState, updateState } from '@/utils/state';
 
-const moveBackwards = (state = getState()) => {
+const moveBackwards = () => {
+  const state = getState();
+  
   if (state.layout === 'flow') {
     updateState(
       {

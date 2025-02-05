@@ -1,1 +1,0 @@
-export type Fit = 'width' | 'height' | 'page';

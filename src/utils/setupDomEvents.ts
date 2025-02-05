@@ -13,7 +13,10 @@ const rightThreshold = 42.5;
 const leftThreshold = 17.5;
 const progressModes: FullState['progressMode'][] = ['percent', 'label', 'none'];
 
-const setupDomEvents = (state = getState(), config = getConfig()) => {
+const setupDomEvents = () => {
+  const state = getState();
+  const config = getConfig();
+
   const touches = new Set<number>();
   let isLongPress = false;
   let isSelection = false;
