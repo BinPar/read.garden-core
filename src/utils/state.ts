@@ -47,10 +47,12 @@ export const init = (
   const containerHeight = Math.floor(containerRect.height);
 
   const readMode = initialOptions.options.readMode ?? defaultState.readMode;
+  const theme = initialOptions.options.theme ?? defaultState.theme;
 
   let common: CommonState = {
     ...defaultState,
     ...initialState,
+    theme,
     readMode,
     isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
     initialized: false,

@@ -67,8 +67,9 @@ export const defaultFixedConfig: Required<Omit<FixedConfig, 'layout'>> = {
 };
 
 export const defaultState: Required<
-  Pick<FullState, 'readMode' | 'progressMode'>
+  Pick<FullState, 'readMode' | 'progressMode' | 'theme'>
 > = {
+  theme: 'light',
   readMode: true,
   progressMode: 'percent',
 };

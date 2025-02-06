@@ -2,7 +2,7 @@ import { getConfig } from '@/utils/config';
 import loadContent from '@/utils/loadContent';
 import { getState } from '@/utils/state';
 
-const loadContentBySlug = async (contentSlug: string) => {
+const loadContentBySlug = (contentSlug: string) => {
   const state = getState();
 
   if (!state.contentsBySlug) {
@@ -22,7 +22,7 @@ const loadContentBySlug = async (contentSlug: string) => {
   }
 
   if (content) {
-    await loadContent(content);
+    loadContent(content);
   }
 };
 

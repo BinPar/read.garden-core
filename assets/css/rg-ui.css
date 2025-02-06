@@ -21,7 +21,7 @@
 
 #ui-container .button {
   aspect-ratio: 1/1;
-  padding: .125rem;
+  padding: 0.125rem;
   font-size: 0.75rem;
   cursor: pointer;
   background-color: #eee;
@@ -30,4 +30,12 @@
   align-items: center;
   text-align: center;
   hyphens: auto;
+}
+
+#ui-container select {
+  appearance: auto;
+}
+
+.dark #ui-container {
+  filter: invert(1);
 }

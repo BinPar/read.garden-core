@@ -9,12 +9,13 @@ export type ButtonType =
   | 'increaseFont'
   | 'decreaseFont'
   | 'setFitMode'
-  // | 'navigateToPage'
+  | 'navigateToPage'
   | 'setTextAlign'
   | 'setLineHeight'
   | 'drawHighlights'
   | 'removeHighlights'
-  | 'setFontFamily';
+  | 'setFontFamily'
+  | 'setTheme';
 
 export interface Button<T extends keyof FullState = never> {
   type: ButtonType;

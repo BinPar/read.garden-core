@@ -7,18 +7,22 @@ import decreaseFont from '@/utils/flow/decreaseFont';
 import increaseFont from '@/utils/flow/increaseFont';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
+import navigateToContentSlug from '@/utils/navigateToContentSlug';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const render = (
-  buttons: Required<UIOptions>['buttons'],
-  state = getState(),
-) => {
-  if (buttons.length) {
-    const uiContainer = state.doc.createElement('div');
-    uiContainer.id = 'ui-container';
-    for (let i = 0; i < buttons.length; i++) {
-      const button = buttons[i];
+const render = (options?: UIOptions) => {
+  if (!options?.buttons?.length && !options?.pageSelect) {
+    return;
+  }
+
+  const state = getState();
+
+  const uiContainer = state.doc.createElement('div');
+  uiContainer.id = 'ui-container';
+  if (options.buttons) {
+    for (let i = 0; i < options.buttons.length; i++) {
+      const button = options.buttons[i];
       if (button) {
         const domButton = document.createElement('button');
         const type = typeof button === 'string' ? button : button.type;
@@ -77,13 +81,38 @@ const render = (
         uiContainer.append(domButton);
       }
     }
-    state.container.appendChild(uiContainer);
-    uiContainer.addEventListener('pointerdown', (ev) => {
-      console.log('ui pointerdown');
-      ev.stopPropagation();
-    });
-    updateState({ uiContainer });
   }
+
+  if (options.pageSelect && state.contentsBySlug) {
+    const slugs = Array.from(state.contentsBySlug.keys());
+    if (slugs.length) {
+      const select = state.doc.createElement('select');
+      for (let i = 0, l = slugs.length; i < l; i++) {
+        const slug = slugs[i];
+        if (slug) {
+          const label = state.labelBySlug?.get(slug) ?? slug;
+          const option = state.doc.createElement('option');
+          option.value = slug;
+          option.textContent = label;
+          select.appendChild(option);
+        }
+      }
+      select.onchange = () => {
+        const value = select.value;
+        if (value) {
+          navigateToContentSlug(value);
+        }
+      };
+      uiContainer.appendChild(select);
+    }
+  }
+
+  state.container.appendChild(uiContainer);
+  uiContainer.addEventListener('pointerdown', (ev) => {
+    console.log('ui pointerdown');
+    ev.stopPropagation();
+  });
+  updateState({ uiContainer });
 };
 
 export default render;

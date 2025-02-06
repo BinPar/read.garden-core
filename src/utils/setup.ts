@@ -27,6 +27,8 @@ const setup = (initialOptions: Options) => {
   const config = getConfig();
   const state = getState();
 
+  state.container.classList.add(state.theme);
+
   if (initialOptions.jsonData?.cssURL && initialOptions.baseUrl) {
     const link = domElements.doc.createElement('link');
     link.rel = 'stylesheet';
@@ -72,12 +74,10 @@ const setup = (initialOptions: Options) => {
   setupDomEvents();
 
   if (config.layout === 'fixed') {
-    // setupFixedVars();
     setupFixedEvents();
   }
 
   if (config.layout === 'flow') {
-    // setupFlowVars();
     setupFlowEvents();
   }
 
@@ -161,13 +161,8 @@ const setup = (initialOptions: Options) => {
     subtree: true,
   });
 
-  loadContentBySlug(initialContentSlug).catch(
-    genericCatch('Exception loading first content'),
-  );
-
-  if (initialOptions.ui?.buttons?.length) {
-    render(initialOptions.ui.buttons, state);
-  }
+  loadContentBySlug(initialContentSlug);
+  render(initialOptions.ui);
 
   addPropertyChangeListener('contentSlug', () => {
     updateProgress();
@@ -196,6 +191,11 @@ const setup = (initialOptions: Options) => {
 
   addPropertyChangeListener('progressMode', () => {
     updateProgress();
+  });
+
+  addPropertyChangeListener('theme', ({ oldValue, newValue }) => {
+    state.container.classList.remove(oldValue);
+    state.container.classList.add(newValue);
   });
 
   return {

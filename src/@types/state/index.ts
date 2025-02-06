@@ -1,9 +1,10 @@
 import type { CoreContent } from '@/@types';
-import type { Layout } from '@/@types/common';
+import type { Layout, Theme } from '@/@types/common';
 import type { FixedState } from '@/@types/state/fixed';
 import type { FlowState } from '@/@types/state/flow';
 
 export interface CommonState {
+  theme: Theme;
   layout: Layout;
   readMode: boolean;
 
@@ -39,6 +40,7 @@ export interface CommonState {
   orderedContents?: CoreContent[];
   orderedContentSlugs?: string[];
   labelBySlug?: Map<string, string>;
+  slugByLabel?: Map<string, string>;
   progressMode: 'percent' | 'label' | 'none';
 
   selectedText: string;

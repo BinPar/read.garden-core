@@ -39,6 +39,21 @@ const selectionOptions: SelectionOption[] = [
   },
 ];
 
+const commonButtons: Button<'theme'>[] = [
+  {
+    type: 'setTheme',
+    text: 'Light',
+    prop: 'theme',
+    value: 'light',
+  },
+  {
+    type: 'setTheme',
+    text: 'Dark',
+    prop: 'theme',
+    value: 'dark',
+  },
+];
+
 const flowButtons: (
   | Button
   | Button<'fontFamily'>
@@ -65,42 +80,42 @@ const flowButtons: (
     prop: 'fontFamily',
     value: 'Obf-Helvetica',
   },
-  {
-    type: 'setTextAlign',
-    text: 'Bandera',
-    prop: 'textAlign',
-    value: 'start',
-  },
-  {
-    type: 'setTextAlign',
-    text: 'Justificado',
-    prop: 'textAlign',
-    value: 'justify',
-  },
-  {
-    type: 'setTextAlign',
-    text: 'Original',
-    prop: 'textAlign',
-    value: null,
-  },
-  {
-    type: 'setLineHeight',
-    text: 'LH -',
-    prop: 'lineHeight',
-    value: 1.25,
-  },
-  {
-    type: 'setLineHeight',
-    text: 'LH',
-    prop: 'lineHeight',
-    value: 1.5,
-  },
-  {
-    type: 'setLineHeight',
-    text: 'LH +',
-    prop: 'lineHeight',
-    value: 1.75,
-  },
+  // {
+  //   type: 'setTextAlign',
+  //   text: 'Bandera',
+  //   prop: 'textAlign',
+  //   value: 'start',
+  // },
+  // {
+  //   type: 'setTextAlign',
+  //   text: 'Justificado',
+  //   prop: 'textAlign',
+  //   value: 'justify',
+  // },
+  // {
+  //   type: 'setTextAlign',
+  //   text: 'Original',
+  //   prop: 'textAlign',
+  //   value: null,
+  // },
+  // {
+  //   type: 'setLineHeight',
+  //   text: 'LH -',
+  //   prop: 'lineHeight',
+  //   value: 1.25,
+  // },
+  // {
+  //   type: 'setLineHeight',
+  //   text: 'LH',
+  //   prop: 'lineHeight',
+  //   value: 1.5,
+  // },
+  // {
+  //   type: 'setLineHeight',
+  //   text: 'LH +',
+  //   prop: 'lineHeight',
+  //   value: 1.75,
+  // },
 ];
 
 const fixedButtons: (Button | Button<'fitMode'>)[] = [
@@ -164,7 +179,8 @@ window.onload = () => {
                 selectionMenuOptions: selectionOptions,
               },
               ui: {
-                buttons: flowButtons,
+                buttons: [...commonButtons, ...flowButtons],
+                pageSelect: true,
               },
             });
           }
@@ -194,7 +210,8 @@ window.onload = () => {
                 selectionMenuOptions: selectionOptions,
               },
               ui: {
-                buttons: fixedButtons,
+                buttons: [...commonButtons, ...fixedButtons],
+                pageSelect: true,
               },
             });
           }

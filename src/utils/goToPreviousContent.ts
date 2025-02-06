@@ -1,4 +1,3 @@
-import genericCatch from '@/tools/genericCatch';
 import loadContent from '@/utils/loadContent';
 import { getState, updateState } from '@/utils/state';
 
@@ -9,9 +8,7 @@ const goToPreviousContent = () => {
     if (state.layout === 'flow') {
       updateState({ goToEnd: true }, true);
     }
-    loadContent(content.prev).catch(
-      genericCatch('Exception loading previous content (chapter/page)'),
-    );
+    loadContent(content.prev);
   }
 };
 

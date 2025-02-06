@@ -1,4 +1,4 @@
-import type { LineHeight, TextAlign } from '@/@types/common';
+import type { LineHeight, TextAlign, Theme } from '@/@types/common';
 import type { Config } from '@/@types/config';
 import type { Highlight } from '@/@types/selection';
 import type { PropertyChangeHandler, State, StateKey } from '@/@types/state';
@@ -8,6 +8,11 @@ export interface AddOnChangeEvent<T extends StateKey = StateKey> {
   propertyName: T;
   event: PropertyChangeHandler<T>;
   returnValue?: boolean;
+}
+
+export interface SetTheme {
+  type: 'setTheme';
+  theme: Theme;
 }
 
 export interface DrawHighlights {
@@ -55,7 +60,13 @@ export interface SetFontFamily {
   fontFamily: string;
 }
 
+export interface NavigateToPage {
+  type: 'navigateToPage';
+  contentSlug: string;
+}
+
 export type Action =
+  | SetTheme
   | DrawHighlights
   | CreateHighlight
   | MovePrev
@@ -65,7 +76,8 @@ export type Action =
   | DecreaseFontSize
   | SetLineHeight
   | SetTextAlign
-  | SetFontFamily;
+  | SetFontFamily
+  | NavigateToPage;
 
 export type Actions = {
   [K in Action['type']]: (params: {

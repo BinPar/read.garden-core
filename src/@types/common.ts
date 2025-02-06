@@ -1,3 +1,4 @@
+export type Theme = 'light' | 'dark';
 export type Layout = 'fixed' | 'flow';
 export type Direction = 'horizontal' | 'vertical';
 export type GapMode = 'all' | 'pairs' | 'none';

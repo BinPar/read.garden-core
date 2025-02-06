@@ -1,5 +1,5 @@
 import type { Button, ButtonType } from '@/@types/buttons';
-import type { Direction, Layout } from '@/@types/common';
+import type { Direction, Layout, Theme } from '@/@types/common';
 import type { FixedConfig, RequiredFixedConfig } from '@/@types/config/fixed';
 import type { FlowConfig, RequiredFlowConfig } from '@/@types/config/flow';
 import type { EventHandler } from '@/@types/events';
@@ -18,6 +18,7 @@ export interface CommonConfig {
   layout: Layout;
   direction: Direction;
   touch: boolean;
+  theme?: Theme;
   lang?: string;
   cssHref: string;
   padding: MarginOrPadding;
@@ -59,6 +60,7 @@ export type Config = CommonConfig &
 
 export interface UIOptions {
   buttons?: (ButtonType | Button | Button<keyof FullState>)[];
+  pageSelect?: boolean;
 }
 
 export type CommonOptions = Pick<CommonConfig, OptionsMainKeys>;
