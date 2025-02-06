@@ -2,7 +2,7 @@ export interface SelectionOption {
   key: string;
   title: string;
   color: string;
-  type: 'highlight' | 'note';
+  type: 'highlighter' | 'note';
   className?: string;
   style?: string;
   selected?: boolean;

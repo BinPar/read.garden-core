@@ -17,6 +17,7 @@ import dispatch from '@/utils/dispatch';
 import updateProgress from '@/utils/updateProgress';
 import { defaultCommonConfig } from '@/utils/defaults';
 import dispatchEvent from '@/utils/events/dispatchEvent';
+import setupSelectionMenu from '@/utils/setupSelectionMenu';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -173,6 +174,11 @@ const setup = (initialOptions: Options) => {
   });
 
   loadContentBySlug(initialContentSlug);
+
+  if (config.selectionMenuOptions?.length) {
+    setupSelectionMenu(config.selectionMenuOptions);
+  }
+
   render(initialOptions.ui);
 
   addPropertyChangeListener('contentSlug', () => {

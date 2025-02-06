@@ -1,6 +1,7 @@
 import type { ActionHandler, CreateHighlight } from '@/@types/actions';
 import clearSelection from '@/utils/clearSelection';
 import { getConfig } from '@/utils/config';
+import getDomHighlight from '@/utils/getDomHighlight';
 import getScale from '@/utils/getScale';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
 
@@ -26,8 +27,6 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
       }
     }
 
-    // TODO: Deduplicate if fixed?? Is it really needed?
-
     if (rects.length) {
       const scale = getScale();
 
@@ -45,12 +44,14 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
             const width = rect.width / scale;
             const height = rect.height / scale;
 
-            const highlight = state.doc.createElement('div');
-            highlight.setAttribute(
-              'style',
-              `--top: ${top}px; --left: ${left}px; --width: ${width}px; --height: ${height}px; --color: ${action.color}`,
-            );
-            highlight.dataset.key = action.key;
+            const highlight = getDomHighlight({
+              top,
+              left,
+              width,
+              height,
+              color: action.color,
+              key: action.key,
+            });
 
             state.highlights.appendChild(highlight);
           }
@@ -69,12 +70,14 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
             const width = rect.width / scale;
             const height = rect.height / scale;
 
-            const highlight = state.doc.createElement('div');
-            highlight.setAttribute(
-              'style',
-              `--top: ${top}px; --left: ${left}px; --width: ${width}px; --height: ${height}px; --color: ${action.color}`,
-            );
-            highlight.dataset.key = action.key;
+            const highlight = getDomHighlight({
+              top,
+              left,
+              width,
+              height,
+              color: action.color,
+              key: action.key,
+            });
 
             state.highlights.appendChild(highlight);
           }

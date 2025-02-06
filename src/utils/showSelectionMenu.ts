@@ -1,52 +1,13 @@
 import type { SelectionOption } from '@/@types/selection';
-import { getConfig } from '@/utils/config';
-import dispatch from '@/utils/dispatch';
-import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
+import setupSelectionMenu from '@/utils/setupSelectionMenu';
 import { getState } from '@/utils/state';
 
 const showSelectionMenu = (options?: SelectionOption[]) => {
-  const config = getConfig();
-  const menuOptions = options ?? config.selectionMenuOptions;
-  console.log({ menuOptions });
-  
-  if (!menuOptions?.length) {
-    return;
+  if (options?.length) {
+    setupSelectionMenu(options);
   }
 
   const state = getState();
-  state.selectionMenu.innerHTML = '';
-
-  for (let i = 0, l = menuOptions.length; i < l; i++) {
-    const option = menuOptions[i];
-    if (option) {
-      const button = state.doc.createElement('button');
-      button.title = option.title;
-      button.innerText = option.title;
-      if (option.className) {
-        button.classList.add(option.className);
-      }
-      if (option.style) {
-        button.setAttribute('style', option.style);
-      }
-      button.addEventListener('pointerdown', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log('selection button pointerdown');
-        dispatch({
-          type: 'createHighlight',
-          key: option.key,
-          color: option.color,
-          clearSelection: true,
-          hideMenu: true,
-          draw: true,
-        });
-      });
-      button.addEventListener('pointerup', preventAndStopPropagation);
-      button.addEventListener('pointercancel', preventAndStopPropagation);
-      state.selectionMenu.appendChild(button);
-    }
-  }
-
   state.container.classList.add('selection-mode');
 };
 

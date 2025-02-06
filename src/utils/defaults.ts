@@ -18,7 +18,7 @@ export const defaultCommonConfig: Required<
   padding: {
     top: 32,
     right: 0,
-    bottom: 56,
+    bottom: 64,
     left: 0,
   },
   readModeMargin: {

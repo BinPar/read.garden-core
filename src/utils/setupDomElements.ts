@@ -97,7 +97,7 @@ const setupDomElements = (
 
   const selectionMenu = iframeDoc.createElement('div');
   selectionMenu.id = 'selection-menu';
-  viewer.appendChild(selectionMenu);
+  container.appendChild(selectionMenu);
 
   const preload = iframeDoc.createElement('div');
   preload.id = 'preload';
