@@ -6,6 +6,7 @@ import waitForRender from '@/utils/waitForRender';
 import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
 import preloadFonts from '@/utils/flow/preloadFonts';
 import setupSnaps from '@/utils/flow/setupSnaps';
+import removeCssVariable from '@/tools/removeCssVariable';
 
 const charWidthFactor = 1.65;
 
@@ -182,6 +183,26 @@ const setup = (checkColumns = false) => {
       setCssVariable('font-family', newValue);
       flowSetup();
     });
+  });
+
+  addPropertyChangeListener('textAlign', ({ newValue }) => {
+    setCssVariable('viewer-margin-top', '200svh');
+    updateState({ previousContent: state.contentSlug }, true);
+    if (newValue === null) {
+      state.container.classList.remove('with-text-align');
+      removeCssVariable('text-align');
+    } else {
+      state.container.classList.add('with-text-align');
+      setCssVariable('text-align', newValue);
+    }
+    flowSetup();
+  });
+
+  addPropertyChangeListener('lineHeight', ({ newValue }) => {
+    setCssVariable('viewer-margin-top', '200svh');
+    updateState({ previousContent: state.contentSlug }, true);
+    setCssVariable('line-height', `${newValue}`);
+    flowSetup();
   });
 
   if (!state.loadingStyles) {

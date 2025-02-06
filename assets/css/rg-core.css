@@ -168,7 +168,14 @@ body {
 .flow #content > div:first-child {
   font-size: var(--font-size);
   font-family: var(--font-family);
-  text-align: var(--text-align);
+}
+
+.flow #content > div:first-child * {
+  line-height: var(--line-height) !important;
+}
+
+.flow.with-text-align #content > div:first-child * {
+  text-align: var(--text-align) !important;
 }
 
 #content img {
@@ -238,29 +245,6 @@ body {
   font-size: 0;
   user-select: none;
 }
-
-/* #chapter-start::before,
-#chapter-start::after,
-#chapter-end::before,
-#chapter-end::after {
-  content: '';
-  display: block;
-  position: absolute;
-  inset: 0;
-}
-
-#chapter-start::before,
-#chapter-end::before {
-  background-color: green;
-}
-
-#chapter-start::after {
-  background: linear-gradient(
-    to left,
-    rgba(255, 255, 255, 1),
-    rgba(255, 0, 0, 0)
-  );
-} */
 
 #chapter-start {
   break-after: column;

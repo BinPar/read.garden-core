@@ -12,7 +12,7 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
 
   // TODO: Emit event with start and end info for highlight
 
-  if (action.payload.draw) {
+  if (action.draw) {
     // TODO: Extract this to generic "drawHighlights" methods
 
     const rects = new Array<DOMRect>();
@@ -48,9 +48,9 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
             const highlight = state.doc.createElement('div');
             highlight.setAttribute(
               'style',
-              `--top: ${top}px; --left: ${left}px; --width: ${width}px; --height: ${height}px; --color: ${action.payload.color}`,
+              `--top: ${top}px; --left: ${left}px; --width: ${width}px; --height: ${height}px; --color: ${action.color}`,
             );
-            highlight.dataset.key = action.payload.key;
+            highlight.dataset.key = action.key;
 
             state.highlights.appendChild(highlight);
           }
@@ -72,9 +72,9 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
             const highlight = state.doc.createElement('div');
             highlight.setAttribute(
               'style',
-              `--top: ${top}px; --left: ${left}px; --width: ${width}px; --height: ${height}px; --color: ${action.payload.color}`,
+              `--top: ${top}px; --left: ${left}px; --width: ${width}px; --height: ${height}px; --color: ${action.color}`,
             );
-            highlight.dataset.key = action.payload.key;
+            highlight.dataset.key = action.key;
 
             state.highlights.appendChild(highlight);
           }
@@ -83,11 +83,11 @@ const createHighlight: ActionHandler<CreateHighlight> = ({ action, state }) => {
     }
   }
 
-  if (action.payload.clearSelection) {
+  if (action.clearSelection) {
     clearSelection();
   }
 
-  if (action.payload.hideMenu) {
+  if (action.hideMenu) {
     hideSelectionMenu();
   }
 };

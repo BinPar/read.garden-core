@@ -1,7 +1,11 @@
 import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
+import { getState } from '@/utils/state';
 
-const setupCssVars = (config = getConfig()) => {
+const setupCssVars = () => {
+  const state = getState();
+  const config = getConfig();
+
   setCssVariable('viewer-margin-top', '200svh');
   setCssVariable('ui-scale', `${config.uiModeScale}`);
   setCssVariable('ui-left', `${config.uiModeLeft}px`);
@@ -15,7 +19,8 @@ const setupCssVars = (config = getConfig()) => {
     setCssVariable('font-family', config.fontFamily);
     setCssVariable('font-size', `${config.fontSize}px`);
     setCssVariable('line-height', `${config.lineHeight}`);
-    if (config.textAlign) {
+    if (config.textAlign !== null) {
+      state.container.classList.add('with-text-align');
       setCssVariable('text-align', config.textAlign);
     }
   }

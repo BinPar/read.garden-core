@@ -37,7 +37,7 @@ const render = (
           if (event.button === 0) {
             event.preventDefault();
             event.stopPropagation();
-            if (prop && value) {
+            if (prop && value !== undefined) {
               updateState({ [prop]: value });
             } else {
               if (type === 'forward') {

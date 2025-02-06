@@ -39,7 +39,12 @@ const selectionOptions: SelectionOption[] = [
   },
 ];
 
-const flowButtons: (Button | Button<'fontFamily'>)[] = [
+const flowButtons: (
+  | Button
+  | Button<'fontFamily'>
+  | Button<'textAlign'>
+  | Button<'lineHeight'>
+)[] = [
   {
     type: 'increaseFont',
     text: 'A+',
@@ -59,6 +64,42 @@ const flowButtons: (Button | Button<'fontFamily'>)[] = [
     text: 'Helvetica',
     prop: 'fontFamily',
     value: 'Obf-Helvetica',
+  },
+  {
+    type: 'setTextAlign',
+    text: 'Bandera',
+    prop: 'textAlign',
+    value: 'start',
+  },
+  {
+    type: 'setTextAlign',
+    text: 'Justificado',
+    prop: 'textAlign',
+    value: 'justify',
+  },
+  {
+    type: 'setTextAlign',
+    text: 'Original',
+    prop: 'textAlign',
+    value: null,
+  },
+  {
+    type: 'setLineHeight',
+    text: 'LH -',
+    prop: 'lineHeight',
+    value: 1.25,
+  },
+  {
+    type: 'setLineHeight',
+    text: 'LH',
+    prop: 'lineHeight',
+    value: 1.5,
+  },
+  {
+    type: 'setLineHeight',
+    text: 'LH +',
+    prop: 'lineHeight',
+    value: 1.75,
   },
 ];
 

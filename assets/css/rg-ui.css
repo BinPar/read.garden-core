@@ -1,13 +1,15 @@
 #ui-container {
   position: absolute;
   display: flex;
+  justify-content: space-evenly;
+  max-width: calc(100% - 1rem);
+  min-width: calc(100% - 1rem);
   left: 50%;
   top: -20svh;
   transform: translateX(-50%);
   background-color: #0000043f;
   border-radius: 0.5rem;
-  display: flex;
-  padding: 1rem;
+  padding-block: 1rem;
   gap: 1rem;
   z-index: 100;
   transition: top var(--animation-delay);
@@ -18,12 +20,14 @@
 }
 
 #ui-container .button {
-  width: 3rem;
-  height: 3rem;
+  aspect-ratio: 1/1;
+  padding: .125rem;
   font-size: 0.75rem;
   cursor: pointer;
   background-color: #eee;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  hyphens: auto;
 }

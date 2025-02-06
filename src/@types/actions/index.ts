@@ -1,23 +1,27 @@
+import type { LineHeight, TextAlign } from '@/@types/common';
 import type { Config } from '@/@types/config';
 import type { Highlight } from '@/@types/selection';
 import type { PropertyChangeHandler, State, StateKey } from '@/@types/state';
 
+export interface AddOnChangeEvent<T extends StateKey = StateKey> {
+  type: 'addOnChangeEvent';
+  propertyName: T;
+  event: PropertyChangeHandler<T>;
+  returnValue?: boolean;
+}
+
 export interface DrawHighlights {
   type: 'drawHighlights';
-  payload: {
-    highlights: Highlight[];
-  };
+  highlights: Highlight[];
 }
 
 export interface CreateHighlight {
   type: 'createHighlight';
-  payload: {
-    key: string;
-    color: string;
-    draw?: boolean;
-    hideMenu?: boolean;
-    clearSelection?: boolean;
-  };
+  key: string;
+  color: string;
+  draw?: boolean;
+  hideMenu?: boolean;
+  clearSelection?: boolean;
 }
 
 export interface MovePrev {
@@ -28,11 +32,27 @@ export interface MoveNext {
   type: 'moveNext';
 }
 
-export interface AddOnChangeEvent<T extends StateKey = StateKey> {
-  type: 'addOnChangeEvent';
-  propertyName: T;
-  event: PropertyChangeHandler<T>;
-  returnValue?: boolean;
+export interface IncreaseFontSize {
+  type: 'increaseFontSize';
+}
+
+export interface DecreaseFontSize {
+  type: 'decreaseFontSize';
+}
+
+export interface SetLineHeight {
+  type: 'setLineHeight';
+  lineHeight: LineHeight;
+}
+
+export interface SetTextAlign {
+  type: 'setTextAlign';
+  textAlign: TextAlign;
+}
+
+export interface SetFontFamily {
+  type: 'setFontFamily';
+  fontFamily: string;
 }
 
 export type Action =
@@ -40,7 +60,12 @@ export type Action =
   | CreateHighlight
   | MovePrev
   | MoveNext
-  | AddOnChangeEvent;
+  | AddOnChangeEvent
+  | IncreaseFontSize
+  | DecreaseFontSize
+  | SetLineHeight
+  | SetTextAlign
+  | SetFontFamily;
 
 export type Actions = {
   [K in Action['type']]: (params: {

@@ -10,7 +10,8 @@ export type ButtonType =
   | 'decreaseFont'
   | 'setFitMode'
   // | 'navigateToPage'
-  // | 'setTextAlign'
+  | 'setTextAlign'
+  | 'setLineHeight'
   | 'drawHighlights'
   | 'removeHighlights'
   | 'setFontFamily';
