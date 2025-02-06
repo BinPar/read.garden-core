@@ -3,7 +3,6 @@ export interface SelectionOption {
   title: string;
   color: string;
   type: 'highlight' | 'note';
-  // isNote?: boolean; // Moved to "type"
   className?: string;
   style?: string;
   selected?: boolean;

@@ -11,18 +11,26 @@ export interface ContentLoaded {
   contentSlug: string;
 }
 
-export interface LinkLoaded {
-  type: 'onLinkLoaded';
-  link: string;
-  href: string | null;
-  target: string | null;
-}
+// export interface LinkLoaded {
+//   type: 'onLinkLoaded';
+//   link: string;
+//   href: string | null;
+//   target: string | null;
+// }
+
+
 
 export interface OnUserSelect {
   type: 'onUserSelect';
 }
 
-export type CoreEvent = ContentLoaded | LinkLoaded | OnUserSelect;
+export interface OnLinkClick {
+  type: 'onLinkClick';
+  url: string | null;
+  querySelector: string;
+}
+
+export type CoreEvent = ContentLoaded | OnUserSelect | OnLinkClick;
 
 export type EventHandler<T extends CoreEvent = CoreEvent> = (
   event: T & EventWithSlugs,

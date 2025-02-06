@@ -223,6 +223,14 @@ body {
   position: relative;
 }
 
+.dark.fixed #content > div:first-child::before {
+  position: absolute;
+  content: '';
+  inset: 0;
+  border: 1px solid #111;
+  z-index: 90;
+}
+
 #snaps-container {
   position: absolute;
   top: 0;

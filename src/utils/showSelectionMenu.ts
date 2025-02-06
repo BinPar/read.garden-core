@@ -8,6 +8,7 @@ const showSelectionMenu = (options?: SelectionOption[]) => {
   const config = getConfig();
   const menuOptions = options ?? config.selectionMenuOptions;
   console.log({ menuOptions });
+  
   if (!menuOptions?.length) {
     return;
   }
@@ -33,13 +34,11 @@ const showSelectionMenu = (options?: SelectionOption[]) => {
         console.log('selection button pointerdown');
         dispatch({
           type: 'createHighlight',
-          payload: {
-            key: option.key,
-            color: option.color,
-            clearSelection: true,
-            hideMenu: true,
-            draw: true,
-          },
+          key: option.key,
+          color: option.color,
+          clearSelection: true,
+          hideMenu: true,
+          draw: true,
         });
       });
       button.addEventListener('pointerup', preventAndStopPropagation);

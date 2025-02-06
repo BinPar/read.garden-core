@@ -16,6 +16,7 @@ import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener'
 import dispatch from '@/utils/dispatch';
 import updateProgress from '@/utils/updateProgress';
 import { defaultCommonConfig } from '@/utils/defaults';
+import dispatchEvent from '@/utils/events/dispatchEvent';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -107,13 +108,23 @@ const setup = (initialOptions: Options) => {
             fixedSetup();
           }
 
-          const links = state.content.querySelectorAll('a');
+          const links = Array.from(state.content.querySelectorAll('a'));
           // TODO: links events (loaded and clicked)
-          links.forEach((link) => {
-            link.onclick = (event) => {
-              event.preventDefault();
-            };
-          });
+          for (let i = 0, l = links.length; i < l; i++) {
+            const link = links[i];
+            if (link) {
+              const id = `link-${Math.random().toString(16).slice(2)}`;
+              link.dataset.link = id;
+              link.onclick = (event) => {
+                event.preventDefault();
+                dispatchEvent({
+                  type: 'onLinkClick',
+                  url: link.getAttribute('href'),
+                  querySelector: `[data-link="${id}"]`,
+                });
+              };
+            }
+          }
         };
 
         if (state.layout === 'fixed') {
