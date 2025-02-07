@@ -228,6 +228,7 @@ window.onload = () => {
                   top: 32,
                   bottom: 32,
                 },
+                uiModeTop: -40,
                 direction: 'horizontal',
                 initialContentSlug: '15',
                 touch: true,

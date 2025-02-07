@@ -125,9 +125,11 @@ body {
 }
 
 .flow.ui-mode #wrapper {
-  --ui-top: calc(var(--vertical-padding-corrector) * 0.5);
+  --transform-y: calc(
+    calc(var(--vertical-padding-corrector) * 0.5) + var(--ui-top, 0)
+  );
   transform: scale(var(--ui-scale, 1))
-    translate3d(var(--ui-left, 0), var(--ui-top, 0), 0);
+    translate3d(var(--ui-left, 0), var(--transform-y, 0), 0);
 }
 
 .fixed.paginated #wrapper {
