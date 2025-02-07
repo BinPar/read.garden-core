@@ -224,10 +224,6 @@ window.onload = () => {
               jsonData: data,
               eventHandler,
               options: {
-                padding: {
-                  top: 32,
-                  bottom: 32,
-                },
                 uiModeTop: -40,
                 direction: 'horizontal',
                 initialContentSlug: '15',

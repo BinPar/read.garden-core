@@ -53,7 +53,7 @@ export const defaultFlowConfig: Required<Omit<FlowConfig, 'layout'>> = {
   maxCharsPerColumn: 80,
   textAlign: null,
   columnGap: 216,
-  minColumnGap: 16,
+  minColumnGap: 32,
   pageLabelsTransformY: 0,
 };
 
