@@ -59,6 +59,9 @@ export const init = (initialOptions: Options) => {
         initialOptions.options.columnGap ?? defaultFlowConfig.columnGap,
       minColumnGap:
         initialOptions.options.minColumnGap ?? defaultFlowConfig.minColumnGap,
+      pageLabelsTransformY:
+        initialOptions.options.pageLabelsTransformY ??
+        defaultFlowConfig.pageLabelsTransformY,
 
       fontSize: initialOptions.options.fontSize ?? defaultFlowConfig.fontSize,
       fontSizeStep:

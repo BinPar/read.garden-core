@@ -256,14 +256,20 @@ body {
 
 .page-label {
   position: absolute;
-  top: calc(100svh - var(--pages-labels-transform-y, 0));
+  top: 100svh;
   left: 0;
   /* padding-top: var(--vertical-padding-corrector); */
   height: var(--vertical-padding-corrector);
   width: calc(var(--column-width) + var(--column-gap));
   display: flex;
+  transition: top var(--animation-delay);
   justify-content: center;
   align-items: center;
+  will-change: top;
+}
+
+.flow.ui-mode .page-label {
+  top: calc(100svh + var(--pages-labels-transform-y, 0));
 }
 
 #chapter-start,
