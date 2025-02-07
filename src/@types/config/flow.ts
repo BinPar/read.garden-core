@@ -15,6 +15,7 @@ export interface FlowConfig {
   fontFamilies: string[];
   lineHeight: LineHeight;
   textAlign: TextAlign;
+  pageLabelsTransformY?: number;
 }
 
 export type RequiredFlowConfig = Required<Pick<FlowConfig, 'fontFamily'>>;

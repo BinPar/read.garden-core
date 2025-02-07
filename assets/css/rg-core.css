@@ -256,7 +256,7 @@ body {
 
 .page-label {
   position: absolute;
-  top: 100svh;
+  top: calc(100svh - var(--pages-labels-transform-y, 0));
   left: 0;
   /* padding-top: var(--vertical-padding-corrector); */
   height: var(--vertical-padding-corrector);

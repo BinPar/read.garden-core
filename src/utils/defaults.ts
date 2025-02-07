@@ -54,6 +54,7 @@ export const defaultFlowConfig: Required<Omit<FlowConfig, 'layout'>> = {
   textAlign: null,
   columnGap: 216,
   minColumnGap: 16,
+  pageLabelsTransformY: 0,
 };
 
 export const defaultFixedConfig: Required<Omit<FixedConfig, 'layout'>> = {

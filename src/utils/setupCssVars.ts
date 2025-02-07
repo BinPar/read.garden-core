@@ -19,6 +19,11 @@ const setupCssVars = () => {
     setCssVariable('font-family', config.fontFamily);
     setCssVariable('font-size', `${config.fontSize}px`);
     setCssVariable('line-height', `${config.lineHeight}`);
+    setCssVariable(
+      'pages-labels-transform-y',
+      `${config.pageLabelsTransformY}px`,
+    );
+
     if (config.textAlign !== null) {
       state.container.classList.add('with-text-align');
       setCssVariable('text-align', config.textAlign);

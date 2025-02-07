@@ -234,6 +234,7 @@ window.onload = () => {
                 touch: true,
                 fontFamily: 'Obf-Helvetica',
                 selectionMenuOptions: selectionOptions,
+                pageLabelsTransformY: -20,
               },
               ui: {
                 buttons: [...commonButtons, ...flowButtons],

@@ -40,4 +40,5 @@ export type CssVariableKey =
   | 'flow-right-threshold'
   | 'scroll-behavior'
   | 'scroll-snap-type'
-  | 'overflow-x';
+  | 'overflow-x'
+  | 'pages-labels-transform-y';
