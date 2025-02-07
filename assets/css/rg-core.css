@@ -207,7 +207,9 @@ body {
   max-width: 100%;
 }
 
-.dark.flow #content img {
+.dark.flow #content img,
+.dark.flow #content svg,
+.dark.flow #content video {
   filter: invert(1);
 }
 
