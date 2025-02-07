@@ -2,6 +2,7 @@ import genericCatch from '@/tools/genericCatch';
 import { getConfig } from '@/utils/config';
 import loadContentFromIframe from '@/utils/loadContentFromIframe';
 import preloadImages from '@/utils/preloadImages';
+import requestIdleCallback from '@/utils/requestIdleCallback';
 import { getState } from '@/utils/state';
 import {
   getWorker,
@@ -9,7 +10,7 @@ import {
 } from '@/utils/workers/download';
 
 const preloadInBackground = () => {
-  window.requestIdleCallback(() => {
+  requestIdleCallback(() => {
     const state = getState();
     const config = getConfig();
 
