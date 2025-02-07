@@ -5,6 +5,7 @@ import zoomIn from '@/utils/fixed/zoomIn';
 import zoomOut from '@/utils/fixed/zoomOut';
 import decreaseFont from '@/utils/flow/decreaseFont';
 import increaseFont from '@/utils/flow/increaseFont';
+import setFontFamily from '@/utils/flow/setFontFamily';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import navigateToContentSlug from '@/utils/navigateToContentSlug';
@@ -74,6 +75,10 @@ const render = (options?: UIOptions) => {
 
               if (type === 'setFitMode') {
                 setFitMode(value as FitMode);
+              }
+
+              if (type === 'setFontFamily') {
+                setFontFamily(value as string);
               }
             }
           }

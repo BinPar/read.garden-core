@@ -20,11 +20,14 @@ export const init = (initialOptions: Options) => {
     productSlug: initialOptions.productSlug,
     lang: initialOptions.lang,
     cssHref: initialOptions.cssHref,
-    padding: initialOptions.options.padding ?? defaultCommonConfig.padding,
-    readModeMargin:
-      initialOptions.options.readModeMargin ??
-      defaultCommonConfig.readModeMargin,
-
+    padding: {
+      ...defaultCommonConfig.padding,
+      ...initialOptions.options.padding,
+    },
+    readModeMargin: {
+      ...defaultCommonConfig.readModeMargin,
+      ...initialOptions.options.readModeMargin,
+    },
     uiModeScale:
       initialOptions.options.uiModeScale ?? defaultCommonConfig.uiModeScale,
     uiModeTop:

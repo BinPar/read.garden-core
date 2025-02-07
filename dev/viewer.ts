@@ -125,13 +125,11 @@ const flowButtons: (
   {
     type: 'setFontFamily',
     text: 'Roboto',
-    prop: 'fontFamily',
     value: 'Obf-RobotoSlab',
   },
   {
     type: 'setFontFamily',
     text: 'Helvetica',
-    prop: 'fontFamily',
     value: 'Obf-Helvetica',
   },
   // {
@@ -226,6 +224,10 @@ window.onload = () => {
               jsonData: data,
               eventHandler,
               options: {
+                padding: {
+                  top: 32,
+                  bottom: 32,
+                },
                 direction: 'horizontal',
                 initialContentSlug: '15',
                 touch: true,

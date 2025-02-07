@@ -8,9 +8,12 @@ const setFontFamily = (fontFamily: string) => {
     return;
   }
 
-  if (config.fontFamilies.includes(fontFamily)) {
-    updateState({ fontFamily });
+  if (!config.fontFamilies.includes(fontFamily)) {
+    console.warn(`Unknown font family: ${fontFamily}`);
+    return;
   }
+
+  updateState({ fontFamily });
 };
 
 export default setFontFamily;

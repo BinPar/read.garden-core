@@ -21,8 +21,8 @@ export interface CommonConfig {
   theme?: Theme;
   lang?: string;
   cssHref: string;
-  padding: MarginOrPadding;
-  readModeMargin: MarginOrPadding;
+  padding: Partial<MarginOrPadding>;
+  readModeMargin: Partial<MarginOrPadding>;
   uiModeScale: number;
   uiModeTop: number;
   uiModeLeft: number;
