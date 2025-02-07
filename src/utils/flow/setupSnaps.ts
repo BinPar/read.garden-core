@@ -11,8 +11,6 @@ const setupSnaps = () => {
     return;
   }
 
-  console.time('setupSnaps');
-
   const totalColumnWidth = state.columnWidth + state.columnGap;
   const wrapperLeft = state.wrapper.getBoundingClientRect().left;
   const wrapperScrollLeft = state.wrapper.scrollLeft;
@@ -132,8 +130,6 @@ const setupSnaps = () => {
   setCssVariable('overflow-x', 'hidden');
   setCssVariable('scroll-behavior', 'auto');
   setCssVariable('scroll-snap-type', 'none');
-
-  console.timeEnd('setupSnaps');
 
   window.requestAnimationFrame(() => {
     state.wrapper.scrollLeft = scrollLeft;
