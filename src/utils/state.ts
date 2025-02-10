@@ -1,6 +1,7 @@
 import type { Options } from '@/@types/config';
 import type { CommonState, FullState, State } from '@/@types/state';
 import type { StatePropChangeHandler } from '@/utils/state/getPropertyValueListener';
+import type { DrawHighlights } from '@/@types/actions';
 
 import listeners from '@/utils/state/listeners';
 import processJsonData from '@/utils/processJsonData';
@@ -9,7 +10,6 @@ import type setupDomElements from '@/utils/setupDomElements';
 import { defaultFixedConfig, defaultState } from '@/utils/defaults';
 import { getConfig } from '@/utils/config';
 import setupFlowElements from '@/utils/flow/setupElements';
-import { DrawHighlights } from '@/@types/actions';
 
 let state: State | undefined;
 
@@ -61,6 +61,7 @@ export const init = (
     contentCssLoaded: false,
     loadingStyles: true,
     rendering: false,
+    addingNote: false,
     layout,
     containerWidth,
     containerHeight,
@@ -73,6 +74,9 @@ export const init = (
     highlightsLayers: new Map<number, HTMLDivElement>(),
     highlightsByKey: new Map<string, HTMLDivElement[]>(),
     highlightsById: new Map<string | number, HTMLDivElement[]>(),
+    noteHighlightKey: '',
+    noteHighlightRange: null,
+    noteHighlightText: '',
     pendingDrawActions: new Array<DrawHighlights>(),
   };
 

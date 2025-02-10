@@ -1,4 +1,7 @@
 import type { HighlighterType } from '@/@types/common';
+import clearSelection from '@/utils/clearSelection';
+import dispatchEvent from '@/utils/events/dispatchEvent';
+import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import { getState } from '@/utils/state';
 
 const getDomHighlight = ({
@@ -27,7 +30,7 @@ const getDomHighlight = ({
   const highlight = state.doc.createElement('div');
   highlight.setAttribute(
     'style',
-    `--top: ${top}px; --left: ${left}px; --width: ${width}px; --height: ${height}px; --color: ${color}; display: var(--highlighter-${highlighter}-display, block)`,
+    `--top: ${top}px; --left: ${left}px; --width: ${width}px; --height: ${height}px; --highlighter-color: ${color}; display: var(--highlighter-${highlighter}-display, block)`,
   );
   highlight.dataset.key = key;
   highlight.dataset.highlighter = `${highlighter}`;
@@ -38,15 +41,17 @@ const getDomHighlight = ({
   }
 
   highlight.onpointerdown = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log('highlight pointerdown');
+    preventAndStopPropagation(event);
+    clearSelection();
+    if (highlight.dataset.id) {
+      dispatchEvent({
+        type: 'onHighlightClick',
+        id: highlight.dataset.id,
+      });
+    }
   };
 
-  highlight.onpointerup = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-  };
+  highlight.onpointerup = preventAndStopPropagation;
 
   return highlight;
 };

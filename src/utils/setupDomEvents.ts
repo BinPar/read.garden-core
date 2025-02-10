@@ -1,11 +1,9 @@
 import type { FullState } from '@/@types/state';
 import { getConfig } from '@/utils/config';
 import getSelection from '@/utils/getSelection';
-import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
-import showSelectionMenu from '@/utils/showSelectionMenu';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
@@ -71,7 +69,6 @@ const setupDomEvents = () => {
           selectionRanges.push(range.cloneRange());
         }
       }
-      showSelectionMenu();
       updateState({
         selectedText: text,
         selectionRanges,
@@ -80,7 +77,6 @@ const setupDomEvents = () => {
     }
 
     isSelection = false;
-    hideSelectionMenu();
     updateState({
       selectedText: '',
       selectionRanges: null,

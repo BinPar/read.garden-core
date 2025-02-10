@@ -4,6 +4,7 @@ import type { SelectionOption, SelectionRange } from '@/@types/selection';
 import type { Button } from '@/@types/buttons';
 import type { EventHandler } from '@/@types/events';
 import getId from '@/tools/getId';
+import nonNullable from '@/tools/nonNullable';
 
 const selectionOptions: SelectionOption[] = [
   {
@@ -11,29 +12,24 @@ const selectionOptions: SelectionOption[] = [
     type: 'highlighter',
     key: 1,
     title: 'Red',
-    style: '--highlighter-color: #ff0000',
-    selected: true,
   },
   {
     color: '#ff00ff',
     type: 'highlighter',
     key: 2,
     title: 'Pink',
-    style: '--highlighter-color: #ff00ff',
   },
   {
     color: '#00ff00',
     type: 'highlighter',
     key: 3,
     title: 'Green',
-    style: '--highlighter-color: #00ff00',
   },
   {
-    color: '#ff0000',
-    type: 'highlighter',
+    color: 'rgb(82, 82, 200)',
+    type: 'note',
     key: 4,
     title: 'Red',
-    style: '--highlighter-color: #ff0000',
   },
 ];
 
@@ -147,8 +143,67 @@ interface StoredHighlight {
   note?: string;
 }
 
+const getStoredHighlights = (key: string) => {
+  const highlights = window.localStorage.getItem(key);
+  return highlights ? (JSON.parse(highlights) as StoredHighlight[]) : [];
+};
+
 const eventHandler: EventHandler = (event) => {
   console.log('Core event dispatched!', event);
+
+  if (event.type === 'onUserSelect') {
+    window.rgCore.dispatch({
+      type: 'showSelectionMenu',
+      options: selectionOptions,
+    });
+  }
+
+  if (event.type === 'onHighlightClick') {
+    const storedHighlights = getStoredHighlights(
+      `rg_dev_highlights_${event.slug}`,
+    );
+    const highlight = storedHighlights.find((hl) => hl.id === event.id);
+    console.log({ storedHighlights, highlight });
+    if (highlight) {
+      window.rgCore.dispatch({
+        type: 'showSelectionMenu',
+        id: highlight.id,
+        options: selectionOptions.map((option) => ({
+          ...option,
+          selected: option.key === highlight.highlighter,
+        })),
+        deleteOption: true,
+      });
+    }
+  }
+
+  if (event.type === 'onHighlightEdit') {
+    const storeKey = `rg_dev_highlights_${event.slug}`;
+    const storedHighlights = getStoredHighlights(storeKey);
+    window.localStorage.setItem(
+      storeKey,
+      JSON.stringify(
+        storedHighlights.map((hl) => {
+          if (hl.id === event.id) {
+            return {
+              ...hl,
+              highlighter: event.highlighter,
+            };
+          }
+          return hl;
+        }),
+      ),
+    );
+  }
+
+  if (event.type === 'onHighlightRemove') {
+    const storeKey = `rg_dev_highlights_${event.slug}`;
+    const storedHighlights = getStoredHighlights(storeKey);
+    window.localStorage.setItem(
+      storeKey,
+      JSON.stringify(storedHighlights.filter((hl) => hl.id !== event.id)),
+    );
+  }
 
   if (event.type === 'onNewHighlight') {
     const failed = Math.random() > 0.8;
@@ -160,10 +215,7 @@ const eventHandler: EventHandler = (event) => {
       });
     } else {
       const storeKey = `rg_dev_highlights_${event.slug}`;
-      const highlights = window.localStorage.getItem(storeKey);
-      const storedHighlights = highlights
-        ? (JSON.parse(highlights) as StoredHighlight[])
-        : [];
+      const storedHighlights = getStoredHighlights(storeKey);
       const id = getId();
       storedHighlights.push({
         id,
@@ -251,34 +303,32 @@ window.onload = () => {
             });
           }
 
-          const storeKey = `rg_dev_highlights_${data.slug}`;
-          const storedHighlights = window.localStorage.getItem(storeKey);
-          if (storedHighlights) {
-            const highlights = JSON.parse(
-              storedHighlights,
-            ) as StoredHighlight[];
-            console.log({ highlights });
+          const highlights = getStoredHighlights(
+            `rg_dev_highlights_${data.slug}`,
+          );
+          console.log({ highlights });
+          if (highlights.length) {
             window.rgCore.dispatch({
               type: 'drawHighlights',
-              highlights: highlights.map((highlight) => {
-                const highlighter = selectionOptions.find(
-                  (hl) => hl.key === highlight.highlighter,
-                );
-                if (!highlighter) {
-                  throw new Error(
-                    `Highlighter not found for ${highlight.highlighter}`,
+              highlights: highlights
+                .map((highlight) => {
+                  const highlighter = selectionOptions.find(
+                    (hl) => hl.key === highlight.highlighter,
                   );
-                }
-                return {
-                  ...highlight,
-                  id: highlight.id,
-                  color: highlighter.color,
-                  type: highlighter.type,
-                  highlighter: highlighter.key,
-                  range: highlight.range,
-                  note: highlight.note,
-                };
-              }),
+                  if (!highlighter) {
+                    return null;
+                  }
+                  return {
+                    ...highlight,
+                    id: highlight.id,
+                    color: highlighter.color,
+                    type: highlighter.type,
+                    highlighter: highlighter.key,
+                    range: highlight.range,
+                    note: highlight.note,
+                  };
+                })
+                .filter(nonNullable),
             });
           }
         })

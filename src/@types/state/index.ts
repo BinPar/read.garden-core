@@ -19,6 +19,7 @@ export interface CommonState {
   coreCssLoaded: boolean;
   contentCssLoaded: boolean;
   rendering: boolean;
+  addingNote: boolean;
 
   containerWidth: number;
   containerHeight: number;
@@ -34,6 +35,9 @@ export interface CommonState {
   progress: HTMLDivElement;
   preload: HTMLDivElement;
   selectionMenu: HTMLDivElement;
+  noteMenu: HTMLDivElement;
+  notesActions: HTMLDivElement;
+  textarea: HTMLTextAreaElement;
   uiContainer?: HTMLDivElement;
 
   isSafari: boolean;
@@ -50,6 +54,9 @@ export interface CommonState {
 
   selectedText: string;
   selectionRanges: Range[] | null;
+  noteHighlightKey: string;
+  noteHighlightRange: Range | null;
+  noteHighlightText: string;
   highlightsLayers: Map<number, HTMLDivElement>;
   pendingDrawActions: DrawHighlights[];
 }

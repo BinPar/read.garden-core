@@ -6,7 +6,6 @@ export interface SelectionOption {
   color: string;
   type: HighlighterType;
   className?: string;
-  style?: string;
   selected?: boolean;
 }
 

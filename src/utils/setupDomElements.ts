@@ -17,6 +17,9 @@ const setupDomElements = (
   | 'progress'
   | 'preload'
   | 'selectionMenu'
+  | 'noteMenu'
+  | 'textarea'
+  | 'notesActions'
 > => {
   const iframe = document.createElement('iframe');
   iframe.id = 'rg-iframe';
@@ -99,6 +102,15 @@ const setupDomElements = (
   selectionMenu.id = 'selection-menu';
   container.appendChild(selectionMenu);
 
+  const noteMenu = iframeDoc.createElement('div');
+  noteMenu.id = 'note-menu';
+  const textarea = iframeDoc.createElement('textarea');
+  noteMenu.appendChild(textarea);
+  const notesActions = iframeDoc.createElement('div');
+  notesActions.id = 'note-options';
+  noteMenu.appendChild(notesActions);
+  container.appendChild(noteMenu);
+
   const preload = iframeDoc.createElement('div');
   preload.id = 'preload';
   container.appendChild(preload);
@@ -118,6 +130,9 @@ const setupDomElements = (
     content,
     progress,
     selectionMenu,
+    noteMenu,
+    textarea,
+    notesActions,
     preload,
   };
 };

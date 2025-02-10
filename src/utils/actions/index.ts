@@ -13,6 +13,7 @@ import setFontFamily from '@/utils/actions/setFontFamily';
 import setLineHeight from '@/utils/actions/setLineHeight';
 import setTextAlign from '@/utils/actions/setTextAlign';
 import setTheme from '@/utils/actions/setTheme';
+import showSelectionMenu from '@/utils/actions/showSelectionMenu';
 
 const actions: Actions = {
   setTheme,
@@ -28,6 +29,7 @@ const actions: Actions = {
   navigateToPage,
   confirmHighlight,
   cancelHighlight,
+  showSelectionMenu,
 };
 
 export default actions;

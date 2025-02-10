@@ -33,7 +33,7 @@ export interface OnNewHighlight {
 
 export interface OnHighlightClick {
   type: 'onHighlightClick';
-  id: string | number;
+  id: string;
 }
 
 export interface OnHighlightRemove {

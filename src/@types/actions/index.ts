@@ -54,7 +54,6 @@ export interface NavigateToPage {
 export interface ShowSelectionMenu {
   type: 'showSelectionMenu';
   options: SelectionOption[];
-  selectedOption: string | number;
   id?: string | number;
   deleteOption?: boolean | string;
 }
@@ -98,6 +97,7 @@ export type Action =
   | SetTextAlign
   | SetFontFamily
   | NavigateToPage
+  | ShowSelectionMenu
   | ConfirmHighlight
   | CancelHighlight;
 

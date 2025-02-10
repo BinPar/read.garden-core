@@ -35,9 +35,10 @@ export const getHighlights = ({
     for (let i = 0, l = rects.length; i < l; i++) {
       const rect = rects[i];
       if (rect) {
-        const top = (rect.top - contentRect.top - config.padding.top) / scale;
+        const top =
+          (rect.top - contentRect.top - (config.padding.top ?? 0)) / scale;
         const left =
-          (rect.left - contentRect.left - config.padding.left) / scale;
+          (rect.left - contentRect.left - (config.padding.left ?? 0)) / scale;
         const width = rect.width / scale;
         const height = rect.height / scale;
 
@@ -94,10 +95,12 @@ const renderHighlight = ({
   highlighter,
   color,
   type,
+  isTemporaryNote = false,
 }: {
   highlighter: string | number;
   color: string;
   type: HighlighterType;
+  isTemporaryNote?: boolean;
 }) => {
   const state = getState();
 
@@ -133,25 +136,29 @@ const renderHighlight = ({
 
   state.highlightsByKey.set(key, highlights);
 
-  dispatchEvent({
-    type: 'onNewHighlight',
-    highlighter,
-    key,
-    range: {
-      obfuscatedText: state.selectedText,
-      start: {
-        offset: range.startOffset,
-        querySelector: getNodeQuerySelector(range.startContainer),
+  if (!isTemporaryNote) {
+    dispatchEvent({
+      type: 'onNewHighlight',
+      highlighter,
+      key,
+      range: {
+        obfuscatedText: state.selectedText,
+        start: {
+          offset: range.startOffset,
+          querySelector: getNodeQuerySelector(range.startContainer),
+        },
+        end: {
+          offset: range.endOffset,
+          querySelector: getNodeQuerySelector(range.endContainer),
+        },
       },
-      end: {
-        offset: range.endOffset,
-        querySelector: getNodeQuerySelector(range.endContainer),
-      },
-    },
-  });
+    });
+  }
 
   clearSelection();
   hideSelectionMenu();
+
+  return { key, range };
 };
 
 export default renderHighlight;
