@@ -135,6 +135,7 @@ const setupSnaps = () => {
     state.wrapper.scrollLeft = scrollLeft;
     window.requestAnimationFrame(() => {
       setCssVariable('viewer-margin-top', '0');
+      updateState({ rendering: false });
       window.requestAnimationFrame(() => {
         setCssVariable('overflow-x', 'auto');
         setCssVariable('scroll-behavior', 'smooth');

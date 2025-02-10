@@ -1,8 +1,10 @@
+import type { HighlighterType } from '@/@types/common';
+
 export interface SelectionOption {
-  key: string;
+  key: string | number;
   title: string;
   color: string;
-  type: 'highlighter' | 'note';
+  type: HighlighterType;
   className?: string;
   style?: string;
   selected?: boolean;
@@ -20,8 +22,11 @@ export interface SelectionRange {
 }
 
 export interface Highlight {
+  id?: string | number;
   key: string;
+  highlighter: string | number;
+  type: HighlighterType;
   color: string;
   range: SelectionRange;
-  // clear?: boolean;
+  note?: string;
 }

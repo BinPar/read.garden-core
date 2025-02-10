@@ -1,6 +1,6 @@
 import type { SelectionOption } from '@/@types/selection';
-import dispatch from '@/utils/dispatch';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
+import renderHighlight from '@/utils/renderHighlight';
 import { getState } from '@/utils/state';
 
 const setupSelectionMenu = (options: SelectionOption[]) => {
@@ -28,13 +28,10 @@ const setupSelectionMenu = (options: SelectionOption[]) => {
         event.preventDefault();
         event.stopPropagation();
         console.log('selection button pointerdown');
-        dispatch({
-          type: 'createHighlight',
-          key: option.key,
+        renderHighlight({
+          highlighter: option.key,
           color: option.color,
-          clearSelection: true,
-          hideMenu: true,
-          draw: true,
+          type: option.type,
         });
       });
       button.addEventListener('pointerup', preventAndStopPropagation);

@@ -18,6 +18,7 @@ import updateProgress from '@/utils/updateProgress';
 import { defaultCommonConfig } from '@/utils/defaults';
 import dispatchEvent from '@/utils/events/dispatchEvent';
 import setupSelectionMenu from '@/utils/setupSelectionMenu';
+import getId from '@/tools/getId';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -114,7 +115,7 @@ const setup = (initialOptions: Options) => {
           for (let i = 0, l = links.length; i < l; i++) {
             const link = links[i];
             if (link) {
-              const id = `link-${Math.random().toString(16).slice(2)}`;
+              const id = `link-${getId()}`;
               link.dataset.link = id;
               link.onclick = (event) => {
                 event.preventDefault();

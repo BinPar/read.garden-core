@@ -1,3 +1,5 @@
+import type { SelectionRange } from '@/@types/selection';
+
 export interface EventWithSlugs {
   slug: string;
   /**
@@ -11,15 +13,6 @@ export interface ContentLoaded {
   contentSlug: string;
 }
 
-// export interface LinkLoaded {
-//   type: 'onLinkLoaded';
-//   link: string;
-//   href: string | null;
-//   target: string | null;
-// }
-
-
-
 export interface OnUserSelect {
   type: 'onUserSelect';
 }
@@ -30,7 +23,45 @@ export interface OnLinkClick {
   querySelector: string;
 }
 
-export type CoreEvent = ContentLoaded | OnUserSelect | OnLinkClick;
+export interface OnNewHighlight {
+  type: 'onNewHighlight';
+  key: string;
+  highlighter: string | number;
+  range: SelectionRange;
+  note?: string;
+}
+
+export interface OnHighlightClick {
+  type: 'onHighlightClick';
+  id: string | number;
+}
+
+export interface OnHighlightRemove {
+  type: 'onHighlightRemove';
+  id: string | number;
+}
+
+export interface OnHighlightEdit {
+  type: 'onHighlightEdit';
+  id: string | number;
+  highlighter: string | number;
+}
+
+export interface OnNoteEdit {
+  type: 'onNoteEdit';
+  id: string | number;
+  note: string;
+}
+
+export type CoreEvent =
+  | ContentLoaded
+  | OnUserSelect
+  | OnLinkClick
+  | OnNewHighlight
+  | OnHighlightClick
+  | OnHighlightRemove
+  | OnHighlightEdit
+  | OnNoteEdit;
 
 export type EventHandler<T extends CoreEvent = CoreEvent> = (
   event: T & EventWithSlugs,

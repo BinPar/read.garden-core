@@ -21,6 +21,7 @@ export const fixedSetup = () => {
     checkCenter();
     window.requestAnimationFrame(() => {
       setCssVariable('viewer-margin-top', '0');
+      updateState({ rendering: false });
     });
   });
 };

@@ -9,6 +9,7 @@ import type setupDomElements from '@/utils/setupDomElements';
 import { defaultFixedConfig, defaultState } from '@/utils/defaults';
 import { getConfig } from '@/utils/config';
 import setupFlowElements from '@/utils/flow/setupElements';
+import { DrawHighlights } from '@/@types/actions';
 
 let state: State | undefined;
 
@@ -59,6 +60,7 @@ export const init = (
     coreCssLoaded: false,
     contentCssLoaded: false,
     loadingStyles: true,
+    rendering: false,
     layout,
     containerWidth,
     containerHeight,
@@ -69,6 +71,9 @@ export const init = (
     selectedText: '',
     selectionRanges: null,
     highlightsLayers: new Map<number, HTMLDivElement>(),
+    highlightsByKey: new Map<string, HTMLDivElement[]>(),
+    highlightsById: new Map<string | number, HTMLDivElement[]>(),
+    pendingDrawActions: new Array<DrawHighlights>(),
   };
 
   if (initialOptions.jsonData) {

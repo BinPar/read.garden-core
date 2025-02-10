@@ -1,7 +1,8 @@
 import type { Actions } from '@/@types/actions';
 
 import addOnChangeEvent from '@/utils/actions/addOnChangeEvent';
-import createHighlight from '@/utils/actions/createHighlight';
+import cancelHighlight from '@/utils/actions/cancelHighlight';
+import confirmHighlight from '@/utils/actions/confirmHighlight';
 import decreaseFontSize from '@/utils/actions/decreaseFontSize';
 import drawHighlights from '@/utils/actions/drawHighlights';
 import increaseFontSize from '@/utils/actions/increaseFontSize';
@@ -15,7 +16,6 @@ import setTheme from '@/utils/actions/setTheme';
 
 const actions: Actions = {
   setTheme,
-  createHighlight,
   drawHighlights,
   moveNext,
   movePrev,
@@ -26,6 +26,8 @@ const actions: Actions = {
   setTextAlign,
   setLineHeight,
   navigateToPage,
+  confirmHighlight,
+  cancelHighlight,
 };
 
 export default actions;

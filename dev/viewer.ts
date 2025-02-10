@@ -1,14 +1,15 @@
 import genericCatch from '@/tools/genericCatch';
 import type { JsonData } from '@/@types/rg';
-import type { SelectionOption } from '@/@types/selection';
+import type { SelectionOption, SelectionRange } from '@/@types/selection';
 import type { Button } from '@/@types/buttons';
 import type { EventHandler } from '@/@types/events';
+import getId from '@/tools/getId';
 
 const selectionOptions: SelectionOption[] = [
   {
     color: '#ff0000',
     type: 'highlighter',
-    key: 'red',
+    key: 1,
     title: 'Red',
     style: '--highlighter-color: #ff0000',
     selected: true,
@@ -16,80 +17,23 @@ const selectionOptions: SelectionOption[] = [
   {
     color: '#ff00ff',
     type: 'highlighter',
-    key: 'pink',
+    key: 2,
     title: 'Pink',
     style: '--highlighter-color: #ff00ff',
   },
   {
     color: '#00ff00',
     type: 'highlighter',
-    key: 'green',
+    key: 3,
     title: 'Green',
     style: '--highlighter-color: #00ff00',
   },
   {
     color: '#ff0000',
     type: 'highlighter',
-    key: 'red',
+    key: 4,
     title: 'Red',
     style: '--highlighter-color: #ff0000',
-    selected: true,
-  },
-  {
-    color: '#ff00ff',
-    type: 'highlighter',
-    key: 'pink',
-    title: 'Pink',
-    style: '--highlighter-color: #ff00ff',
-  },
-  {
-    color: '#00ff00',
-    type: 'highlighter',
-    key: 'green',
-    title: 'Green',
-    style: '--highlighter-color: #00ff00',
-  },
-  {
-    color: '#00ff00',
-    type: 'highlighter',
-    key: 'green',
-    title: 'Green',
-    style: '--highlighter-color: #00ff00',
-  },
-  {
-    color: '#ff00ff',
-    type: 'highlighter',
-    key: 'pink',
-    title: 'Pink',
-    style: '--highlighter-color: #ff00ff',
-  },
-  {
-    color: '#00ff00',
-    type: 'highlighter',
-    key: 'green',
-    title: 'Green',
-    style: '--highlighter-color: #00ff00',
-  },
-  {
-    color: '#00ff00',
-    type: 'highlighter',
-    key: 'green',
-    title: 'Green',
-    style: '--highlighter-color: #00ff00',
-  },
-  {
-    color: '#0000ff',
-    type: 'note',
-    key: 'notes',
-    title: 'Notes',
-    style: '--highlighter-color: #0000ff',
-  },
-  {
-    color: '#0000ff',
-    type: 'note',
-    key: 'notes',
-    title: 'Notes',
-    style: '--highlighter-color: #0000ff',
   },
 ];
 
@@ -196,8 +140,45 @@ const fixedButtons: (Button | Button<'fitMode'>)[] = [
   },
 ];
 
+interface StoredHighlight {
+  id: string;
+  highlighter: string | number;
+  range: SelectionRange;
+  note?: string;
+}
+
 const eventHandler: EventHandler = (event) => {
   console.log('Core event dispatched!', event);
+
+  if (event.type === 'onNewHighlight') {
+    const failed = Math.random() > 0.8;
+    console.log({ failed });
+    if (failed) {
+      window.rgCore.dispatch({
+        type: 'cancelHighlight',
+        key: event.key,
+      });
+    } else {
+      const storeKey = `rg_dev_highlights_${event.slug}`;
+      const highlights = window.localStorage.getItem(storeKey);
+      const storedHighlights = highlights
+        ? (JSON.parse(highlights) as StoredHighlight[])
+        : [];
+      const id = getId();
+      storedHighlights.push({
+        id,
+        highlighter: event.highlighter,
+        range: event.range,
+        note: event.note,
+      });
+      window.localStorage.setItem(storeKey, JSON.stringify(storedHighlights));
+      window.rgCore.dispatch({
+        type: 'confirmHighlight',
+        id,
+        key: event.key,
+      });
+    }
+  }
 };
 
 window.onload = () => {
@@ -267,6 +248,37 @@ window.onload = () => {
                 buttons: [...commonButtons, ...fixedButtons],
                 pageSelect: true,
               },
+            });
+          }
+
+          const storeKey = `rg_dev_highlights_${data.slug}`;
+          const storedHighlights = window.localStorage.getItem(storeKey);
+          if (storedHighlights) {
+            const highlights = JSON.parse(
+              storedHighlights,
+            ) as StoredHighlight[];
+            console.log({ highlights });
+            window.rgCore.dispatch({
+              type: 'drawHighlights',
+              highlights: highlights.map((highlight) => {
+                const highlighter = selectionOptions.find(
+                  (hl) => hl.key === highlight.highlighter,
+                );
+                if (!highlighter) {
+                  throw new Error(
+                    `Highlighter not found for ${highlight.highlighter}`,
+                  );
+                }
+                return {
+                  ...highlight,
+                  id: highlight.id,
+                  color: highlighter.color,
+                  type: highlighter.type,
+                  highlighter: highlighter.key,
+                  range: highlight.range,
+                  note: highlight.note,
+                };
+              }),
             });
           }
         })

@@ -1,6 +1,6 @@
 import type { LineHeight, TextAlign, Theme } from '@/@types/common';
 import type { Config } from '@/@types/config';
-import type { Highlight } from '@/@types/selection';
+import type { Highlight, SelectionOption } from '@/@types/selection';
 import type { PropertyChangeHandler, State, StateKey } from '@/@types/state';
 
 export interface AddOnChangeEvent<T extends StateKey = StateKey> {
@@ -13,20 +13,6 @@ export interface AddOnChangeEvent<T extends StateKey = StateKey> {
 export interface SetTheme {
   type: 'setTheme';
   theme: Theme;
-}
-
-export interface DrawHighlights {
-  type: 'drawHighlights';
-  highlights: Highlight[];
-}
-
-export interface CreateHighlight {
-  type: 'createHighlight';
-  key: string;
-  color: string;
-  draw?: boolean;
-  hideMenu?: boolean;
-  clearSelection?: boolean;
 }
 
 export interface MovePrev {
@@ -65,10 +51,44 @@ export interface NavigateToPage {
   contentSlug: string;
 }
 
+export interface ShowSelectionMenu {
+  type: 'showSelectionMenu';
+  options: SelectionOption[];
+  selectedOption: string | number;
+  id?: string | number;
+  deleteOption?: boolean | string;
+}
+
+export interface ShowNotesDialog {
+  type: 'showNotesDialog';
+  id: string | number;
+  note: string;
+}
+
+export interface ConfirmHighlight {
+  type: 'confirmHighlight';
+  key: string;
+  id: string | number;
+}
+
+export interface CancelHighlight {
+  type: 'cancelHighlight';
+  key: string;
+}
+
+export interface DrawHighlights {
+  type: 'drawHighlights';
+  highlights: (Omit<Highlight, 'key'> & Required<Pick<Highlight, 'id'>>)[];
+}
+
+export interface RemoveHighlights {
+  type: 'removeHighlights';
+  ids: (string | number)[];
+}
+
 export type Action =
   | SetTheme
   | DrawHighlights
-  | CreateHighlight
   | MovePrev
   | MoveNext
   | AddOnChangeEvent
@@ -77,7 +97,9 @@ export type Action =
   | SetLineHeight
   | SetTextAlign
   | SetFontFamily
-  | NavigateToPage;
+  | NavigateToPage
+  | ConfirmHighlight
+  | CancelHighlight;
 
 export type Actions = {
   [K in Action['type']]: (params: {

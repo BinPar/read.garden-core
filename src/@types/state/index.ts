@@ -1,4 +1,5 @@
 import type { CoreContent } from '@/@types';
+import type { DrawHighlights } from '@/@types/actions';
 import type { Layout, Theme } from '@/@types/common';
 import type { FixedState } from '@/@types/state/fixed';
 import type { FlowState } from '@/@types/state/flow';
@@ -17,6 +18,7 @@ export interface CommonState {
   loadingStyles: boolean;
   coreCssLoaded: boolean;
   contentCssLoaded: boolean;
+  rendering: boolean;
 
   containerWidth: number;
   containerHeight: number;
@@ -43,9 +45,13 @@ export interface CommonState {
   slugByLabel?: Map<string, string>;
   progressMode: 'percent' | 'label' | 'none';
 
+  highlightsByKey: Map<string, HTMLDivElement[]>;
+  highlightsById: Map<string | number, HTMLDivElement[]>;
+
   selectedText: string;
   selectionRanges: Range[] | null;
   highlightsLayers: Map<number, HTMLDivElement>;
+  pendingDrawActions: DrawHighlights[];
 }
 
 export type State = CommonState & (FixedState | FlowState);

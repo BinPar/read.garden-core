@@ -7,3 +7,5 @@ export type FitMode = 'width' | 'height' | 'page' | 'none';
 
 export type TextAlign = 'start' | 'justify' | null;
 export type LineHeight = 1.25 | 1.5 | 1.75;
+
+export type HighlighterType = 'highlighter' | 'note';
