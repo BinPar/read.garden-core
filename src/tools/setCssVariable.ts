@@ -1,4 +1,4 @@
-import type { CssVariableKey } from '@/@types';
+import type { CssVariableKey } from '@/@types/common';
 import { getState } from '@/utils/state';
 
 const setCssVariable = (variable: CssVariableKey, value: string | null) => {

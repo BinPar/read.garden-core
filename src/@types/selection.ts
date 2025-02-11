@@ -29,3 +29,6 @@ export interface Highlight {
   range: SelectionRange;
   note?: string;
 }
+
+export type UserHighlight = Omit<Highlight, 'key'> &
+  Required<Pick<Highlight, 'id'>>;

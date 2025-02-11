@@ -1,4 +1,4 @@
-import type { CoreContent } from '@/@types';
+import type { CoreContent } from '@/@types/common';
 import type { JsonData } from '@/@types/rg';
 
 const processJsonData = (data: JsonData) => {

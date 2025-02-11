@@ -1,8 +1,9 @@
-import type { CoreContent } from '@/@types';
+import type { CoreContent } from '@/@types/common';
 import type { DrawHighlights } from '@/@types/actions';
 import type { Layout, Theme } from '@/@types/common';
 import type { FixedState } from '@/@types/state/fixed';
 import type { FlowState } from '@/@types/state/flow';
+import type { UserHighlight } from '@/@types/selection';
 
 export interface CommonState {
   theme: Theme;
@@ -51,6 +52,7 @@ export interface CommonState {
 
   highlightsByKey: Map<string, HTMLDivElement[]>;
   highlightsById: Map<string | number, HTMLDivElement[]>;
+  userHighlightsById: Map<string | number, UserHighlight>;
 
   selectedText: string;
   selectionRanges: Range[] | null;

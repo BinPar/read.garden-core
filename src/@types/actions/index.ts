@@ -1,6 +1,6 @@
 import type { LineHeight, TextAlign, Theme } from '@/@types/common';
 import type { Config } from '@/@types/config';
-import type { Highlight, SelectionOption } from '@/@types/selection';
+import type { Highlight, SelectionOption, UserHighlight } from '@/@types/selection';
 import type { PropertyChangeHandler, State, StateKey } from '@/@types/state';
 
 export interface AddOnChangeEvent<T extends StateKey = StateKey> {
@@ -77,7 +77,7 @@ export interface CancelHighlight {
 
 export interface DrawHighlights {
   type: 'drawHighlights';
-  highlights: (Omit<Highlight, 'key'> & Required<Pick<Highlight, 'id'>>)[];
+  highlights: UserHighlight[];
 }
 
 export interface RemoveHighlights {

@@ -1,4 +1,4 @@
-import type { CoreContent } from '@/@types';
+import type { CoreContent } from '@/@types/common';
 import genericCatch from '@/tools/genericCatch';
 import { getConfig } from '@/utils/config';
 import downloadHtml from '@/utils/downloadHtml';

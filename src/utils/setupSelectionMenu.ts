@@ -2,7 +2,7 @@ import type { SelectionOption } from '@/@types/selection';
 import dispatchEvent from '@/utils/events/dispatchEvent';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
-import renderHighlight from '@/utils/renderHighlight';
+import renderCurrentHighlight from '@/utils/renderCurrentHighlight';
 import showNoteMenu from '@/utils/showNoteMenu';
 import { getState, updateState } from '@/utils/state';
 
@@ -87,7 +87,7 @@ const setupSelectionMenu = (
           hideSelectionMenu();
         } else {
           if (option.type === 'highlighter') {
-            renderHighlight({
+            renderCurrentHighlight({
               highlighter: option.key,
               color: option.color,
               type: option.type,

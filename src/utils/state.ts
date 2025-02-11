@@ -10,6 +10,7 @@ import type setupDomElements from '@/utils/setupDomElements';
 import { defaultFixedConfig, defaultState } from '@/utils/defaults';
 import { getConfig } from '@/utils/config';
 import setupFlowElements from '@/utils/flow/setupElements';
+import type { UserHighlight } from '@/@types/selection';
 
 let state: State | undefined;
 
@@ -74,6 +75,7 @@ export const init = (
     highlightsLayers: new Map<number, HTMLDivElement>(),
     highlightsByKey: new Map<string, HTMLDivElement[]>(),
     highlightsById: new Map<string | number, HTMLDivElement[]>(),
+    userHighlightsById: new Map<string | number, UserHighlight>(),
     noteHighlightKey: '',
     noteHighlightRange: null,
     noteHighlightText: '',

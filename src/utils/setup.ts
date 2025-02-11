@@ -21,7 +21,7 @@ import setupSelectionMenu from '@/utils/setupSelectionMenu';
 import getId from '@/tools/getId';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import hideMenuNote from '@/utils/hideNoteMenu';
-import renderHighlight from '@/utils/renderHighlight';
+import renderCurrentHighlight from '@/utils/renderCurrentHighlight';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -222,7 +222,7 @@ const setup = (initialOptions: Options) => {
   addPropertyChangeListener('addingNote', ({ newValue }) => {
     if (newValue === true) {
       const { key, range } =
-        renderHighlight({
+        renderCurrentHighlight({
           highlighter: 'note',
           color: '#ffd700b0',
           type: 'note',
