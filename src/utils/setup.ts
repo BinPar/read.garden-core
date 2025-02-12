@@ -218,7 +218,7 @@ const setup = (initialOptions: Options) => {
           highlighter: 'note',
           color: '#ffd700b0',
           type: 'note',
-          isTemporaryNote: true,
+          isTemporary: true,
         }) ?? {};
 
       if (key && range) {

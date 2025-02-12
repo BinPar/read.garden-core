@@ -445,12 +445,12 @@ body {
   background-image: url(../img/delete.svg);
 }
 
-#selection-menu button.highlighter::after {
+#selection-menu button.highlight::after {
   mask-image: url(../img/highlighter.svg);
   -webkit-mask-image: url(../img/highlighter.svg);
 }
 
-#selection-menu button.highlighter.selected::after {
+#selection-menu button.highlight.selected::after {
   mask-image: url(../img/highlighter-selected.svg);
   -webkit-mask-image: url(../img/highlighter-selected.svg);
 }

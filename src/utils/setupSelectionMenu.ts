@@ -71,7 +71,10 @@ const setupSelectionMenu = (
             for (let j = 0, k = highlights.length; j < k; j++) {
               const highlight = highlights[j];
               if (highlight) {
-                highlight.style.setProperty('--highlighter-color', option.color);
+                highlight.style.setProperty(
+                  '--highlighter-color',
+                  option.color,
+                );
                 highlight.style.setProperty(
                   'display',
                   `var(--highlighter-${option.key}-display, block)`,

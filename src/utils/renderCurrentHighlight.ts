@@ -11,12 +11,12 @@ const renderCurrentHighlight = ({
   highlighter,
   color,
   type,
-  isTemporaryNote = false,
+  isTemporary: isTemporaryNote = false,
 }: {
   highlighter: string | number;
   color: string;
   type: HighlighterType;
-  isTemporaryNote?: boolean;
+  isTemporary?: boolean;
 }) => {
   const state = getState();
 
