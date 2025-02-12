@@ -18,6 +18,14 @@ const drawHighlights: ActionHandler<DrawHighlights> = ({ action, state }) => {
     if (highlight) {
       const highlights = renderUserHighlight(highlight);
 
+      const existingDomHighlights = state.domHighlightsById.get(highlight.id);
+
+      if (existingDomHighlights?.length) {
+        for (let j = 0, k = existingDomHighlights.length; j < k; j++) {
+          existingDomHighlights[j]?.remove();
+        }
+      }
+
       if (highlights) {
         state.domHighlightsById.set(highlight.id, highlights);
       }
