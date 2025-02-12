@@ -66,16 +66,16 @@ const setupSelectionMenu = (
         console.log('selection button pointerdown', id);
 
         if (id) {
-          const highlights = state.domHighlightsById.get(id);
-          if (highlights) {
-            for (let j = 0, k = highlights.length; j < k; j++) {
-              const highlight = highlights[j];
-              if (highlight) {
-                highlight.style.setProperty(
+          const domHighlights = state.domHighlightsById.get(id);
+          if (domHighlights) {
+            for (let j = 0, k = domHighlights.length; j < k; j++) {
+              const domHighlight = domHighlights[j];
+              if (domHighlight) {
+                domHighlight.style.setProperty(
                   '--highlighter-color',
                   option.color,
                 );
-                highlight.style.setProperty(
+                domHighlight.style.setProperty(
                   'display',
                   `var(--highlighter-${option.key}-display, block)`,
                 );
