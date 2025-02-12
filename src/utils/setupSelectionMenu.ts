@@ -27,7 +27,7 @@ const setupSelectionMenu = (
         type: 'onHighlightRemove',
         id,
       });
-      const highlights = state.highlightsById.get(id);
+      const highlights = state.domHighlightsById.get(id);
       if (highlights) {
         for (let i = 0, l = highlights.length; i < l; i++) {
           const highlight = highlights[i];
@@ -66,7 +66,7 @@ const setupSelectionMenu = (
         console.log('selection button pointerdown', id);
 
         if (id) {
-          const highlights = state.highlightsById.get(id);
+          const highlights = state.domHighlightsById.get(id);
           if (highlights) {
             for (let j = 0, k = highlights.length; j < k; j++) {
               const highlight = highlights[j];
@@ -86,7 +86,7 @@ const setupSelectionMenu = (
           });
           hideSelectionMenu();
         } else {
-          if (option.type === 'highlighter') {
+          if (option.type === 'highlight') {
             renderCurrentHighlight({
               highlighter: option.key,
               color: option.color,

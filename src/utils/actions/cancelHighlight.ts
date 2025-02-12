@@ -1,7 +1,7 @@
 import type { ActionHandler, CancelHighlight } from '@/@types/actions';
 
 const cancelHighlight: ActionHandler<CancelHighlight> = ({ action, state }) => {
-  const highlights = state.highlightsByKey.get(action.key);
+  const highlights = state.domHighlightsByKey.get(action.key);
 
   if (!highlights) {
     console.error(`No highlights found with key: ${action.key}`);
@@ -15,7 +15,7 @@ const cancelHighlight: ActionHandler<CancelHighlight> = ({ action, state }) => {
     }
   }
 
-  state.highlightsByKey.delete(action.key);
+  state.domHighlightsByKey.delete(action.key);
 };
 
 export default cancelHighlight;

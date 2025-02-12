@@ -50,24 +50,30 @@ const renderCurrentHighlight = ({
     }
   }
 
-  state.highlightsByKey.set(key, highlights);
+  state.domHighlightsByKey.set(key, highlights);
+
+  const highlight = {
+    highlighter,
+    key,
+    range: {
+      obfuscatedText: state.selectedText,
+      start: {
+        offset: range.startOffset,
+        querySelector: getNodeQuerySelector(range.startContainer),
+      },
+      end: {
+        offset: range.endOffset,
+        querySelector: getNodeQuerySelector(range.endContainer),
+      },
+    },
+  };
+
+  state.userHighlightsByKey.set(key, { ...highlight, type, color });
 
   if (!isTemporaryNote) {
     dispatchEvent({
       type: 'onNewHighlight',
-      highlighter,
-      key,
-      range: {
-        obfuscatedText: state.selectedText,
-        start: {
-          offset: range.startOffset,
-          querySelector: getNodeQuerySelector(range.startContainer),
-        },
-        end: {
-          offset: range.endOffset,
-          querySelector: getNodeQuerySelector(range.endContainer),
-        },
-      },
+      ...highlight,
     });
   }
 

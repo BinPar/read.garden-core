@@ -31,7 +31,7 @@ const showNoteMenu = ({
         state.noteHighlightRange &&
         state.noteHighlightText
       ) {
-        const highlights = state.highlightsByKey.get(state.noteHighlightKey);
+        const highlights = state.domHighlightsByKey.get(state.noteHighlightKey);
         if (highlights) {
           for (let i = 0, l = highlights.length; i < l; i++) {
             const highlight = highlights[i];

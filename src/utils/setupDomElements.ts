@@ -88,6 +88,7 @@ const setupDomElements = (
   content.id = 'content';
 
   const highlights = iframeDoc.createElement('div');
+  highlights.id = 'highlights';
 
   if (initialOptions.layout === 'fixed') {
     const contentPlaceholder = iframeDoc.createElement('div');

@@ -3,7 +3,7 @@ import type { DrawHighlights } from '@/@types/actions';
 import type { Layout, Theme } from '@/@types/common';
 import type { FixedState } from '@/@types/state/fixed';
 import type { FlowState } from '@/@types/state/flow';
-import type { UserHighlight } from '@/@types/selection';
+import type { Highlight, UserHighlight } from '@/@types/selection';
 
 export interface CommonState {
   theme: Theme;
@@ -50,8 +50,9 @@ export interface CommonState {
   slugByLabel?: Map<string, string>;
   progressMode: 'percent' | 'label' | 'none';
 
-  highlightsByKey: Map<string, HTMLDivElement[]>;
-  highlightsById: Map<string | number, HTMLDivElement[]>;
+  domHighlightsByKey: Map<string, HTMLDivElement[]>;
+  domHighlightsById: Map<string | number, HTMLDivElement[]>;
+  userHighlightsByKey: Map<string, Highlight>;
   userHighlightsById: Map<string | number, UserHighlight>;
 
   selectedText: string;
@@ -59,7 +60,6 @@ export interface CommonState {
   noteHighlightKey: string;
   noteHighlightRange: Range | null;
   noteHighlightText: string;
-  highlightsLayers: Map<number, HTMLDivElement>;
   pendingDrawActions: DrawHighlights[];
 }
 

@@ -19,7 +19,7 @@ const drawHighlights: ActionHandler<DrawHighlights> = ({ action, state }) => {
       const highlights = renderUserHighlight(highlight);
 
       if (highlights) {
-        state.highlightsById.set(highlight.id, highlights);
+        state.domHighlightsById.set(highlight.id, highlights);
       }
 
       state.userHighlightsById.set(highlight.id, highlight);

@@ -22,6 +22,7 @@ import getId from '@/tools/getId';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import hideMenuNote from '@/utils/hideNoteMenu';
 import renderCurrentHighlight from '@/utils/renderCurrentHighlight';
+import redrawHighlights from '@/utils/redrawHighlights';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -189,25 +190,16 @@ const setup = (initialOptions: Options) => {
     updateProgress();
   });
 
-  addPropertyChangeListener('contentOrder', ({ oldValue, newValue }) => {
-    state.highlightsLayers.set(
-      oldValue,
-      state.highlights.cloneNode(true) as HTMLDivElement,
-    );
-    let highlightsLayer = state.highlightsLayers.get(newValue);
-    if (!highlightsLayer) {
-      highlightsLayer = state.doc.createElement('div');
-      highlightsLayer.id = 'highlights';
-      state.highlightsLayers.set(newValue, highlightsLayer);
-    }
+  addPropertyChangeListener('contentOrder', () => {
+    state.highlights.remove();
+    state.highlights.innerHTML = '';
     if (state.layout === 'fixed') {
-      state.content.appendChild(highlightsLayer);
+      state.content.appendChild(state.highlights);
     }
     if (state.layout === 'flow') {
-      state.highlights.remove();
-      state.wrapper.appendChild(highlightsLayer);
+      state.wrapper.appendChild(state.highlights);
     }
-    updateState({ highlights: highlightsLayer });
+    redrawHighlights();
   });
 
   addPropertyChangeListener('progressMode', () => {

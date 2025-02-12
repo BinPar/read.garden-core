@@ -9,19 +9,19 @@ import nonNullable from '@/tools/nonNullable';
 const selectionOptions: SelectionOption[] = [
   {
     color: '#ff0000',
-    type: 'highlighter',
+    type: 'highlight',
     key: 1,
     title: 'Red',
   },
   {
     color: '#ff00ff',
-    type: 'highlighter',
+    type: 'highlight',
     key: 2,
     title: 'Pink',
   },
   {
     color: '#00ff00',
-    type: 'highlighter',
+    type: 'highlight',
     key: 3,
     title: 'Green',
   },
@@ -206,7 +206,7 @@ const eventHandler: EventHandler = (event) => {
   }
 
   if (event.type === 'onNewHighlight') {
-    const failed = Math.random() > 0.8;
+    const failed = false && Math.random() > 0.8;
     console.log({ failed });
     if (failed) {
       window.rgCore.dispatch({
