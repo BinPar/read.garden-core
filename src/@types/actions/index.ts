@@ -1,6 +1,6 @@
 import type { LineHeight, TextAlign, Theme } from '@/@types/common';
 import type { Config } from '@/@types/config';
-import type { Highlight, SelectionOption, UserHighlight } from '@/@types/selection';
+import type { SelectionOption, UserHighlight } from '@/@types/selection';
 import type { PropertyChangeHandler, State, StateKey } from '@/@types/state';
 
 export interface AddOnChangeEvent<T extends StateKey = StateKey> {

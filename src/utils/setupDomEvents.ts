@@ -17,7 +17,6 @@ const setupDomEvents = () => {
 
   const touches = new Set<number>();
   let isLongPress = false;
-  let isSelection = false;
   let isMultipleTouch = false;
 
   const handleTouchStart = (event: PointerEvent) => {
@@ -42,7 +41,7 @@ const setupDomEvents = () => {
 
   const handleTouchEnd = (event: PointerEvent) => {
     touches.delete(event.pointerId);
-    if (!isLongPress && !isMultipleTouch && !isSelection) {
+    if (!isLongPress && !isMultipleTouch && !state.currentSelection) {
       checkIfScreenXBorderIsPressed(event);
     }
     if (touches.size === 0) {
@@ -51,41 +50,32 @@ const setupDomEvents = () => {
     isLongPress = false;
   };
 
-  const handleContextMenu = (event: MouseEvent) => {
-    event.preventDefault();
+  const handleContextMenu = (event: Event) => {
+    preventAndStopPropagation(event);
     isLongPress = true;
   };
 
   const handleSelectionChange = () => {
     const selection = getSelection();
     const text = selection.toString().trim();
-    isLongPress = false;
-    if (text) {
-      isSelection = true;
-      const selectionRanges = new Array<Range>();
-      for (let i = 0, l = selection.rangeCount; i < l; i++) {
-        const range = selection.getRangeAt(i);
-        if (range) {
-          selectionRanges.push(range.cloneRange());
-        }
-      }
-      updateState({
-        selectedText: text,
-        selectionRanges,
-      });
-      return;
-    }
 
-    isSelection = false;
-    updateState({
-      selectedText: '',
-      selectionRanges: null,
-    });
+    if (text) {
+      const range = selection.getRangeAt(0);
+      if (
+        range &&
+        !range.collapsed &&
+        state.content.contains(range.startContainer) &&
+        state.content.contains(range.endContainer)
+      ) {
+        updateState({
+          currentSelection: { range, text },
+        });
+      }
+    }
   };
 
   const handleProgressClick = (event: PointerEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
+    preventAndStopPropagation(event);
     const progressIndex = progressModes.indexOf(state.progressMode);
     const progressMode =
       progressModes[(progressIndex + 1) % progressModes.length];

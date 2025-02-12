@@ -12,6 +12,7 @@ export const defaultCommonConfig: Required<
     | 'uiModeLeft'
     | 'uiModeScale'
     | 'lang'
+    | 'selectionHighlightColor'
   >
 > = {
   lang: 'es',
@@ -30,6 +31,7 @@ export const defaultCommonConfig: Required<
   uiModeTop: 0,
   uiModeLeft: 0,
   uiModeScale: 0.75,
+  selectionHighlightColor: '#ff0',
 };
 
 export const defaultFlowConfig: Required<Omit<FlowConfig, 'layout'>> = {

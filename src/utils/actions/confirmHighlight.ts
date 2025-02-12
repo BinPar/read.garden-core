@@ -4,33 +4,30 @@ const confirmHighlight: ActionHandler<ConfirmHighlight> = ({
   action,
   state,
 }) => {
-  const highlights = state.domHighlightsByKey.get(action.key);
+  const highlight = state.coreHighlightsByKey.get(action.key);
 
-  if (!highlights) {
-    console.error(`No highlights found with key: ${action.key}`);
+  if (!highlight) {
+    console.error(`No highlight found with key: ${action.key}`);
     return;
   }
 
-  for (let i = 0, l = highlights.length; i < l; i++) {
-    const highlight = highlights[i];
-    if (highlight) {
-      highlight.dataset.id = `${action.id}`;
+  for (let i = 0, l = highlight.domHighlights.length; i < l; i++) {
+    const domHighlight = highlight.domHighlights[i];
+    if (domHighlight) {
+      domHighlight.dataset.id = `${action.id}`;
     }
   }
 
-  const highlight = state.userHighlightsByKey.get(action.key);
-
-  if (highlight) {
-    state.userHighlightsById.set(action.id, {
-      ...highlight,
-      id: action.id,
-      // note ?
-    });
-    state.userHighlightsByKey.delete(action.key);
-  }
-
-  state.domHighlightsByKey.delete(action.key);
-  state.domHighlightsById.set(action.id, highlights);
+  state.domHighlightsById.set(action.id, highlight.domHighlights);
+  state.userHighlightsById.set(action.id, {
+    id: action.id,
+    color: highlight.color,
+    highlighter: highlight.highlighter,
+    range: highlight.selectionRange,
+    type: highlight.type,
+    note: highlight.note,
+  });
+  state.coreHighlightsByKey.delete(action.key);
 };
 
 export default confirmHighlight;

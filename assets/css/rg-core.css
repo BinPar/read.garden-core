@@ -12,10 +12,8 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
 }
 
-.flow ::selection {
-  background-color: #333;
-  color: #eee;
-  scale: 2;
+#content ::selection {
+  background-color: var(--selection-highlight-color);
 }
 
 #container {

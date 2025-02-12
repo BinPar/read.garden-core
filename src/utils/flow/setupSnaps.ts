@@ -1,5 +1,6 @@
 import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
+import redrawHighlights from '@/utils/redrawHighlights';
 import { getState, updateState } from '@/utils/state';
 import updateProgress from '@/utils/updateProgress';
 
@@ -135,6 +136,7 @@ const setupSnaps = () => {
     state.wrapper.scrollLeft = scrollLeft;
     window.requestAnimationFrame(() => {
       setCssVariable('viewer-margin-top', '0');
+      redrawHighlights();
       updateState({ rendering: false });
       window.requestAnimationFrame(() => {
         setCssVariable('overflow-x', 'auto');

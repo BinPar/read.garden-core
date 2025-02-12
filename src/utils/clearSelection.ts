@@ -5,8 +5,7 @@ const clearSelection = () => {
   const selection = getSelection();
   selection.empty();
   updateState({
-    selectedText: '',
-    selectionRanges: null,
+    currentSelection: null,
   });
 };
 

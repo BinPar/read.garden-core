@@ -21,8 +21,8 @@ import setupSelectionMenu from '@/utils/setupSelectionMenu';
 import getId from '@/tools/getId';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import hideMenuNote from '@/utils/hideNoteMenu';
-import renderCurrentHighlight from '@/utils/renderCurrentHighlight';
 import redrawHighlights from '@/utils/redrawHighlights';
+import showNoteMenu from '@/utils/showNoteMenu';
 
 const setup = (initialOptions: Options) => {
   console.log('setup', initialOptions);
@@ -191,14 +191,6 @@ const setup = (initialOptions: Options) => {
   });
 
   addPropertyChangeListener('contentOrder', () => {
-    state.highlights.remove();
-    state.highlights.innerHTML = '';
-    if (state.layout === 'fixed') {
-      state.content.appendChild(state.highlights);
-    }
-    if (state.layout === 'flow') {
-      state.wrapper.appendChild(state.highlights);
-    }
     redrawHighlights();
   });
 
@@ -211,38 +203,22 @@ const setup = (initialOptions: Options) => {
     state.container.classList.add(newValue);
   });
 
-  addPropertyChangeListener('addingNote', ({ newValue }) => {
-    if (newValue === true) {
-      const { key, range } =
-        renderCurrentHighlight({
-          highlighter: 'note',
-          color: '#ffd700b0',
-          type: 'note',
-          isTemporary: true,
-        }) ?? {};
-
-      if (key && range) {
-        updateState({ noteHighlightKey: key, noteHighlightRange: range }, true);
-
-        setTimeout(() => {
-          console.log('focus');
-          state.textarea.focus({
-            preventScroll: true,
-          });
-        }, 500); // FIXME: doesn't work without timeout... might be a better way?
-      }
+  addPropertyChangeListener('currentHighlight', ({ newValue }) => {
+    if (newValue) {
+      showNoteMenu();
+    } else {
+      hideMenuNote();
     }
   });
 
-  addPropertyChangeListener('selectedText', ({ newValue, oldValue }) => {
-    console.log('selectedText', newValue, oldValue);
+  addPropertyChangeListener('currentSelection', ({ newValue }) => {
     if (newValue) {
       dispatchEvent({
         type: 'onUserSelect',
       });
     } else {
       hideSelectionMenu();
-      if (!state.addingNote) {
+      if (!state.currentHighlight) {
         hideMenuNote();
       }
     }

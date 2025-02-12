@@ -1,67 +1,47 @@
 import dispatchEvent from '@/utils/events/dispatchEvent';
-import getNodeQuerySelector from '@/utils/getNodeQuerySelector';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
-import { getState } from '@/utils/state';
+import { getState, updateState } from '@/utils/state';
 
-const showNoteMenu = ({
-  highlighter,
-  color,
-  mode = 'add',
-}: {
-  mode?: 'add' | 'edit' | 'show';
-  highlighter: string | number;
-  color: string;
-}) => {
+const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
   const state = getState();
 
   state.notesActions.innerHTML = '';
+  state.noteMenu.classList.remove('add', 'edit', 'show');
+  state.noteMenu.classList.add(mode);
 
-  if (mode === 'add' || mode === 'edit') {
+  if (mode === 'add') {
+    const { currentHighlight } = state;
+    if (!currentHighlight) {
+      console.error(`No currentHighlight when adding note`);
+      return;
+    }
+
     const save = state.doc.createElement('button');
     save.title = 'Save';
     save.innerText = 'Save';
     save.classList.add('save');
-    state.notesActions.appendChild(save);
 
     save.addEventListener('pointerdown', (event) => {
       preventAndStopPropagation(event);
 
-      if (
-        state.noteHighlightKey &&
-        state.noteHighlightRange &&
-        state.noteHighlightText
-      ) {
-        const highlights = state.domHighlightsByKey.get(state.noteHighlightKey);
-        if (highlights) {
-          for (let i = 0, l = highlights.length; i < l; i++) {
-            const highlight = highlights[i];
-            if (highlight) {
-              highlight.style.setProperty('--highlighter-color', color);
-              highlight.dataset.highlighter = `${highlighter}`;
-            }
-          }
-        }
-        dispatchEvent({
-          type: 'onNewHighlight',
-          highlighter,
-          key: state.noteHighlightKey,
-          range: {
-            obfuscatedText: state.noteHighlightText,
-            start: {
-              offset: state.noteHighlightRange.startOffset,
-              querySelector: getNodeQuerySelector(
-                state.noteHighlightRange.startContainer,
-              ),
-            },
-            end: {
-              offset: state.noteHighlightRange.endOffset,
-              querySelector: getNodeQuerySelector(
-                state.noteHighlightRange.endContainer,
-              ),
-            },
-          },
-        });
-      }
+      const note = state.textarea.value;
+
+      state.coreHighlightsByKey.set(currentHighlight.key, {
+        ...currentHighlight,
+        note,
+      });
+
+      dispatchEvent({
+        type: 'onNewHighlight',
+        highlighter: currentHighlight.highlighter,
+        key: currentHighlight.key,
+        range: currentHighlight.selectionRange,
+        note,
+      });
+
+      updateState({
+        currentHighlight: null,
+      });
     });
 
     save.addEventListener('pointerup', preventAndStopPropagation);
@@ -71,7 +51,32 @@ const showNoteMenu = ({
     cancel.title = 'Cancel';
     cancel.innerText = 'Cancel';
     cancel.classList.add('cancel');
+
+    cancel.addEventListener('pointerdown', (event) => {
+      preventAndStopPropagation(event);
+
+      for (let i = 0, l = currentHighlight.domHighlights.length; i < l; i++) {
+        const domHighlight = currentHighlight.domHighlights[i];
+        if (domHighlight) {
+          domHighlight.remove();
+        }
+      }
+
+      updateState({
+        currentHighlight: null,
+      });
+
+      state.coreHighlightsByKey.delete(currentHighlight.key);
+    });
+
+    state.notesActions.appendChild(save);
     state.notesActions.appendChild(cancel);
+
+    setTimeout(() => {
+      state.textarea.focus({
+        preventScroll: true,
+      });
+    }, 500);
   }
 
   if (mode === 'show') {

@@ -20,6 +20,9 @@ export const init = (initialOptions: Options) => {
     productSlug: initialOptions.productSlug,
     lang: initialOptions.lang,
     cssHref: initialOptions.cssHref,
+    selectionHighlightColor:
+      initialOptions.options.selectionHighlightColor ??
+      defaultCommonConfig.selectionHighlightColor,
     padding: {
       ...defaultCommonConfig.padding,
       ...initialOptions.options.padding,

@@ -1,21 +1,18 @@
 import type { ActionHandler, CancelHighlight } from '@/@types/actions';
 
 const cancelHighlight: ActionHandler<CancelHighlight> = ({ action, state }) => {
-  const highlights = state.domHighlightsByKey.get(action.key);
+  const highlight = state.coreHighlightsByKey.get(action.key);
 
-  if (!highlights) {
-    console.error(`No highlights found with key: ${action.key}`);
+  if (!highlight) {
+    console.error(`No highlight found with key: ${action.key}`);
     return;
   }
 
-  for (let i = 0, l = highlights.length; i < l; i++) {
-    const highlight = highlights[i];
-    if (highlight) {
-      highlight.remove();
-    }
+  for (let i = 0, l = highlight.domHighlights.length; i < l; i++) {
+    highlight.domHighlights[i]?.remove();
   }
 
-  state.domHighlightsByKey.delete(action.key);
+  state.coreHighlightsByKey.delete(action.key);
 };
 
 export default cancelHighlight;

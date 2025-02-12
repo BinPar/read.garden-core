@@ -1,9 +1,9 @@
 import type { SelectionOption } from '@/@types/selection';
 import dispatchEvent from '@/utils/events/dispatchEvent';
+import getCurrentHighlight from '@/utils/getCurrentHighlight';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import renderCurrentHighlight from '@/utils/renderCurrentHighlight';
-import showNoteMenu from '@/utils/showNoteMenu';
 import { getState, updateState } from '@/utils/state';
 
 const setupSelectionMenu = (
@@ -96,13 +96,15 @@ const setupSelectionMenu = (
               type: option.type,
             });
           }
-          if (option.type === 'note') {
+          if (option.type === 'note' && state.currentSelection) {
             updateState({
-              addingNote: true,
-            });
-            showNoteMenu({
-              highlighter: option.key,
-              color: option.color,
+              currentHighlight: getCurrentHighlight({
+                ...state.currentSelection,
+                highlighter: option.key,
+                color: option.color,
+                type: option.type,
+              }),
+              currentSelection: null,
             });
           }
         }

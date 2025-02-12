@@ -21,14 +21,26 @@ export interface SelectionRange {
 }
 
 export interface Highlight {
-  id?: string | number;
-  key: string;
   highlighter: string | number;
   type: HighlighterType;
   color: string;
-  range: SelectionRange;
   note?: string;
 }
 
-export type UserHighlight = Omit<Highlight, 'key'> &
-  Required<Pick<Highlight, 'id'>>;
+export type CoreHighlight = Highlight & {
+  key: string;
+  text: string;
+  range: Range;
+  selectionRange: SelectionRange;
+  domHighlights: HTMLDivElement[];
+};
+
+export type UserHighlight = Highlight & {
+  id: string | number;
+  range: SelectionRange;
+};
+
+export interface CurrentSelection {
+  range: Range;
+  text: string;
+}

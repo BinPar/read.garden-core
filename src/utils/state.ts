@@ -10,7 +10,7 @@ import type setupDomElements from '@/utils/setupDomElements';
 import { defaultFixedConfig, defaultState } from '@/utils/defaults';
 import { getConfig } from '@/utils/config';
 import setupFlowElements from '@/utils/flow/setupElements';
-import type { Highlight, UserHighlight } from '@/@types/selection';
+import type { CoreHighlight, UserHighlight } from '@/@types/selection';
 
 let state: State | undefined;
 
@@ -62,7 +62,6 @@ export const init = (
     contentCssLoaded: false,
     loadingStyles: true,
     rendering: false,
-    addingNote: false,
     layout,
     containerWidth,
     containerHeight,
@@ -70,15 +69,11 @@ export const init = (
     contentOrder: -1,
     pendingContents: new Set<number>(),
     loadingContents: new Set<number>(),
-    selectedText: '',
-    selectionRanges: null,
-    domHighlightsByKey: new Map<string, HTMLDivElement[]>(),
+    currentSelection: null,
+    currentHighlight: null,
     domHighlightsById: new Map<string | number, HTMLDivElement[]>(),
-    userHighlightsByKey: new Map<string, Highlight>(),
+    coreHighlightsByKey: new Map<string, CoreHighlight>(),
     userHighlightsById: new Map<string | number, UserHighlight>(),
-    noteHighlightKey: '',
-    noteHighlightRange: null,
-    noteHighlightText: '',
     pendingDrawActions: new Array<DrawHighlights>(),
   };
 

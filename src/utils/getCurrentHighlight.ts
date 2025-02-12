@@ -1,37 +1,29 @@
 import type { HighlighterType } from '@/@types/common';
+import type { CoreHighlight } from '@/@types/selection';
 import getId from '@/tools/getId';
-import clearSelection from '@/utils/clearSelection';
-import dispatchEvent from '@/utils/events/dispatchEvent';
 import getDomHighlights from '@/utils/getDomHighlights';
 import getNodeQuerySelector from '@/utils/getNodeQuerySelector';
-import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import { getState } from '@/utils/state';
 
-const renderCurrentHighlight = ({
-  highlighter,
+const getCurrentHighlight = ({
+  range,
+  text,
   color,
   type,
+  highlighter,
 }: {
-  highlighter: string | number;
+  range: Range;
+  text: string;
   color: string;
   type: HighlighterType;
-  isTemporary?: boolean;
-}) => {
+  highlighter: string | number;
+}): CoreHighlight => {
   const state = getState();
 
-  if (!state.currentSelection) {
-    console.error(
-      'No highlight, selection ranges or selected text at renderHighlight',
-    );
-    return;
-  }
-
-  const { range, text } = state.currentSelection;
   const rects = Array.from(range.getClientRects());
 
   if (!rects.length) {
     console.error('No client rects for selection range');
-    return;
   }
 
   const key = `hl-${getId()}`;
@@ -62,25 +54,20 @@ const renderCurrentHighlight = ({
     },
   };
 
-  state.coreHighlightsByKey.set(key, {
+  const coreHighlight = {
+    range,
     color,
-    domHighlights,
     highlighter,
     key,
-    range,
-    selectionRange,
     text,
     type,
-  });
+    domHighlights,
+    selectionRange,
+  };
 
-  dispatchEvent({
-    type: 'onNewHighlight',
-    highlighter,
-    key,
-    range: selectionRange,
-  });
-  clearSelection();
-  hideSelectionMenu();
+  state.coreHighlightsByKey.set(key, coreHighlight);
+
+  return coreHighlight;
 };
 
-export default renderCurrentHighlight;
+export default getCurrentHighlight;

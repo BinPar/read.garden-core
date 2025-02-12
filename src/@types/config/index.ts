@@ -30,6 +30,7 @@ export interface CommonConfig {
   jsonData?: JsonData;
   initialContentSlug?: string;
   selectionMenuOptions?: SelectionOption[];
+  selectionHighlightColor: string;
   slug: string;
   productSlug?: string;
   eventHandler?: EventHandler;

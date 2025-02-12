@@ -12,7 +12,7 @@ export const addPropertyChangeListener = <K extends StateKey>(
   propertyName: K,
   handler: PropertyChangeHandler<K>,
 ) => {
-  console.log(`Listener added for property: ${propertyName}`);
+  console.debug(`Listener added for property: ${propertyName}`);
   let propertySet = handlers.get(propertyName);
   if (!propertySet) {
     propertySet = new Set<PropertyChangeHandler<StateKey>>();
