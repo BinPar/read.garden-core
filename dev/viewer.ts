@@ -9,19 +9,19 @@ import nonNullable from '@/tools/nonNullable';
 const selectionOptions: SelectionOption[] = [
   {
     color: '#ff0000',
-    type: 'highlight',
+    type: 'highlighter',
     key: 1,
     title: 'Red',
   },
   {
     color: '#ff00ff',
-    type: 'highlight',
+    type: 'highlighter',
     key: 2,
     title: 'Pink',
   },
   {
     color: '#00ff00',
-    type: 'highlight',
+    type: 'highlighter',
     key: 3,
     title: 'Green',
   },

@@ -89,7 +89,7 @@ const setupSelectionMenu = (
           });
           hideSelectionMenu();
         } else {
-          if (option.type === 'highlight') {
+          if (option.type === 'highlighter') {
             renderCurrentHighlight({
               highlighter: option.key,
               color: option.color,
