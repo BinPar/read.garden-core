@@ -22,6 +22,10 @@ body {
   overflow: hidden;
 }
 
+#container.dark {
+  filter: invert(1) contrast(0.8);
+}
+
 #progress {
   position: absolute;
   bottom: 0;
@@ -30,9 +34,9 @@ body {
   padding: calc(var(--column-gap, 1rem) / 2);
 }
 
-.dark #progress {
+/* .dark #progress {
   color: #bbb;
-}
+} */
 
 #progress.hidden {
   color: transparent;
@@ -61,9 +65,9 @@ body {
   background-color: #eee;
 }
 
-.dark #bg-cleaner {
+/* .dark #bg-cleaner {
   background-color: #111;
-}
+} */
 
 #viewer {
   position: relative;
@@ -118,9 +122,9 @@ body {
   z-index: 30;
 }
 
-.dark.flow #wrapper {
+/* .dark.flow #wrapper {
   filter: invert(1) contrast(0.6);
-}
+} */
 
 .flow.ui-mode #wrapper {
   --transform-y: calc(
@@ -258,7 +262,6 @@ body {
   position: absolute;
   top: 100svh;
   left: 0;
-  /* padding-top: var(--vertical-padding-corrector); */
   height: var(--vertical-padding-corrector);
   width: calc(var(--column-width) + var(--column-gap));
   display: flex;
@@ -297,12 +300,10 @@ body {
   );
 }
 
-/* TODO: Is this necessary? */
 #content span[data-page]::before {
   content: '';
   display: block;
 }
-/**/
 
 #highlights {
   position: absolute;
@@ -330,6 +331,10 @@ body {
   pointer-events: auto;
 }
 
+.dark #highlights > div {
+  filter: invert(1) contrast(0.6);
+}
+
 #note-menu {
   position: absolute;
   left: 0;
@@ -340,7 +345,7 @@ body {
   border-top: 1px solid #ddd;
   transition: bottom var(--animation-delay);
   will-change: bottom;
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
   display: flex;
   gap: 0.5rem;
 }
@@ -422,6 +427,10 @@ body {
   text-indent: -10000px;
   outline: none;
   border-radius: 0.5rem;
+}
+
+.dark #selection-menu button {
+  filter: invert(1) contrast(0.8);
 }
 
 #selection-menu button.selected::before {

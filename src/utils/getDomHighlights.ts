@@ -30,10 +30,9 @@ const getDomHighlights = ({
     for (let i = 0, l = rects.length; i < l; i++) {
       const rect = rects[i];
       if (rect) {
-        const top =
-          (rect.top - contentRect.top - (config.padding.top ?? 0)) / scale;
+        const top = (rect.top - contentRect.top - config.padding.top) / scale;
         const left =
-          (rect.left - contentRect.left - (config.padding.left ?? 0)) / scale;
+          (rect.left - contentRect.left - config.padding.left) / scale;
         const width = rect.width / scale;
         const height = rect.height / scale;
 

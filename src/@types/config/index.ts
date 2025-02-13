@@ -7,6 +7,10 @@ import type { JsonData } from '@/@types/rg';
 import type { SelectionOption } from '@/@types/selection';
 import type { FullState } from '@/@types/state';
 
+type PartialProperties<T> = {
+  [P in keyof T]: Partial<T[P]>;
+};
+
 export interface MarginOrPadding {
   top: number;
   right: number;
@@ -21,8 +25,8 @@ export interface CommonConfig {
   theme?: Theme;
   lang?: string;
   cssHref: string;
-  padding: Partial<MarginOrPadding>;
-  readModeMargin: Partial<MarginOrPadding>;
+  padding: MarginOrPadding;
+  readModeMargin: MarginOrPadding;
   uiModeScale: number;
   uiModeTop: number;
   uiModeLeft: number;
@@ -44,6 +48,9 @@ export type OptionsMainKeys =
   | 'baseUrl'
   | 'jsonData'
   | 'lang';
+export type PartialOptions = Partial<PartialProperties<
+  Pick<CommonConfig, 'padding' | 'readModeMargin'>
+>>;
 
 export type RequiredOptions = Required<Pick<CommonConfig, RequiredOptionsKeys>>;
 export type OptionalOptions = Partial<
@@ -54,7 +61,8 @@ export type OptionalOptions = Partial<
 >;
 
 export type InitialOptions = RequiredOptions &
-  OptionalOptions & { readMode?: boolean };
+  OptionalOptions &
+  PartialOptions & { readMode?: boolean };
 
 export type Config = CommonConfig &
   (({ layout: 'flow' } & FlowConfig) | ({ layout: 'fixed' } & FixedConfig));

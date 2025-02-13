@@ -18,5 +18,5 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["src/types/**/*.ts", "src/index.ts"]
+  "include": ["src/@types/**/*.ts", "src/index.ts"]
 }
