@@ -25,8 +25,6 @@ import redrawHighlights from '@/utils/redrawHighlights';
 import showNoteMenu from '@/utils/showNoteMenu';
 
 const setup = (initialOptions: Options) => {
-  console.log('setup', initialOptions);
-
   const domElements = setupDomElements(initialOptions);
   initConfig(initialOptions);
   initState(initialOptions, domElements);
@@ -53,10 +51,7 @@ const setup = (initialOptions: Options) => {
       });
     };
 
-    link.onload = () => {
-      console.log('content styles loaded');
-      onFinish();
-    };
+    link.onload = onFinish;
     link.onerror = (ex) => {
       console.error('Error loading content styles', ex);
       onFinish();

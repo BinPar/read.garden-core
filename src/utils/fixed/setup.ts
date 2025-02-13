@@ -35,10 +35,7 @@ const setup = () => {
     return;
   }
 
-  console.log('fixed setup', state.initialized);
-
   if (state.initialized) {
-    console.log('hey');
     fixedSetup();
     return;
   }

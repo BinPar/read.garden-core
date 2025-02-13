@@ -17,7 +17,6 @@ const fitPage = () => {
   const fitWidthZoom = getFitWidthZoom(content);
   const fitHeightZoom = getFitHeightZoom(content);
   const zoom = Math.min(fitWidthZoom, fitHeightZoom);
-  console.log('fitPage', zoom);
   updateState({ zoom, fitMode: 'page' });
 };
 

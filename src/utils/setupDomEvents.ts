@@ -19,7 +19,6 @@ const setupDomEvents = () => {
   const config = getConfig();
 
   const touches = new Set<number>();
-  let isLongPress = false;
   let isMultipleTouch = false;
 
   const handleTouchStart = (event: PointerEvent) => {
@@ -58,7 +57,6 @@ const setupDomEvents = () => {
     touches.delete(event.pointerId);
 
     if (
-      !isLongPress &&
       !isMultipleTouch &&
       !state.currentSelection &&
       !state.clickedHighlight &&
@@ -78,13 +76,10 @@ const setupDomEvents = () => {
     if (touches.size === 0) {
       isMultipleTouch = false;
     }
-
-    isLongPress = false;
   };
 
   const handleContextMenu = (event: Event) => {
     preventAndStopPropagation(event);
-    isLongPress = true;
   };
 
   const handleSelectionChange = () => {

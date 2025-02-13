@@ -63,7 +63,6 @@ const setupSelectionMenu = (
 
       button.addEventListener('pointerdown', (event) => {
         preventAndStopPropagation(event);
-        console.log('selection button pointerdown', id);
 
         if (id) {
           const domHighlights = state.domHighlightsById.get(id);

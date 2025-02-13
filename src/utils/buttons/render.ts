@@ -9,6 +9,7 @@ import setFontFamily from '@/utils/flow/setFontFamily';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import navigateToContentSlug from '@/utils/navigateToContentSlug';
+import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
@@ -38,7 +39,6 @@ const render = (options?: UIOptions) => {
         const value = typeof button === 'string' ? undefined : button.value;
         domButton.classList.add('button');
         domButton.addEventListener('pointerdown', (event) => {
-          console.log('ui button pointerdown');
           if (event.button === 0) {
             event.preventDefault();
             event.stopPropagation();
@@ -113,10 +113,7 @@ const render = (options?: UIOptions) => {
   }
 
   state.container.appendChild(uiContainer);
-  uiContainer.addEventListener('pointerdown', (ev) => {
-    console.log('ui pointerdown');
-    ev.stopPropagation();
-  });
+  uiContainer.addEventListener('pointerdown', preventAndStopPropagation);
   updateState({ uiContainer });
 };
 

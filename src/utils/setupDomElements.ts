@@ -42,7 +42,6 @@ const setupDomElements = (
 
   const styles = iframeDoc.createElement('link');
   styles.onload = () => {
-    console.log('styles.css loaded');
     window.requestAnimationFrame(() => {
       iframeDoc.body.appendChild(container);
       updateState((current) => {

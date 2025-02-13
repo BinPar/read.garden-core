@@ -38,7 +38,7 @@ const preloadFonts = (fontFamily?: string, callback?: () => void) => {
     return;
   }
 
-  console.log(`Preloading ${fontsUrls.length} fonts for ${font}`);
+  console.debug(`Preloading ${fontsUrls.length} fonts for ${font}`);
 
   requestIdleCallback(() => {
     Promise.all(

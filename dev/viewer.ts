@@ -149,7 +149,7 @@ const getStoredHighlights = (key: string) => {
 };
 
 const eventHandler: EventHandler = (event) => {
-  console.log('Core event dispatched!', event);
+  console.debug('Core event dispatched!', event);
 
   if (event.type === 'onUserSelect') {
     window.rgCore.dispatch({
@@ -163,7 +163,6 @@ const eventHandler: EventHandler = (event) => {
       `rg_dev_highlights_${event.slug}`,
     );
     const highlight = storedHighlights.find((hl) => hl.id === event.id);
-    console.log({ storedHighlights, highlight });
     if (highlight) {
       window.rgCore.dispatch({
         type: 'showSelectionMenu',
@@ -206,8 +205,7 @@ const eventHandler: EventHandler = (event) => {
   }
 
   if (event.type === 'onNewHighlight') {
-    const failed = false && Math.random() > 0.8;
-    console.log({ failed });
+    const failed = false && Math.random() > 0.8; // For testing purposes
     if (failed) {
       window.rgCore.dispatch({
         type: 'cancelHighlight',
@@ -306,7 +304,6 @@ window.onload = () => {
           const highlights = getStoredHighlights(
             `rg_dev_highlights_${data.slug}`,
           );
-          console.log({ highlights });
           if (highlights.length) {
             window.rgCore.dispatch({
               type: 'drawHighlights',

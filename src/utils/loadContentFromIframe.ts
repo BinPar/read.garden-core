@@ -9,7 +9,6 @@ const loadContentFromIframe = (
 ) =>
   new Promise<DownloadWorkerResponse>((resolve, reject) => {
     try {
-      console.log(`Using iframe for ${url}`);
       const state = getState();
       const iframe = state.doc.createElement('iframe');
       state.preload.appendChild(iframe);
@@ -20,7 +19,6 @@ const loadContentFromIframe = (
         let html =
           (iframe.contentDocument ?? iframe.contentWindow?.document)?.body
             .innerHTML ?? '';
-        console.log(`Loaded iframe from ${url} with html: ${!!html}`);
         if (html) {
           if (replacements.length) {
             for (let i = 0, l = replacements.length; i < l; i++) {

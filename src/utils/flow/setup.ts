@@ -69,7 +69,6 @@ const updateColumnNumber = () => {
 };
 
 const flowSetup = (checkColumns = false) => {
-  console.log('flowSetup', checkColumns);
   if (checkColumns) {
     window.requestAnimationFrame(() => {
       updateColumnNumber();
@@ -90,8 +89,6 @@ const setup = (checkColumns = false) => {
   if (state.layout !== 'flow') {
     return;
   }
-
-  console.log('flow setup', state.initialized);
 
   if (state.initialized) {
     waitForRender(() => flowSetup(checkColumns), state.isSafari ? 128 : 1);
