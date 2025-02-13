@@ -34,10 +34,6 @@ body {
   padding: calc(var(--column-gap, 1rem) / 2);
 }
 
-/* .dark #progress {
-  color: #bbb;
-} */
-
 #progress.hidden {
   color: transparent;
 }
@@ -64,10 +60,6 @@ body {
 .fixed #bg-cleaner {
   background-color: #eee;
 }
-
-/* .dark #bg-cleaner {
-  background-color: #111;
-} */
 
 #viewer {
   position: relative;
@@ -122,10 +114,6 @@ body {
   z-index: 30;
 }
 
-/* .dark.flow #wrapper {
-  filter: invert(1) contrast(0.6);
-} */
-
 .flow.ui-mode #wrapper {
   --transform-y: calc(
     calc(var(--vertical-padding-corrector) * 0.5) + var(--ui-top, 0)
@@ -177,7 +165,6 @@ body {
 }
 
 #content {
-  /* pointer-events: var(--pointer-events, auto); */
   position: relative;
   user-select: auto;
   text-rendering: optimizeLegibility;
