@@ -2,7 +2,7 @@ import type { HighlighterType } from '@/@types/common';
 import clearSelection from '@/utils/clearSelection';
 import dispatchEvent from '@/utils/events/dispatchEvent';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
-import { getState } from '@/utils/state';
+import { getState, updateState } from '@/utils/state';
 
 const getDomHighlight = ({
   top,
@@ -44,10 +44,17 @@ const getDomHighlight = ({
     preventAndStopPropagation(event);
     clearSelection();
     if (highlight.dataset.id) {
-      dispatchEvent({
-        type: 'onHighlightClick',
-        id: highlight.dataset.id,
-      });
+      if (type === 'highlighter') {
+        updateState({ clickedHighlight: id });
+        dispatchEvent({
+          type: 'onHighlightClick',
+          id: highlight.dataset.id,
+          highlighterType: type,
+        });
+      }
+      if (type === 'note') {
+        updateState({ clickedNoteHighlight: id });
+      }
     }
   };
 

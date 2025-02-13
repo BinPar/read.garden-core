@@ -52,6 +52,8 @@ export interface CommonState {
   coreHighlightsByKey: Map<string, CoreHighlight>;
   userHighlightsById: Map<string | number, UserHighlight>;
   domHighlightsById: Map<string | number, HTMLDivElement[]>;
+  clickedHighlight: string | number | null;
+  clickedNoteHighlight: string | number | null;
 
   currentSelection: CurrentSelection | null;
   currentHighlight: CoreHighlight | null;

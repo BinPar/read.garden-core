@@ -326,7 +326,7 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -100%;
+  bottom: -8rem;
   z-index: 60;
   background-color: #eee;
   border-top: 1px solid #ddd;
@@ -346,6 +346,10 @@ body {
   resize: none;
   outline: none;
   border-radius: 0.5rem;
+}
+
+#note-menu.show textarea {
+  background: transparent;
 }
 
 #note-options {
@@ -381,6 +385,8 @@ body {
 }
 #note-options button.edit::after {
   background-image: url(../img/edit.svg);
+  background-position: 0.15rem;
+  background-size: 80%;
 }
 
 #selection-menu {
@@ -392,7 +398,7 @@ body {
   background-color: #fff;
   filter: brightness(0.95) drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 1px);
   gap: 0.25rem;
-  bottom: -100%;
+  bottom: -6rem;
   transition: bottom var(--animation-delay);
   display: flex;
   justify-content: space-evenly;

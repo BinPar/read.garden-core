@@ -1,6 +1,9 @@
 import type { FullState } from '@/@types/state';
+import clearSelection from '@/utils/clearSelection';
 import { getConfig } from '@/utils/config';
 import getSelection from '@/utils/getSelection';
+import hideMenuNote from '@/utils/hideNoteMenu';
+import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
@@ -22,6 +25,18 @@ const setupDomEvents = () => {
   const handleTouchStart = (event: PointerEvent) => {
     touches.add(event.pointerId);
     isMultipleTouch = touches.size > 1;
+
+    if (state.currentSelection || state.currentHighlight) {
+      clearSelection();
+      if (state.currentHighlight) {
+        state.currentHighlight.domHighlights.forEach((domHighlight) => {
+          domHighlight.remove();
+        });
+        hideMenuNote();
+      } else {
+        hideSelectionMenu();
+      }
+    }
   };
 
   const checkIfScreenXBorderIsPressed = (event: PointerEvent) => {
@@ -41,12 +56,29 @@ const setupDomEvents = () => {
 
   const handleTouchEnd = (event: PointerEvent) => {
     touches.delete(event.pointerId);
-    if (!isLongPress && !isMultipleTouch && !state.currentSelection) {
+
+    if (
+      !isLongPress &&
+      !isMultipleTouch &&
+      !state.currentSelection &&
+      !state.clickedHighlight &&
+      !state.clickedNoteHighlight
+    ) {
       checkIfScreenXBorderIsPressed(event);
     }
+
+    if (state.clickedHighlight) {
+      updateState({ clickedHighlight: null });
+    }
+
+    if (state.clickedNoteHighlight) {
+      updateState({ clickedNoteHighlight: null });
+    }
+
     if (touches.size === 0) {
       isMultipleTouch = false;
     }
+
     isLongPress = false;
   };
 
@@ -99,9 +131,9 @@ const setupDomEvents = () => {
   state.progress.addEventListener('pointerdown', handleProgressClick);
 
   state.doc.addEventListener('selectionchange', handleSelectionChange);
-  state.viewer.addEventListener('pointerdown', handleTouchStart);
-  state.viewer.addEventListener('pointerup', handleTouchEnd);
-  state.viewer.addEventListener('pointercancel', handleTouchEnd);
+  state.wrapper.addEventListener('pointerdown', handleTouchStart);
+  state.wrapper.addEventListener('pointerup', handleTouchEnd);
+  state.wrapper.addEventListener('pointercancel', handleTouchEnd);
   state.selectionMenu.addEventListener('pointerup', preventAndStopPropagation);
   state.selectionMenu.addEventListener(
     'pointercancel',

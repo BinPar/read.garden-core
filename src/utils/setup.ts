@@ -224,6 +224,20 @@ const setup = (initialOptions: Options) => {
     }
   });
 
+  addPropertyChangeListener('clickedHighlight', ({ newValue }) => {
+    if (newValue === null && !state.currentSelection) {
+      hideSelectionMenu();
+    }
+  });
+
+  addPropertyChangeListener('clickedNoteHighlight', ({ newValue }) => {
+    if (newValue) {
+      showNoteMenu('show');
+    } else {
+      hideMenuNote();
+    }
+  });
+
   return {
     state,
     config,

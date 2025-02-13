@@ -1,3 +1,4 @@
+import type { HighlighterType } from '@/@types/common';
 import type { SelectionRange } from '@/@types/selection';
 
 export interface EventWithSlugs {
@@ -34,6 +35,7 @@ export interface OnNewHighlight {
 export interface OnHighlightClick {
   type: 'onHighlightClick';
   id: string;
+  highlighterType: HighlighterType;
 }
 
 export interface OnHighlightRemove {

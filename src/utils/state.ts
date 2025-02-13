@@ -71,6 +71,7 @@ export const init = (
     loadingContents: new Set<number>(),
     currentSelection: null,
     currentHighlight: null,
+    clickedNoteHighlight: null,
     domHighlightsById: new Map<string | number, HTMLDivElement[]>(),
     coreHighlightsByKey: new Map<string, CoreHighlight>(),
     userHighlightsById: new Map<string | number, UserHighlight>(),
