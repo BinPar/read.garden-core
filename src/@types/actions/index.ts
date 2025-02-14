@@ -58,12 +58,6 @@ export interface ShowSelectionMenu {
   deleteOption?: boolean | string;
 }
 
-export interface ShowNotesDialog {
-  type: 'showNotesDialog';
-  id: string | number;
-  note: string;
-}
-
 export interface ConfirmHighlight {
   type: 'confirmHighlight';
   key: string;
@@ -88,6 +82,7 @@ export interface RemoveHighlights {
 export type Action =
   | SetTheme
   | DrawHighlights
+  | RemoveHighlights
   | MovePrev
   | MoveNext
   | AddOnChangeEvent

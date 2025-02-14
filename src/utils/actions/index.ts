@@ -9,6 +9,7 @@ import increaseFontSize from '@/utils/actions/increaseFontSize';
 import moveNext from '@/utils/actions/moveNext';
 import movePrev from '@/utils/actions/movePrev';
 import navigateToPage from '@/utils/actions/navigateToPage';
+import removeHighlights from '@/utils/actions/removeHighlights';
 import setFontFamily from '@/utils/actions/setFontFamily';
 import setLineHeight from '@/utils/actions/setLineHeight';
 import setTextAlign from '@/utils/actions/setTextAlign';
@@ -18,6 +19,7 @@ import showSelectionMenu from '@/utils/actions/showSelectionMenu';
 const actions: Actions = {
   setTheme,
   drawHighlights,
+  removeHighlights,
   moveNext,
   movePrev,
   addOnChangeEvent,
