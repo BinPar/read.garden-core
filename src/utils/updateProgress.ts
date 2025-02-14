@@ -9,15 +9,14 @@ const updateProgress = () => {
         state.labelBySlug?.get(state.contentSlug) ?? state.contentSlug;
       state.progress.innerHTML = label;
     } else if (state.orderedContentSlugs?.length) {
-      // TODO: use a map instead of indexOf
       const index = state.orderedContentSlugs.indexOf(state.contentSlug);
       if (index >= 0) {
         const progress = Math.min(
           100,
           Math.max(
             Math.round((index / state.orderedContentSlugs.length) * 100),
-            0,
-          ) + 1,
+            1,
+          ),
         );
         state.progress.innerHTML = `${progress}%`;
       }

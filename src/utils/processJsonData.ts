@@ -32,7 +32,6 @@ const processJsonData = (data: JsonData) => {
           orderedContentSlugs.push(slug);
           labelBySlug.set(slug, label);
           slugByLabel.set(label, slug);
-          // TODO: Should be unique (may not be the case in fixed)
           if (!coreContent.slug) {
             coreContent.slug = slug;
           }
