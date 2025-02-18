@@ -110,7 +110,6 @@ const setup = (initialOptions: Options) => {
           }
 
           const links = Array.from(state.content.querySelectorAll('a'));
-          // TODO: onLinkLoaded event
           for (let i = 0, l = links.length; i < l; i++) {
             const link = links[i];
             if (link) {
@@ -124,6 +123,7 @@ const setup = (initialOptions: Options) => {
                   querySelector: `[data-link="${id}"]`,
                 });
               };
+              // TODO: onLinkLoaded event
             }
           }
         };
