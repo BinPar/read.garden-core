@@ -72,6 +72,7 @@ export const init = (
     currentSelection: null,
     currentHighlight: null,
     clickedNoteHighlight: null,
+    clickedHighlight: null,
     domHighlightsById: new Map<string | number, HTMLDivElement[]>(),
     coreHighlightsByKey: new Map<string, CoreHighlight>(),
     userHighlightsById: new Map<string | number, UserHighlight>(),
