@@ -19,7 +19,6 @@ await build({
   ],
   bundle: true,
   minify: true,
-  // minifyIdentifiers: true,
   minifySyntax: true,
   minifyWhitespace: true,
   outdir: 'build',

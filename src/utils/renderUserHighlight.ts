@@ -32,6 +32,8 @@ const renderUserHighlight = (highlight: UserHighlight) => {
   if (!rects.length) {
     return;
   }
+  console.log('render ids: ')
+  console.log({id: highlight.id})
 
   const highlights = getDomHighlights({
     rects: Array.from(rects),

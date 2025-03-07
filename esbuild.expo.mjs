@@ -6,6 +6,7 @@ const ctx = await context({
     '.js': 'file',
     '.css': 'css',
     '.svg': 'copy',
+    '.png': 'copy',
   },
   assetNames: '[name][ext]',
   entryPoints: [
@@ -20,7 +21,7 @@ const ctx = await context({
   ],
   bundle: true,
   minify: false,
-  platform: 'node',
+  platform: 'browser',
   target: 'node20',
   outdir: packageJson.readGarden.publish.expoPath,
   outExtension: { '.js': '.cjs' },

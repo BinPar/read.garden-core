@@ -1,4 +1,5 @@
 import type { SelectionOption } from '@/@types/selection';
+import dispatch from '@/utils/dispatch';
 import dispatchEvent from '@/utils/events/dispatchEvent';
 import getCurrentHighlight from '@/utils/getCurrentHighlight';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
@@ -27,15 +28,10 @@ const setupSelectionMenu = (
         type: 'onHighlightRemove',
         id,
       });
-      const highlights = state.domHighlightsById.get(id);
-      if (highlights) {
-        for (let i = 0, l = highlights.length; i < l; i++) {
-          const highlight = highlights[i];
-          if (highlight) {
-            highlight.remove();
-          }
-        }
-      }
+      dispatch({
+        type: 'removeHighlights',
+        ids: [id],
+      })
       hideSelectionMenu();
     });
 

@@ -1,3 +1,4 @@
+import dispatch from '@/utils/dispatch';
 import dispatchEvent from '@/utils/events/dispatchEvent';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import { getState, updateState } from '@/utils/state';
@@ -40,7 +41,6 @@ const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
         range: currentHighlight.selectionRange,
         note,
       });
-
       updateState({
         currentHighlight: null,
       });
@@ -122,6 +122,14 @@ const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
 
       remove.addEventListener('pointerdown', (event) => {
         preventAndStopPropagation(event);
+        dispatchEvent({
+          type: 'onHighlightRemove',
+          id: clickedNoteHighlight,
+        });
+        dispatch({
+          type: 'removeHighlights',
+          ids: [clickedNoteHighlight],
+        })
         updateState({ clickedNoteHighlight: null });
       });
 
