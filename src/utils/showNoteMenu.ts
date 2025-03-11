@@ -4,6 +4,20 @@ import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import { getState, updateState } from '@/utils/state';
 
 const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
+  const resize = () => {
+    const viewportHeight = window.visualViewport?.height ?? 0;
+    const windowHeight = window.innerHeight;
+    const keyboardThreshold = 100; // Umbral en píxeles para considerar que el teclado está abierto
+
+    const noteMenu = state.noteMenu;
+
+    if (windowHeight - viewportHeight > keyboardThreshold) {
+      noteMenu.style.bottom = `${windowHeight - viewportHeight}px`;
+    } else {
+      noteMenu.style.removeProperty('bottom');
+    }
+  };
+
   const state = getState();
 
   state.notesActions.innerHTML = '';
@@ -11,6 +25,10 @@ const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
   state.noteMenu.classList.add(mode);
   state.textarea.value = '';
   state.textarea.readOnly = false;
+
+  if (window.visualViewport) {
+    window.visualViewport.removeEventListener('resize', resize);
+  }
 
   if (mode === 'add') {
     const { currentHighlight } = state;
@@ -28,7 +46,6 @@ const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
       preventAndStopPropagation(event);
 
       const note = state.textarea.value;
-
       state.coreHighlightsByKey.set(currentHighlight.key, {
         ...currentHighlight,
         note,
@@ -129,7 +146,7 @@ const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
         dispatch({
           type: 'removeHighlights',
           ids: [clickedNoteHighlight],
-        })
+        });
         updateState({ clickedNoteHighlight: null });
       });
 
@@ -186,6 +203,11 @@ const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
   }
 
   if (mode === 'add' || mode === 'edit') {
+    console.log('visualViewport: ', !!window.visualViewport);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', resize);
+    }
+
     setTimeout(
       () => {
         state.textarea.focus({
