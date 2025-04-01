@@ -106,6 +106,7 @@ body {
 #wrapper {
   position: relative;
   height: 100%;
+  max-width: calc(var(--column-width) + var(--column-gap));
   padding: var(--padding-top) 0 var(--padding-bottom) 0;
   clear: both;
   /* cursor: var(--drag-cursor, grab); */

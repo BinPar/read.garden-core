@@ -32,6 +32,7 @@ const updateColumnNumber = () => {
   const containerRect = container.getBoundingClientRect();
   const containerWidth = Math.floor(containerRect.width);
 
+  
   const charWidth = fontSize / charWidthFactor;
   const minColumnWidth = Math.min(
     minCharsPerColumn * charWidth,
@@ -41,6 +42,8 @@ const updateColumnNumber = () => {
     maxCharsPerColumn * charWidth + desiredColumnGap,
     containerWidth - minColumnGap,
   );
+  
+  console.log({containerWidth, minColumnWidth, maxColumnWidth, colgap: config.minColumnGap})
 
   if (config.direction === 'horizontal') {
     const doubleColumnWidth = containerWidth / 2 - desiredColumnGap;
@@ -55,6 +58,8 @@ const updateColumnNumber = () => {
     );
     const columnWidth = totalColumnWidth - columnGap;
 
+    console.log({columnWidth, columnCount, columnGap})
+
     setCssVariable('column-count', `${columnCount}`);
     setCssVariable('column-width', `${columnWidth}px`);
     setCssVariable('column-gap', `${columnGap}px`);
@@ -68,7 +73,7 @@ const updateColumnNumber = () => {
   }
 };
 
-const flowSetup = (checkColumns = false) => {
+export const flowSetup = (checkColumns = false) => {
   if (checkColumns) {
     window.requestAnimationFrame(() => {
       updateColumnNumber();

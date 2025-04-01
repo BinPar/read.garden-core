@@ -8,6 +8,7 @@ const goToPreviousContent = () => {
     if (state.layout === 'flow') {
       updateState({ goToEnd: true }, true);
     }
+    
     loadContent(content.prev);
   }
 };

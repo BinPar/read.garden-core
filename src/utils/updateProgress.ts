@@ -11,13 +11,13 @@ const updateProgress = () => {
     } else if (state.orderedContentSlugs?.length) {
       const index = state.orderedContentSlugs.indexOf(state.contentSlug);
       if (index >= 0) {
-        const progress = Math.min(
+        const progress = parseFloat(Math.min(
           100,
           Math.max(
-            Math.round((index / state.orderedContentSlugs.length) * 100),
+            ((index / state.orderedContentSlugs.length) * 100),
             1,
           ),
-        );
+        ).toFixed(1));
         state.progress.innerHTML = `${progress}%`;
       }
     }
