@@ -42,8 +42,6 @@ const updateColumnNumber = () => {
     maxCharsPerColumn * charWidth + desiredColumnGap,
     containerWidth - minColumnGap,
   );
-  
-  console.log({containerWidth, minColumnWidth, maxColumnWidth, colgap: config.minColumnGap})
 
   if (config.direction === 'horizontal') {
     const doubleColumnWidth = containerWidth / 2 - desiredColumnGap;
@@ -71,6 +69,7 @@ const updateColumnNumber = () => {
       columnCount,
     });
   }
+  
 };
 
 export const flowSetup = (checkColumns = false) => {
