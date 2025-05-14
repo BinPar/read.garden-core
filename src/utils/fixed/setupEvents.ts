@@ -137,6 +137,7 @@ const setupEvents = () => {
   };
 
   const handleTouchStart = (event: TouchEvent) => {
+    updateState({ fitMode: 'none' });
     if (event.touches.length === 2) {
       startX = state.wrapper.scrollLeft;
       startY = state.wrapper.scrollTop;

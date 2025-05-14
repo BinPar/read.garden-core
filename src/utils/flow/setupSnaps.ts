@@ -135,12 +135,11 @@ const setupSnaps = () => {
   window.requestAnimationFrame(() => {
     state.wrapper.scrollLeft = scrollLeft;
     window.requestAnimationFrame(() => {
-      if(state.currentSelection || state.currentHighlight) {
+      if (state.currentSelection || state.currentHighlight) {
         updateState({ rendering: false });
         return;
       }
       setCssVariable('viewer-margin-top', '0');
-      console.log('bySetupSnaps')
       redrawHighlights();
       updateState({ rendering: false });
       window.requestAnimationFrame(() => {

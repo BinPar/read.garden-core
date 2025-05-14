@@ -1,8 +1,8 @@
-import { getState, updateState } from '@/utils/state'
+import { getState, updateState } from '@/utils/state';
 
 const zoomIn = () => {
   const state = getState();
-  
+
   if (state.layout === 'flow') {
     return;
   }

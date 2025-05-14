@@ -203,7 +203,6 @@ const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
   }
 
   if (mode === 'add' || mode === 'edit') {
-    console.log('visualViewport: ', !!window.visualViewport);
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', resize);
     }

@@ -16,20 +16,9 @@ const removeHighlights: ActionHandler<RemoveHighlights> = ({
           domHighlight.remove();
         });
       }
-      console.log('antes del delete')
-      console.log({
-        id,
-        domHighlights: Array.from(domHighlightsById.keys()),
-        userHighlights: Array.from(userHighlightsById.keys()),
-      });
 
       domHighlightsById.delete(id);
       userHighlightsById.delete(id);
-      console.log('despues del delete')
-      console.log({
-        domHighlights: Array.from(domHighlightsById.keys()),
-        userHighlights: Array.from(userHighlightsById.keys()),
-      });
     }
   }
 };

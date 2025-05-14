@@ -13,8 +13,6 @@ const redrawHighlights = () => {
     state.wrapper.appendChild(state.highlights);
   }
 
-  console.log('redrawHighlights');
-
   if (state.userHighlightsById?.size) {
     const highlights = Array.from(state.userHighlightsById.values());
 

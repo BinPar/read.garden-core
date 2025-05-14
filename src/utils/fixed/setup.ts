@@ -1,6 +1,6 @@
 import setCssVariable from '@/tools/setCssVariable';
 import setFitMode from '@/utils/fixed/setFitMode';
-import { checkCenter, setScale } from '@/utils/fixed/setupEvents';
+import { setScale } from '@/utils/fixed/setupEvents';
 import redrawHighlights from '@/utils/redrawHighlights';
 import { getState, updateState } from '@/utils/state';
 import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
@@ -19,10 +19,9 @@ export const fixedSetup = () => {
       setScale(state.zoom / 100);
     }
 
-    checkCenter();
+    // checkCenter();
     window.requestAnimationFrame(() => {
       setCssVariable('viewer-margin-top', '0');
-      console.log('byFixedSetup');
       redrawHighlights();
       updateState({ rendering: false });
     });

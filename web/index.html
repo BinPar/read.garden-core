@@ -21,6 +21,7 @@
       const server = url.searchParams.get('server');
       fetch(
         `${server ? decodeURIComponent(server) : 'http://localhost:3001'}/get-books`,
+        { headers: { 'ngrok-skip-browser-warning': 'whatever' } },
       ).then(async (res) => {
         const { books, cloudFrontUrl, ngrokUrl } = await res.json();
         if (cloudFrontUrl && books && books.length) {

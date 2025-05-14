@@ -186,7 +186,6 @@ const setup = (initialOptions: Options) => {
   });
 
   addPropertyChangeListener('contentOrder', () => {
-    console.log('byContentOrder')
     redrawHighlights();
   });
 

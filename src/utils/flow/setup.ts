@@ -32,7 +32,6 @@ const updateColumnNumber = () => {
   const containerRect = container.getBoundingClientRect();
   const containerWidth = Math.floor(containerRect.width);
 
-  
   const charWidth = fontSize / charWidthFactor;
   const minColumnWidth = Math.min(
     minCharsPerColumn * charWidth,
@@ -56,8 +55,6 @@ const updateColumnNumber = () => {
     );
     const columnWidth = totalColumnWidth - columnGap;
 
-    console.log({columnWidth, columnCount, columnGap})
-
     setCssVariable('column-count', `${columnCount}`);
     setCssVariable('column-width', `${columnWidth}px`);
     setCssVariable('column-gap', `${columnGap}px`);
@@ -69,7 +66,6 @@ const updateColumnNumber = () => {
       columnCount,
     });
   }
-  
 };
 
 export const flowSetup = (checkColumns = false) => {
