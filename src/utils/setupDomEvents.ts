@@ -26,14 +26,11 @@ const setupDomEvents = () => {
     isMultipleTouch = touches.size > 1;
 
     if (state.currentSelection || state.currentHighlight) {
-      clearSelection();
       if (state.currentHighlight) {
         state.currentHighlight.domHighlights.forEach((domHighlight) => {
           domHighlight.remove();
         });
         hideMenuNote();
-      } else {
-        hideSelectionMenu();
       }
     }
   };
@@ -98,6 +95,9 @@ const setupDomEvents = () => {
           currentSelection: { range, text },
         });
       }
+    } else {
+      clearSelection();
+      hideSelectionMenu();
     }
   };
 
