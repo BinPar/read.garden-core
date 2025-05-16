@@ -26,15 +26,26 @@ const getDomHighlights = ({
 
   if (state.layout === 'fixed') {
     const contentRect = state.content.getBoundingClientRect();
-
+    const isWebKit =
+      navigator.userAgent.includes('AppleWebKit') &&
+      !navigator.userAgent.includes('Chrome');
     for (let i = 0, l = rects.length; i < l; i++) {
       const rect = rects[i];
       if (rect) {
-        const top = (rect.top - contentRect.top - config.padding.top) / scale;
-        const left =
-          (rect.left - contentRect.left - config.padding.left) / scale;
-        const width = rect.width / scale;
-        const height = rect.height / scale;
+        let top, left, width, height;
+        if (isWebKit) {
+          // En WebKit getBoundingClientRect ya devuelve los valores
+          // visuales escalados (solo se escala el padding por es es fijo)
+          top = rect.top - contentRect.top - config.padding.top / scale;
+          left = rect.left - contentRect.left - config.padding.left / scale;
+          width = rect.width;
+          height = rect.height;
+        } else {
+          top = (rect.top - contentRect.top - config.padding.top) / scale;
+          left = (rect.left - contentRect.left - config.padding.left) / scale;
+          width = rect.width / scale;
+          height = rect.height / scale;
+        }
 
         highlights.push(
           getDomHighlight({

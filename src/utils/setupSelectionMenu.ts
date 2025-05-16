@@ -31,7 +31,7 @@ const setupSelectionMenu = (
       dispatch({
         type: 'removeHighlights',
         ids: [id],
-      })
+      });
       hideSelectionMenu();
     });
 
