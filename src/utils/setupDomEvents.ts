@@ -103,13 +103,11 @@ const setupDomEvents = () => {
           currentSelection: { range, text },
         });
       }
-    } else {
-      if (isMobileDevice()) {
-        // en desktop el evento selection change se ejecuta muchas veces
-        // en mobile solo una vez y es al final de la selección
-        clearSelection();
-        hideSelectionMenu();
-      }
+    } else if (isMobileDevice() && state.currentSelection) {
+      // en desktop el evento selection change se ejecuta muchas veces
+      // en mobile solo una vez y es al final de la selección
+      clearSelection();
+      hideSelectionMenu();
     }
   };
 

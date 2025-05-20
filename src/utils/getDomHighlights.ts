@@ -1,4 +1,5 @@
 import type { HighlighterType } from '@/@types/common';
+import isWebKit from '@/tools/isWebkit';
 import { getConfig } from '@/utils/config';
 import getDomHighlight from '@/utils/getDomHighlight';
 import getScale from '@/utils/getScale';
@@ -26,14 +27,11 @@ const getDomHighlights = ({
 
   if (state.layout === 'fixed') {
     const contentRect = state.content.getBoundingClientRect();
-    const isWebKit =
-      navigator.userAgent.includes('AppleWebKit') &&
-      !navigator.userAgent.includes('Chrome');
     for (let i = 0, l = rects.length; i < l; i++) {
       const rect = rects[i];
       if (rect) {
         let top, left, width, height;
-        if (isWebKit) {
+        if (isWebKit()) {
           // En WebKit getBoundingClientRect ya devuelve los valores
           // visuales escalados (solo se escala el padding por es es fijo)
           top = rect.top - contentRect.top - config.padding.top / scale;
