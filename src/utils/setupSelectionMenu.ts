@@ -43,6 +43,9 @@ const setupSelectionMenu = (
 
   for (let i = 0, l = options.length; i < l; i++) {
     const option = options[i];
+    // oculultar nota cuando se tiene una seleccion activa
+    if (id && option?.type === 'note') continue;
+
     if (option) {
       const button = state.doc.createElement('button');
       button.title = option.title;

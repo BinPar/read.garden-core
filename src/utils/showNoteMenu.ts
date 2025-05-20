@@ -1,3 +1,4 @@
+import isWebKit from '@/tools/isWebkit';
 import dispatch from '@/utils/dispatch';
 import dispatchEvent from '@/utils/events/dispatchEvent';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
@@ -11,7 +12,7 @@ const showNoteMenu = (mode: 'add' | 'edit' | 'show' = 'add') => {
 
     const noteMenu = state.noteMenu;
 
-    if (windowHeight - viewportHeight > keyboardThreshold) {
+    if (windowHeight - viewportHeight > keyboardThreshold && isWebKit()) {
       noteMenu.style.bottom = `${windowHeight - viewportHeight}px`;
     } else {
       noteMenu.style.removeProperty('bottom');
