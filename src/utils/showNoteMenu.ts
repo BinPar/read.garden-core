@@ -1,4 +1,4 @@
-import isWebKit from '@/tools/isWebkit';
+import isWebKit from '@/tools/isWebKit';
 import dispatch from '@/utils/dispatch';
 import dispatchEvent from '@/utils/events/dispatchEvent';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';

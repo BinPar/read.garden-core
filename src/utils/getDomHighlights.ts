@@ -1,5 +1,5 @@
 import type { HighlighterType } from '@/@types/common';
-import isWebKit from '@/tools/isWebkit';
+import isWebKit from '@/tools/isWebKit';
 import { getConfig } from '@/utils/config';
 import getDomHighlight from '@/utils/getDomHighlight';
 import getScale from '@/utils/getScale';

@@ -13,11 +13,6 @@ import switchMode from '@/utils/switchMode';
 const rightThreshold = 42.5;
 const leftThreshold = 17.5;
 const progressModes: FullState['progressMode'][] = ['percent', 'label', 'none'];
-function isMobileDevice(): boolean {
-  return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent,
-  );
-}
 
 const setupDomEvents = () => {
   const state = getState();
@@ -25,15 +20,13 @@ const setupDomEvents = () => {
 
   const touches = new Set<number>();
   let isMultipleTouch = false;
+  let hasSelection = false;
 
   const handleTouchStart = (event: PointerEvent) => {
     touches.add(event.pointerId);
     isMultipleTouch = touches.size > 1;
 
     if (state.currentSelection || state.currentHighlight) {
-      if (!isMobileDevice()) {
-        clearSelection();
-      }
       if (state.currentHighlight) {
         state.currentHighlight.domHighlights.forEach((domHighlight) => {
           domHighlight.remove();
@@ -63,6 +56,7 @@ const setupDomEvents = () => {
 
     if (
       !isMultipleTouch &&
+      !hasSelection &&
       !state.currentSelection &&
       !state.clickedHighlight &&
       !state.clickedNoteHighlight
@@ -80,6 +74,9 @@ const setupDomEvents = () => {
 
     if (touches.size === 0) {
       isMultipleTouch = false;
+    }
+    if (hasSelection && !state.currentSelection) {
+      hasSelection = false;
     }
   };
 
@@ -102,10 +99,9 @@ const setupDomEvents = () => {
         updateState({
           currentSelection: { range, text },
         });
+        hasSelection = true;
       }
-    } else if (isMobileDevice() && state.currentSelection) {
-      // en desktop el evento selection change se ejecuta muchas veces
-      // en mobile solo una vez y es al final de la selección
+    } else if (state.currentSelection) {
       clearSelection();
       hideSelectionMenu();
     }
