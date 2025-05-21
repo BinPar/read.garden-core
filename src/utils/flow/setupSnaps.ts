@@ -7,8 +7,14 @@ import updateProgress from '@/utils/updateProgress';
 const setupSnaps = () => {
   const state = getState();
   const config = getConfig();
+  const keyboardOpen = state.container.classList?.contains('note-mode');
 
-  if (state.layout !== 'flow' || config.layout !== 'flow') {
+  if (
+    state.layout !== 'flow' ||
+    config.layout !== 'flow' ||
+    // previene cambiar de capitulo al agregar nota en android
+    keyboardOpen
+  ) {
     return;
   }
 
