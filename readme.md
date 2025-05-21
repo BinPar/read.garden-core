@@ -24,6 +24,8 @@ For this, you'll need to create a free account in <https://ngrok.com> and [conne
 There are different build scripts, using different esbuild configs.
 Dev and expo configs are working, main config is intended to be used when core is extended to web projects as well (might need some testing before it's ready).
 
+To run `npm run build:expo` its necessary that the application repository be in the same folder, the build will be saved in `expoPath` variable from `package.json`.
+
 # Gestión de Eventos y Acciones [(Excalidraw)](https://app.excalidraw.com/l/4N9ldVOwdSU/9M9GjIMVcUv)
 
 Este proyecto implementa un sistema interactivo basado en eventos (events) y acciones (actions) claramente definidas y separadas según sus responsabilidades. A continuación, se explica detalladamente el funcionamiento del sistema, así como la interacción entre eventos lanzados desde el core y las acciones gestionadas desde el wrapper.
