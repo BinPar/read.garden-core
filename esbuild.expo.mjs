@@ -11,7 +11,7 @@ const ctx = await context({
   assetNames: '[name][ext]',
   entryPoints: [
     {
-      out: 'js/rg-core.asset',
+      out: 'js/rg-core',
       in: 'src/index.ts',
     },
     {
@@ -24,7 +24,7 @@ const ctx = await context({
   platform: 'browser',
   target: 'node20',
   outdir: packageJson.readGarden.publish.expoPath,
-  // outExtension: { '.js': '.cjs' },
+  outExtension: { '.js': '.viewerjs' },
   legalComments: 'none',
   sourcemap: false,
 });
