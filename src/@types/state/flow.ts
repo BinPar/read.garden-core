@@ -1,5 +1,11 @@
 import type { LineHeight, TextAlign } from '@/@types/common';
 
+export type ContentRange = {
+  from: number;
+  to: number;
+  slug: string;
+};
+
 export interface FlowState {
   layout: 'flow';
 
@@ -8,7 +14,7 @@ export interface FlowState {
   chapterStart: HTMLDivElement;
   chapterEnd: HTMLDivElement;
   snapsContainer: HTMLDivElement;
-  contentBySnap: Map<number, string>;
+  contentBySnapRange: ContentRange[];
   snapByContent: Map<string, number>;
   previousContent: string | null;
 

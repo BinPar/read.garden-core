@@ -1,3 +1,4 @@
+import type { ContentRange } from '@/@types/state/flow';
 import setCssVariable from '@/tools/setCssVariable';
 import goToNextContent from '@/utils/goToNextContent';
 import goToPreviousContent from '@/utils/goToPreviousContent';
@@ -53,11 +54,21 @@ const setupEvents = () => {
     }
   };
 
+  const findContentSlugByScroll = (
+    scrollLeft: number,
+    ranges: ContentRange[],
+  ): string | undefined => {
+    return ranges.find((r) => scrollLeft >= r.from && scrollLeft <= r.to)?.slug;
+  };
+
   const handleScrollEnd = () => {
     if (!pointers.size && !handledScrollEnd) {
       handledScrollEnd = true;
       checkNavigation();
-      const contentSlug = state.contentBySnap.get(state.wrapper.scrollLeft);
+      const contentSlug = findContentSlugByScroll(
+        state.wrapper.scrollLeft,
+        state.contentBySnapRange,
+      );
       if (contentSlug) {
         updateState({
           contentSlug,

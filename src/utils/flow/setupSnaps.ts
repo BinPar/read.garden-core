@@ -1,8 +1,11 @@
+import type { ContentRange } from '@/@types/state/flow';
 import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
 import redrawHighlights from '@/utils/redrawHighlights';
 import { getState, updateState } from '@/utils/state';
 import updateProgress from '@/utils/updateProgress';
+
+const SCROLL_TOLERANCE = 2;
 
 const setupSnaps = () => {
   const state = getState();
@@ -48,7 +51,7 @@ const setupSnaps = () => {
     left += totalColumnWidth;
   }
 
-  const contentBySnap = new Map<number, string>();
+  const contentBySnapRange: ContentRange[] = [];
   const snapByContent = new Map<string, number>();
 
   const addLabel = (label: string, left: number) => {
@@ -58,7 +61,12 @@ const setupSnaps = () => {
       labelContainer.classList.add('page-label');
       labelContainer.textContent = label;
       snap.appendChild(labelContainer);
-      contentBySnap.set(left, label);
+      const maxLeft = left + SCROLL_TOLERANCE;
+      contentBySnapRange.push({
+        from: maxLeft - totalColumnWidth + 1,
+        to: maxLeft,
+        slug: label,
+      });
     }
   };
 
@@ -126,7 +134,7 @@ const setupSnaps = () => {
       firstSnap: totalColumnWidth,
       lastSnap,
       snapByContent,
-      contentBySnap,
+      contentBySnapRange,
       contentSlug,
       goToEnd: false,
       previousContent: null,

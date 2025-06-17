@@ -115,7 +115,7 @@ export const init = (
       fontsCssLoaded: false,
       snaps: new Set<number>(),
       snapByContent: new Map<string, number>(),
-      contentBySnap: new Map<number, string>(),
+      contentBySnapRange: [],
       fontsUrls: new Map<string, string[]>(),
       firstSnap: 0,
       lastSnap: 0,
