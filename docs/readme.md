@@ -4,12 +4,12 @@
 
 ## Índice General
 
-- [Módulos y lógica de inicialización](#-modulos-y-lógica-de-inicialización)
-- [Funcionamiento general](#-funcionamiento-general)
-- [Proceso de Carga del Visor](#-proceso-de-carga-del-visor)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Flujo de Trabajo](#-flujo-de-trabajo)
-- [Proceso de Build](#-proceso-de-build)
+- [Módulos y lógica de inicialización](#módulos-y-lógica-de-inicialización)
+- [Funcionamiento general](#funcionamiento-general)
+- [Proceso de Carga del Visor](#proceso-de-carga-del-visor)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Flujo de Trabajo](#flujo-de-trabajo)
+- [Proceso de Build](#proceso-de-build)
 
 # Módulos y lógica de inicialización
 

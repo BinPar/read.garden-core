@@ -19,11 +19,11 @@ Nueva versión de Read Garden Viewer Core, extremadamente mejorado y completamen
 
 ## 🌍 Características Principales
 
-- Doble Motor de Renderizado: Soporte nativo para libros de texto que fluyen (modo flow) y contenido de diseño fijo como cómics o revistas (modo fixed).
-- Interactividad y Anotaciones: Funcionalidades integradas para que el usuario pueda resaltar texto con diferentes colores y añadir notas personales.
-- Personalización Avanzada de Lectura: Ofrece un control total sobre la experiencia visual, permitiendo ajustar el tamaño de fuente, cambiar la familia tipográfica y modificar el interlineado y la alineación del texto.
-- Modo dark/light: Incluye modos de visualización claro (light) y oscuro (dark) para adaptarse a distintas condiciones de luz.
-- Diseño "Mobile First": Construido desde cero para un rendimiento óptimo en dispositivos móviles.
+- **Doble Motor de Renderizado**: Soporte nativo para libros de texto que fluyen (modo flow) y contenido de diseño fijo como cómics o revistas (modo fixed).
+- **Interactividad y Anotaciones**: Funcionalidades integradas para que el usuario pueda resaltar texto con diferentes colores y añadir notas personales.
+- **Personalización Avanzada de Lectura**: Ofrece un control total sobre la experiencia visual, permitiendo ajustar el tamaño de fuente, cambiar la familia tipográfica y modificar el interlineado y la alineación del texto.
+- **Modo dark/light**: Incluye modos de visualización claro (light) y oscuro (dark) para adaptarse a distintas condiciones de luz.
+- **Diseño "Mobile First"**: Construido desde cero para un rendimiento óptimo en dispositivos móviles.
 
 ## Primeros Pasos
 
@@ -31,7 +31,7 @@ Nueva versión de Read Garden Viewer Core, extremadamente mejorado y completamen
 
 - pnpm: El proyecto utiliza pnpm como gestor de paquetes. Asegúrate de tenerlo instalado.
 - Node.js: La versión de Node.js requerida es la v22 o superior, como se especifica en el archivo .nvmrc.
-- ngrok: Para una simulación completa del entorno real, se recomienda el uso de dos URLs de ngrok. Esto requiere una cuenta gratuita en [ngrok.com](https://ngrok.com) y conectar tu cuenta localmente.
+- ngrok: Para una simulación completa del entorno real, se recomienda el uso de dos URLs de ngrok. Esto requiere una cuenta gratuita en [ngrok.com](https://ngrok.com) y conectar la cuenta localmente.
 
 ### 🛠️ Configuración del entorno
 
@@ -41,7 +41,7 @@ Nueva versión de Read Garden Viewer Core, extremadamente mejorado y completamen
 pnpm install
 ```
 
-2. Crear cuenta gratuita en [ngrok.com](https://ngrok.com) y configurar tu cuenta localmente.
+2. Crear cuenta gratuita en [ngrok.com](https://ngrok.com) y configurar la cuenta localmente.
 3. Configura las variables de entorno en un archivo `.env` en la raíz del proyecto basado en el `.env.example`
 4. Arrancar el servidor de desarrollo:
 
