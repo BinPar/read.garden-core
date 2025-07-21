@@ -1,88 +1,104 @@
-# Read Garden Core
+<div align="center">
+  
+  ```text
+                    _                       _                                 
+ _ __ ___  __ _  __| |   __ _  __ _ _ __ __| | ___ _ __     ___ ___  _ __ ___ 
+| '__/ _ \/ _` |/ _` |  / _` |/ _` | '__/ _` |/ _ \ '_ \   / __/ _ \| '__/ _ \
+| | |  __/ (_| | (_| | | (_| | (_| | | | (_| |  __/ | | | | (_| (_) | | |  __/
+|_|  \___|\__,_|\__,_|  \__, |\__,_|_|  \__,_|\___|_| |_|  \___\___/|_|  \___|
+                        |___/                                                 
+  ```
+  Desarrollado por [**BinPar Digital Ignition**](https://binpar.com)
+  
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-blue)](https://www.typescriptlang.org)
+  [![Node.js](https://img.shields.io/badge/Node.js-22+-green)](https://nodejs.org)
+  [![License](https://img.shields.io/badge/License-Proprietary-red)](LICENSE)
+</div>
 
-New version of Read Garden viewer core.
-Extremely enhanced and fully built from scratch.
-Mobile first version, mainly intended to work smoothly in mobile apps.
+Nueva versión de Read Garden Viewer Core, extremadamente mejorado y completamente construido desde cero. Primera versión móvil, principalmente destinada a funcionar sin problemas en aplicaciones móviles.
 
-## Basic instructions
+## 🌍 Características Principales
 
-Use `pnpm`.
+- Doble Motor de Renderizado: Soporte nativo para libros de texto que fluyen (modo flow) y contenido de diseño fijo como cómics o revistas (modo fixed).
+- Interactividad y Anotaciones: Funcionalidades integradas para que el usuario pueda resaltar texto con diferentes colores y añadir notas personales.
+- Personalización Avanzada de Lectura: Ofrece un control total sobre la experiencia visual, permitiendo ajustar el tamaño de fuente, cambiar la familia tipográfica y modificar el interlineado y la alineación del texto.
+- Modo dark/light: Incluye modos de visualización claro (light) y oscuro (dark) para adaptarse a distintas condiciones de luz.
+- Diseño "Mobile First": Construido desde cero para un rendimiento óptimo en dispositivos móviles.
 
-## Work with this repo
+## Primeros Pasos
 
-There are multiple dev scripts, but `pnpm dev` should work.
-Check `.env.example` so you can check what you need in your `.env` file.
-It's highly recommended to work with ngrok and all server variables set, so developing conditions will be mostly the same than real web/app.
+### ✅ Requisitos Previos
 
-### Using with ngrok
+- pnpm: El proyecto utiliza pnpm como gestor de paquetes. Asegúrate de tenerlo instalado.
+- Node.js: La versión de Node.js requerida es la v22 o superior, como se especifica en el archivo .nvmrc.
+- ngrok: Para una simulación completa del entorno real, se recomienda el uso de dos URLs de ngrok. Esto requiere una cuenta gratuita en [ngrok.com](https://ngrok.com) y conectar tu cuenta localmente.
 
-Full experience needs **two ngrok** URLs so final behavior can be really simulated.
-For this, you'll need to create a free account in <https://ngrok.com> and [connect your account](https://ngrok.com/docs/getting-started/#step-2-connect-your-account)
+### 🛠️ Configuración del entorno
 
-## Build
+1. Instalar dependencias:
 
-There are different build scripts, using different esbuild configs.
-Dev and expo configs are working, main config is intended to be used when core is extended to web projects as well (might need some testing before it's ready).
+```bash
+pnpm install
+```
 
-To run `npm run build:expo` its necessary that the application repository be in the same folder, the build will be saved in `expoPath` variable from `package.json`.
+2. Crear cuenta gratuita en [ngrok.com](https://ngrok.com) y configurar tu cuenta localmente.
+3. Configura las variables de entorno en un archivo `.env` en la raíz del proyecto basado en el `.env.example`
+4. Arrancar el servidor de desarrollo:
 
-# Gestión de Eventos y Acciones [(Excalidraw)](https://app.excalidraw.com/l/4N9ldVOwdSU/9M9GjIMVcUv)
+```bash
+pnpm run dev
+```
 
-Este proyecto implementa un sistema interactivo basado en eventos (events) y acciones (actions) claramente definidas y separadas según sus responsabilidades. A continuación, se explica detalladamente el funcionamiento del sistema, así como la interacción entre eventos lanzados desde el core y las acciones gestionadas desde el wrapper.
+## 📁 Estructura de directorios
+```text
+read.garden-core/
+├── assets/             # Archivos estáticos como CSS, imágenes y fuentes
+├── dev/                # Lógica para el visor de desarrollo de prueba
+├── scripts/            # Scripts para tareas de automatización (ej. descarga de contenido)
+├── server/             # Backend (servidor Express) para ngrok, cookies y API
+├── src/                # Código fuente principal del visor de libros
+│   ├── @types/         # Definiciones de tipos de TypeScript para todo el proyecto
+│   ├── tools/          # Herramientas de ayuda y funciones genéricas
+│   └── utils/          # Lógica central y utilidades del visor
+│       ├── actions/    # Implementación de las acciones que el wrapper puede invocar
+│       ├── events/     # Lógica para despachar eventos desde el core
+│       ├── fixed/      # Funcionalidades específicas para el modo de visualización "fixed"
+│       └── flow/       # Funcionalidades específicas para el modo de visualización "flow"
+├── web/                # Carpeta de salida para los builds de desarrollo
+├── esbuild.dev.mjs     # Configuración de esbuild para el entorno de desarrollo
+├── esbuild.expo.mjs    # Configuración de esbuild para builds de Expo (React Native)
+├── esbuild.mjs         # Configuración de esbuild para builds de producción
+└── package.json        # Dependencias y scripts del proyecto
+```
 
-## Estructura del Proyecto
+## 🚢 Build
 
-El proyecto consta principalmente de dos tipos de elementos:
+Hay diferentes scripts de compilación, utilizando diferentes configuraciones de ESBuild.
+Las configuraciones de Dev y Expo están funcionando(podría necesitar algunas pruebas antes de que esté lista).
 
-- **EVENTS** (Eventos lanzados desde el core)
-- **ACTIONS** (Acciones ejecutadas desde el wrapper hacia el core)
+Para ejecutar `npm run build:expo` es necesario que el repositorio de aplicaciones esté en la misma carpeta, la compilación se guardará en la variable` expoPath` de `paquete.json`.
 
-Estos elementos interactúan constantemente para manejar la lógica de selección, creación, modificación y eliminación de highlights y notas.
+## 🤝 Cómo Contribuir
 
-### Eventos (EVENTS)
+Todo el trabajo de desarrollo se realiza en la rama develop. Asegúrate de crear tus nuevas ramas a partir de develop y de enviar tus Pull Requests apuntando a esta misma rama. La rama main se reserva para las versiones estables.
+Usamos un formato de commits convencional. La estructura general es la siguiente:
 
-- Eventos emitidos por el core que son escuchados por el wrapper.
-- Ejemplos de eventos:
-  - `onUserSelect`: lanzado al seleccionar texto con el ratón.
-  - `onClickHighlight`: lanzado al hacer clic en un highlight existente.
-  - `onUpdateHighlight`: lanzado al actualizar un highlight.
-  - `onDeleteElement`: lanzado al borrar un highlight o nota.
-  - `onEditElement`: lanzado al editar una nota.
+**Formato**: `type: description`
 
-### Acciones (ACTIONS)
+**Tipos**:
+- `feat`: Nueva característica
+- `fix`: Corrección de bug
+- `docs`: Documentación
+- `style`: Formato (no afecta código)
+- `refactor`: Refactorización
+- `test`: Añadir tests
+- `chore`: Tareas de mantenimiento
 
-- Acciones invocadas por el wrapper que solicitan al core realizar operaciones específicas.
-- Ejemplos de acciones:
-  - `drawHighlights`: dibuja highlights existentes.
-  - `removeHighlights`: elimina highlights existentes.
-  - `showSelectionMenu`: muestra el menú contextual con opciones de selección (tipo, color).
+**Ejemplos**:
+- `feat: some highlights actions and events`
+- `fix: highlights positions`
+- `chore: logs cleaning`
 
-## Flujo de Trabajo
+## 📚 Documentación tecnica
 
-### Selección de Texto y Creación de Elementos
-
-1. **Selección de texto** (`onUserSelect`) lanza un evento desde el core.
-
-   - wrapper responde con `showSelectionMenu`, mostrando las opciones disponibles.
-
-2. **Interacción con menú de selección**:
-
-   - Click en opción "highlight": crea un highlight.
-   - Click en opción "nota": muestra menú de notas con opciones para crear o cancelar.
-
-3. **Creación de highlights o notas**:
-   - Confirmación del usuario ejecuta la creación y lo dibuja en el DOM.
-   - Cancelación cierra el menú y limpia la selección.
-
-### Interacción con Highlights o Notas Existentes
-
-1. **Click en elemento existente** (`onClickHighlight`):
-
-   - Según tipo, lanza menú específico:
-     - Tipo "highlight": muestra menú para cambiar color o eliminar.
-     - Tipo "nota": muestra menú para editar o borrar.
-
-2. **Acciones sobre elementos existentes**:
-   - Cambio de highlighter: ejecuta `onUpdateHighlight`.
-   - Borrado: ejecuta `onDeleteElement`.
-   - Edición de nota: ejecuta `onEditElement`.
+Toda la documentación detallada del proyecto se encuentra en la carpeta [`/docs`](./docs). Te recomendamos empezar por el [README de la documentación](./docs/readme.md), que funciona como un panel de control del estado del proyecto.
