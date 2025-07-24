@@ -1,3 +1,4 @@
+import getDomainForImages from '@/utils/getDomainForImages';
 import loadContentFromIframe from '@/utils/loadContentFromIframe';
 import preloadImages from '@/utils/preloadImages';
 import {
@@ -16,8 +17,7 @@ const downloadHtml = async (url: string, baseUrl?: string) =>
           replacements.push(['%%CDN%%', domain]);
         }
       } else {
-        const { protocol, host } = new URL(baseUrl);
-        const domain = `${protocol}//${host}`;
+        const domain = getDomainForImages();
         replacements.push(['%%CDN%%', domain]);
       }
     }

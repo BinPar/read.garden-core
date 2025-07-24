@@ -1,5 +1,6 @@
 import genericCatch from '@/tools/genericCatch';
 import { getConfig } from '@/utils/config';
+import getDomainForImages from '@/utils/getDomainForImages';
 import loadContentFromIframe from '@/utils/loadContentFromIframe';
 import preloadImages from '@/utils/preloadImages';
 import requestIdleCallback from '@/utils/requestIdleCallback';
@@ -78,8 +79,7 @@ const preloadInBackground = () => {
         replacements.push(['%%CDN%%', domain]);
       }
     } else {
-      const { protocol, host } = new URL(config.baseUrl);
-      const domain = `${protocol}//${host}`;
+      const domain = getDomainForImages();
       replacements.push(['%%CDN%%', domain]);
     }
 
@@ -104,9 +104,7 @@ const preloadInBackground = () => {
       return;
     }
 
-    const { protocol, host } = new URL(config.baseUrl);
-    const domain = `${protocol}//${host}`;
-
+    const domain = getDomainForImages();
     const worker = getWorker();
 
     worker.onmessage = function (e) {

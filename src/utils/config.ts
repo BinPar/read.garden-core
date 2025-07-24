@@ -38,6 +38,7 @@ export const init = (initialOptions: Options) => {
     uiModeLeft:
       initialOptions.options.uiModeLeft ?? defaultCommonConfig.uiModeLeft,
     baseUrl: initialOptions.baseUrl,
+    customRouteForImages: initialOptions.customRouteForImages,
     jsonData: initialOptions.jsonData,
     selectionMenuOptions: initialOptions.options.selectionMenuOptions,
   };

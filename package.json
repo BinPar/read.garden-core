@@ -67,8 +67,9 @@
   "packageManager": "pnpm@9.10.0",
   "readGarden": {
     "publish": {
-      "expoPath": "../read.garden-expo-sample/olectio-viewer/core",
-      "t3ExpoPath": "../read.garden-t3/core"
+      "olectioExpoPath": "../read.garden-expo-sample/olectio-viewer/core",
+      "t3WebExpoPath": "../read.garden-t3/core",
+      "rgAppExpoPath": "../read.garden-mobile/sdk-viewer"
     }
   }
 }
