@@ -8,6 +8,7 @@ export interface FixedConfig {
   maximumZoomValue: number;
   minimumZoomValue: number;
   zoom: number;
+  navigationBarHeight: number;
 }
 
 export type RequiredFixedConfig = Required<

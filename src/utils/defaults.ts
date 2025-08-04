@@ -67,6 +67,7 @@ export const defaultFixedConfig: Required<Omit<FixedConfig, 'layout'>> = {
   zoom: 100,
   gapMode: 'pairs',
   gapSize: 16,
+  navigationBarHeight: 0,
 };
 
 export const defaultState: Required<

@@ -103,6 +103,9 @@ export const init = (initialOptions: Options) => {
         defaultFixedConfig.minimumZoomValue,
       zoom: initialOptions.options.zoom ?? defaultFixedConfig.zoom,
       fitMode: initialOptions.options.fitMode ?? defaultFixedConfig.fitMode,
+      navigationBarHeight:
+        initialOptions.options.navigationBarHeight ??
+        defaultFixedConfig.navigationBarHeight,
     };
   }
 };

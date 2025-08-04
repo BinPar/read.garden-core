@@ -39,6 +39,7 @@ export interface CommonConfig {
   slug: string;
   productSlug?: string;
   eventHandler?: EventHandler;
+  navigationBarHeight?: number;
 }
 
 export type RequiredOptionsKeys = 'direction';

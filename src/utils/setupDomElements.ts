@@ -100,6 +100,8 @@ const setupDomElements = (
 
   const selectionMenu = iframeDoc.createElement('div');
   selectionMenu.id = 'selection-menu';
+  if (initialOptions.options.navigationBarHeight)
+    selectionMenu.style.marginBottom = `${initialOptions.options.navigationBarHeight}px`;
   container.appendChild(selectionMenu);
 
   const noteMenu = iframeDoc.createElement('div');
