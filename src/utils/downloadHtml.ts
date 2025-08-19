@@ -1,3 +1,4 @@
+import { getConfig } from '@/utils/config';
 import getDomainForImages from '@/utils/getDomainForImages';
 import loadContentFromIframe from '@/utils/loadContentFromIframe';
 import preloadImages from '@/utils/preloadImages';
@@ -9,10 +10,10 @@ import {
 const downloadHtml = async (url: string, baseUrl?: string) =>
   new Promise<string>((resolve, reject) => {
     const replacements = new Array<[string, string]>();
-
+    const config = getConfig();
     if (baseUrl) {
       if (baseUrl.startsWith('file://')) {
-        const [domain] = baseUrl.split('/contents');
+        const domain = config.localBaseUrl ?? baseUrl.split('/contents')?.[0];
         if (domain) {
           replacements.push(['%%CDN%%', domain]);
         }

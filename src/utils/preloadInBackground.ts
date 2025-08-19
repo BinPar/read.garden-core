@@ -74,7 +74,8 @@ const preloadInBackground = () => {
     const url = `${config.baseUrl}/${content.file}`;
 
     if (config.baseUrl.startsWith('file://')) {
-      const [domain] = config.baseUrl.split('/contents');
+      const domain =
+        config.localBaseUrl ?? config.baseUrl.split('/contents')?.[0];
       if (domain) {
         replacements.push(['%%CDN%%', domain]);
       }

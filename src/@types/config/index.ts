@@ -32,6 +32,7 @@ export interface CommonConfig {
   uiModeLeft: number;
   baseUrl?: string;
   customRouteForImages?: string;
+  localBaseUrl?: string;
   jsonData?: JsonData;
   initialContentSlug?: string;
   selectionMenuOptions?: SelectionOption[];
@@ -48,6 +49,7 @@ export type OptionsMainKeys =
   | 'productSlug'
   | 'eventHandler'
   | 'baseUrl'
+  | 'localBaseUrl'
   | 'customRouteForImages'
   | 'jsonData'
   | 'lang';
