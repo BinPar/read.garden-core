@@ -8,9 +8,6 @@ const renderUserHighlight = (highlight: UserHighlight) => {
     highlight.range.start.querySelector,
   );
   if (!startContainer) {
-    console.debug(
-      `Could not find start container for ${highlight.range.start.querySelector}`,
-    );
     return;
   }
 
@@ -18,9 +15,6 @@ const renderUserHighlight = (highlight: UserHighlight) => {
     highlight.range.end.querySelector,
   );
   if (!endContainer) {
-    console.debug(
-      `Could not find end container for ${highlight.range.end.querySelector}`,
-    );
     return;
   }
 

@@ -1,10 +1,13 @@
 import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
+import moveBackwards from '@/utils/moveBackwards';
+import moveForward from '@/utils/moveForward';
 import { getState, updateState } from '@/utils/state';
 
 // TODO: Min and max from config
 const minScale = 0.5;
 const maxScale = 4;
+const swipeThreshold = 210;
 
 let parentWidth = 0;
 let parentHeight = 0;
@@ -12,6 +15,7 @@ let parentHeight = 0;
 let scale = 1;
 let verticalStartScale = 0;
 let horizontalStartScale = 0;
+let swipeStartX = 0;
 let startX = 0;
 let startY = 0;
 let originX = 0;
@@ -138,6 +142,7 @@ const setupEvents = () => {
 
   const handleTouchStart = (event: TouchEvent) => {
     updateState({ fitMode: 'none' });
+    swipeStartX = event.touches[0]?.clientX ?? 0;
     if (event.touches.length === 2) {
       startX = state.wrapper.scrollLeft;
       startY = state.wrapper.scrollTop;
@@ -163,6 +168,17 @@ const setupEvents = () => {
   };
 
   const handleTouchEnd = (event: TouchEvent) => {
+    const swipeEndX = event.changedTouches[0]?.clientX ?? 0;
+    const deltaX = swipeStartX - swipeEndX;
+    if (Math.abs(deltaX) > swipeThreshold) {
+      if (deltaX > 0) {
+        // Swipe hacia la izquierda
+        moveForward();
+      } else {
+        // Swipe hacia la derecha
+        moveBackwards();
+      }
+    }
     if (event.touches.length === 0) {
       startDistance = 0;
     }
