@@ -49,6 +49,23 @@ pnpm install
 pnpm run dev
 ```
 
+## 🚀 Arrancar app
+
+Al ejecutar
+```bash
+pnpm run dev
+```
+se mostraran dos enlaces, el enlace web (túnel público) y el del servidor web de Ngrok
+```bash
+::: Server available with Ngrok on: https://example.com
+::: Web available with Ngrok on: https://example.com
+```
+se tienen que abrir ambos y dar click en "Visit site", primero hacerlo en el server y despues en la web, con esto deberia abrir correctamente la aplicacion.
+
+## 🐛 Posibles errores
+
+- **Third-Party Cookies**: si al momento de abrir el enlace de la web, dar click en "Visit site" y si al abrir un enlace para visualizar el visor este se ve blanco, puede que sea por que es necesario activar las cookies de terceros en el navegador. Tanto en mobile como en desktop puede surgir este error.
+
 ## 📁 Estructura de directorios
 ```text
 read.garden-core/

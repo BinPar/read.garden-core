@@ -1,6 +1,7 @@
 import type { FullState } from '@/@types/state';
 import clearSelection from '@/utils/clearSelection';
 import { getConfig } from '@/utils/config';
+import setFitMode from '@/utils/fixed/setFitMode';
 import getSelection from '@/utils/getSelection';
 import hideMenuNote from '@/utils/hideNoteMenu';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
@@ -10,9 +11,11 @@ import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const rightThreshold = 42.5;
+const rightThreshold = 38.5;
+const rightThresholdLandscape = 30.5;
 const leftThreshold = 17.5;
 const progressModes: FullState['progressMode'][] = ['percent', 'label', 'none'];
+let scrollPositionAfterResize = 0;
 
 const setupDomEvents = () => {
   const state = getState();
@@ -40,10 +43,15 @@ const setupDomEvents = () => {
     const touchX = event.x;
     if (touchX) {
       const width = state.doc.body.clientWidth;
+      const isLandscapeOrientation =
+        screen.orientation?.type.includes('landscape');
+      const newRightThreshold = isLandscapeOrientation
+        ? rightThresholdLandscape
+        : rightThreshold;
 
       if (touchX <= width * (leftThreshold / 100)) {
         moveBackwards();
-      } else if (touchX > width - width * (rightThreshold / 100)) {
+      } else if (touchX > width - width * (newRightThreshold / 100)) {
         moveForward();
       } else if (config.touch) {
         switchMode();
@@ -119,10 +127,38 @@ const setupDomEvents = () => {
     }
   };
 
+  const handleOrientationChange = () => {
+    scrollPositionAfterResize = state.wrapper.scrollLeft;
+    setTimeout(() => {
+      const containerRect = state.container.getBoundingClientRect();
+      const containerWidth = Math.floor(containerRect.width);
+      const containerHeight = Math.floor(containerRect.height);
+
+      updateState({
+        containerWidth,
+        containerHeight,
+      });
+
+      if (state.layout === 'fixed') {
+        const newFitMode = state.fitMode || 'height';
+        setFitMode(newFitMode);
+      }
+      if (state.layout === 'flow') {
+        setTimeout(() => {
+          state.wrapper.scrollTo({
+            left: scrollPositionAfterResize,
+            behavior: 'instant',
+          });
+        }, 100);
+      }
+    }, 150);
+  };
+
   window.addEventListener('contextmenu', handleContextMenu, true);
   document.addEventListener('contextmenu', handleContextMenu, true);
   window.addEventListener('contextmenu', handleContextMenu);
   document.addEventListener('contextmenu', handleContextMenu);
+  window.screen.orientation.addEventListener('change', handleOrientationChange);
 
   state.win.addEventListener('contextmenu', handleContextMenu, true);
   state.doc.addEventListener('contextmenu', handleContextMenu, true);

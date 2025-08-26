@@ -9,9 +9,7 @@ const minScale = 0.5;
 const maxScale = 4;
 const swipeThreshold = 210;
 
-let parentWidth = 0;
-let parentHeight = 0;
-
+let isMultipleTouch = false;
 let scale = 1;
 let verticalStartScale = 0;
 let horizontalStartScale = 0;
@@ -34,11 +32,9 @@ export const checkCenter = () => {
   }
 
   window.requestAnimationFrame(() => {
-    if (!parentWidth || !parentHeight) {
-      const parentRect = parent.getBoundingClientRect();
-      parentWidth = parentRect.width;
-      parentHeight = parentRect.height;
-    }
+    const parentRect = parent.getBoundingClientRect();
+    const parentWidth = parentRect.width;
+    const parentHeight = parentRect.height;
 
     const elementRect = element.getBoundingClientRect();
 
@@ -141,6 +137,7 @@ const setupEvents = () => {
   };
 
   const handleTouchStart = (event: TouchEvent) => {
+    isMultipleTouch = event.touches.length > 1;
     updateState({ fitMode: 'none' });
     swipeStartX = event.touches[0]?.clientX ?? 0;
     if (event.touches.length === 2) {
@@ -170,7 +167,7 @@ const setupEvents = () => {
   const handleTouchEnd = (event: TouchEvent) => {
     const swipeEndX = event.changedTouches[0]?.clientX ?? 0;
     const deltaX = swipeStartX - swipeEndX;
-    if (Math.abs(deltaX) > swipeThreshold) {
+    if (Math.abs(deltaX) > swipeThreshold && !isMultipleTouch) {
       if (deltaX > 0) {
         // Swipe hacia la izquierda
         moveForward();
@@ -181,6 +178,7 @@ const setupEvents = () => {
     }
     if (event.touches.length === 0) {
       startDistance = 0;
+      isMultipleTouch = false;
     }
   };
 

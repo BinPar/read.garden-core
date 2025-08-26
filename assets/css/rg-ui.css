@@ -5,7 +5,7 @@
   max-width: calc(100% - 1rem);
   min-width: calc(100% - 1rem);
   left: 50%;
-  top: -20svh;
+  top: -25svh;
   transform: translateX(-50%);
   background-color: #0000043f;
   border-radius: 0.5rem;

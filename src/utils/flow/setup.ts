@@ -164,7 +164,7 @@ const setup = (checkColumns = false) => {
     }
   }
 
-  window.addEventListener('resize', debounce(flowSetup, 300));
+  window.addEventListener('resize', debounce(flowSetup, 500));
 
   addPropertyChangeListener('fontSize', ({ newValue }) => {
     setCssVariable('viewer-margin-top', '200svh');

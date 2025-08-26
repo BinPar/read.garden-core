@@ -6,7 +6,7 @@ import { getState, updateState } from '@/utils/state';
 import updateProgress from '@/utils/updateProgress';
 
 const SCROLL_TOLERANCE = 2;
-
+let isOrientationChanging = false;
 const setupSnaps = () => {
   const state = getState();
   const config = getConfig();
@@ -23,7 +23,7 @@ const setupSnaps = () => {
 
   const totalColumnWidth = state.columnWidth + state.columnGap;
   const wrapperLeft = state.wrapper.getBoundingClientRect().left;
-  const wrapperScrollLeft = state.wrapper.scrollLeft;
+  let wrapperScrollLeft = state.wrapper.scrollLeft;
   const scale = state.readMode ? 1 : config.uiModeScale;
   const chapterEndLeft = state.chapterEnd.getBoundingClientRect().left;
 
@@ -67,6 +67,9 @@ const setupSnaps = () => {
         to: maxLeft,
         slug: label,
       });
+      if (!snapByContent.has(label)) {
+        snapByContent.set(label, left);
+      }
     }
   };
 
@@ -78,6 +81,9 @@ const setupSnaps = () => {
 
   let currentLeft = lefts.shift();
 
+  if (wrapperScrollLeft > maxLeft) {
+    wrapperScrollLeft = maxLeft - totalColumnWidth;
+  }
   for (let i = 0, l = labels.length; i < l; i++) {
     const label = labels[i];
     if (label && currentLeft) {
@@ -85,12 +91,12 @@ const setupSnaps = () => {
       const labelRectLeft = label.getBoundingClientRect().left;
 
       const labelLeft =
-        (labelRectLeft - wrapperLeft) / scale +
+        (labelRectLeft - wrapperLeft) / scale -
         totalColumnWidth +
-        Math.max(wrapperScrollLeft - totalColumnWidth, 0);
+        Math.max(wrapperScrollLeft, 0);
+
       const labelSnap =
-        Math.round(labelLeft / totalColumnWidth) * totalColumnWidth;
-      snapByContent.set(page, currentLeft);
+        Math.ceil(labelLeft / totalColumnWidth) * totalColumnWidth;
 
       while (currentLeft && currentLeft < labelSnap) {
         addLabel(lastLabel, currentLeft);
@@ -146,8 +152,18 @@ const setupSnaps = () => {
   setCssVariable('scroll-behavior', 'auto');
   setCssVariable('scroll-snap-type', 'none');
 
+  window.addEventListener('resize', () => {
+    isOrientationChanging = true;
+  });
   window.requestAnimationFrame(() => {
-    state.wrapper.scrollLeft = scrollLeft;
+    if (!isOrientationChanging) {
+      state.wrapper.scrollLeft = scrollLeft;
+    } else {
+      const snapLeft = state.snapByContent.get(state.contentSlug);
+      state.wrapper.scrollLeft = snapLeft ?? scrollLeft;
+      isOrientationChanging = false;
+    }
+
     window.requestAnimationFrame(() => {
       if (state.currentSelection || state.currentHighlight) {
         updateState({ rendering: false });

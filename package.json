@@ -69,7 +69,7 @@
     "publish": {
       "olectioExpoPath": "../read.garden-expo-sample/olectio-viewer/core",
       "t3WebExpoPath": "../read.garden-t3/core",
-      "rgAppExpoPath": "../read.garden-mobile/sdk-viewer"
+      "rgAppExpoPath": "../../read-garden/read.garden-mobile/sdk-viewer"
     }
   }
 }
