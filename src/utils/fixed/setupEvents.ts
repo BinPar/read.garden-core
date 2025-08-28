@@ -1,3 +1,4 @@
+import isWebKit from '@/tools/isWebKit';
 import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
 import moveBackwards from '@/utils/moveBackwards';
@@ -26,7 +27,6 @@ export const checkCenter = () => {
   const state = getState();
   const element = state.content;
   const parent = element.parentElement;
-
   if (!parent) {
     return;
   }
@@ -45,7 +45,7 @@ export const checkCenter = () => {
       return;
     }
 
-    if (state.isSafari) {
+    if (isWebKit()) {
       elementWidth = elementWidth * scale;
       elementHeight = elementHeight * scale;
     }

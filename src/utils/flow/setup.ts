@@ -7,6 +7,7 @@ import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener'
 import preloadFonts from '@/utils/flow/preloadFonts';
 import setupSnaps from '@/utils/flow/setupSnaps';
 import removeCssVariable from '@/tools/removeCssVariable';
+import isWebKit from '@/tools/isWebKit';
 
 const charWidthFactor = 1.65;
 
@@ -91,7 +92,7 @@ const setup = (checkColumns = false) => {
   }
 
   if (state.initialized) {
-    waitForRender(() => flowSetup(checkColumns), state.isSafari ? 128 : 1);
+    waitForRender(() => flowSetup(checkColumns), isWebKit() ? 128 : 1);
     return;
   }
 
@@ -156,7 +157,7 @@ const setup = (checkColumns = false) => {
             }
             onFinish();
           },
-          state.isSafari ? 256 : 1,
+          isWebKit() ? 256 : 1,
         );
       };
 
