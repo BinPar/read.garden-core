@@ -1,4 +1,5 @@
 import type { FullState } from '@/@types/state';
+import debounce from '@/tools/debounce';
 import clearSelection from '@/utils/clearSelection';
 import { getConfig } from '@/utils/config';
 import setFitMode from '@/utils/fixed/setFitMode';
@@ -16,6 +17,7 @@ const rightThresholdLandscape = 30.5;
 const leftThreshold = 17.5;
 const progressModes: FullState['progressMode'][] = ['percent', 'label', 'none'];
 let scrollPositionAfterResize = 0;
+let scrollPositionAfterSelect = 0;
 
 const setupDomEvents = () => {
   const state = getState();
@@ -107,13 +109,26 @@ const setupDomEvents = () => {
         updateState({
           currentSelection: { range, text },
         });
+        if (!hasSelection) {
+          scrollPositionAfterSelect = state.wrapper.scrollLeft;
+        }
         hasSelection = true;
       }
     } else if (state.currentSelection) {
       clearSelection();
       hideSelectionMenu();
+      debounceScroll();
     }
   };
+
+  const debounceScroll = debounce(() => {
+    if (!state.currentSelection && state.layout === 'flow') {
+      state.wrapper.scrollTo({
+        left: scrollPositionAfterSelect,
+        behavior: 'instant',
+      });
+    }
+  }, 300);
 
   const handleProgressClick = (event: PointerEvent) => {
     preventAndStopPropagation(event);

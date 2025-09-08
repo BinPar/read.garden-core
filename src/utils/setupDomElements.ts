@@ -69,6 +69,9 @@ const setupDomElements = (
   }
 
   const container = iframeDoc.createElement('div');
+  if (!initialOptions.options?.isEReader) {
+    container.classList.add('animated');
+  }
   container.id = 'container';
 
   const backgroundCleaner = iframeDoc.createElement('div');

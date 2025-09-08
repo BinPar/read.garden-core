@@ -115,7 +115,7 @@ body {
   z-index: 30;
 }
 
-.flow.ui-mode #wrapper {
+.flow.ui-mode.animated #wrapper {
   --transform-y: calc(
     calc(var(--vertical-padding-corrector) * 0.5) + var(--ui-top, 0)
   );
@@ -147,10 +147,16 @@ body {
   column-gap: var(--column-gap);
   column-width: var(--column-width);
   overflow-y: hidden;
-  overflow-x: var(--overflow-x, auto);
   touch-action: pan-x;
-  scroll-snap-type: var(--scroll-snap-type, x mandatory);
+}
+.flow.horizontal #wrapper {
+  scroll-behavior: var(--scroll-behavior, auto);
+  overflow-x: hidden;
+}
+.flow.horizontal.animated #wrapper {
   scroll-behavior: var(--scroll-behavior, smooth);
+  overflow-x: var(--overflow-x, auto);
+  scroll-snap-type: var(--scroll-snap-type, x mandatory);
 }
 
 .flow.vertical #wrapper {
@@ -253,14 +259,17 @@ body {
   height: var(--vertical-padding-corrector);
   width: calc(var(--column-width) + var(--column-gap));
   display: flex;
-  transition: top var(--animation-delay);
   justify-content: center;
   align-items: center;
   will-change: top;
 }
 
+.ui-mode.animated .page-label {
+  transition: top var(--animation-delay);
+}
+
 .flow.ui-mode .page-label {
-  top: calc(100svh + var(--pages-labels-transform-y, 0));
+  top: calc(100svh + var(--pages-labels-transform-y, 0)) !important;
 }
 
 #chapter-start,
@@ -400,13 +409,15 @@ body {
   filter: brightness(0.95) drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 1px);
   gap: 0.25rem;
   bottom: -6rem;
-  transition: bottom var(--animation-delay);
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   border-top: 1px solid #ddd;
   overflow-x: scroll;
   will-change: bottom;
+}
+.flow.animated #selection-menu {
+  transition: bottom var(--animation-delay);
 }
 
 #selection-menu button {

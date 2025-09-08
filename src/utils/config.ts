@@ -42,6 +42,7 @@ export const init = (initialOptions: Options) => {
     customRouteForImages: initialOptions.customRouteForImages,
     jsonData: initialOptions.jsonData,
     selectionMenuOptions: initialOptions.options.selectionMenuOptions,
+    isEReader: initialOptions.options.isEReader,
   };
 
   if (initialOptions.layout === 'flow') {

@@ -1,20 +1,27 @@
 import type { ContentRange } from '@/@types/state/flow';
 import setCssVariable from '@/tools/setCssVariable';
+import { getConfig } from '@/utils/config';
 import goToNextContent from '@/utils/goToNextContent';
 import goToPreviousContent from '@/utils/goToPreviousContent';
+import moveBackwards from '@/utils/moveBackwards';
+import moveForward from '@/utils/moveForward';
 import { getState, updateState } from '@/utils/state';
 import waitForRender from '@/utils/waitForRender';
 
 const scrollThreshold = 256;
 const flowThreshold = 0.25;
+const swipeThreshold = 210;
 
 let leftThreshold = 0;
 let rightThreshold = 0;
 let wasNotSmooth = false;
 let handledScrollEnd = false;
+let isMultipleTouch = false;
+let swipeStartX = 0;
 
 const setupEvents = () => {
   const state = getState();
+  const config = getConfig();
 
   if (state.layout !== 'flow') {
     return;
@@ -116,12 +123,35 @@ const setupEvents = () => {
       setCssVariable('scroll-snap-type', 'none');
     } else if (wasNotSmooth) {
       wasNotSmooth = false;
-      setCssVariable('scroll-behavior', 'smooth');
+      setCssVariable('scroll-behavior', config.isEReader ? 'auto' : 'smooth');
       setCssVariable('scroll-snap-type', 'x mandatory');
     }
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchStart = (event: TouchEvent) => {
+    isMultipleTouch = event.touches.length > 1;
+    swipeStartX = event.touches[0]?.clientX ?? 0;
+  };
+
+  const handleTouchEnd = (event: TouchEvent) => {
+    const swipeEndX = event.changedTouches[0]?.clientX ?? 0;
+    const deltaX = swipeStartX - swipeEndX;
+    if (
+      Math.abs(deltaX) > swipeThreshold &&
+      !isMultipleTouch &&
+      config.isEReader
+    ) {
+      if (deltaX > 0) {
+        // Swipe hacia la izquierda
+        moveForward();
+      } else {
+        // Swipe hacia la derecha
+        moveBackwards();
+      }
+    }
+    if (event.touches.length === 0) {
+      isMultipleTouch = false;
+    }
     checkNavigation();
   };
 
@@ -137,7 +167,7 @@ const setupEvents = () => {
 
   state.wrapper.addEventListener('scroll', handleScroll);
   state.viewer.addEventListener('touchend', handleTouchEnd);
-  // state.viewer.addEventListener('touchstart', handleTouchStart);
+  state.viewer.addEventListener('touchstart', handleTouchStart);
 
   state.viewer.addEventListener('pointerdown', handlePointerDown);
   state.viewer.addEventListener('pointerup', handlePointerUp);

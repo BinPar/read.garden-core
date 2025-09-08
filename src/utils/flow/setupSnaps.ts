@@ -174,7 +174,7 @@ const setupSnaps = () => {
       updateState({ rendering: false });
       window.requestAnimationFrame(() => {
         setCssVariable('overflow-x', 'auto');
-        setCssVariable('scroll-behavior', 'smooth');
+        setCssVariable('scroll-behavior', config.isEReader ? 'auto' : 'smooth');
         setCssVariable('scroll-snap-type', 'x mandatory');
         updateProgress();
       });

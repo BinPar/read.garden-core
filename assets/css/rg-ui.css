@@ -12,7 +12,6 @@
   padding-block: 1rem;
   gap: 1rem;
   z-index: 100;
-  transition: top var(--animation-delay);
 }
 
 .ui-mode #ui-container {

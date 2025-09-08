@@ -13,7 +13,7 @@ import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const render = (options?: UIOptions) => {
+const render = (options?: UIOptions, isEReader?: boolean) => {
   if (!options?.buttons?.length && !options?.pageSelect) {
     return;
   }
@@ -21,6 +21,9 @@ const render = (options?: UIOptions) => {
   const state = getState();
 
   const uiContainer = state.doc.createElement('div');
+  if (!isEReader) {
+    uiContainer.style.transition = 'top var(--animation-delay)';
+  }
   uiContainer.id = 'ui-container';
   if (options.buttons) {
     for (let i = 0; i < options.buttons.length; i++) {

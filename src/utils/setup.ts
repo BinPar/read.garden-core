@@ -179,7 +179,7 @@ const setup = (initialOptions: Options) => {
     setupSelectionMenu(config.selectionMenuOptions);
   }
 
-  render(initialOptions.ui);
+  render(initialOptions.ui, initialOptions.options?.isEReader);
 
   addPropertyChangeListener('contentSlug', () => {
     updateProgress();
