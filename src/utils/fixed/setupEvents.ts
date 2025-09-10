@@ -6,7 +6,7 @@ import moveForward from '@/utils/moveForward';
 import { getState, updateState } from '@/utils/state';
 
 // TODO: Min and max from config
-const minScale = 0.5;
+const minScale = 0.2;
 const maxScale = 4;
 const swipeThreshold = 210;
 

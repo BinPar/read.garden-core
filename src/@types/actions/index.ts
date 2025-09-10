@@ -1,4 +1,4 @@
-import type { LineHeight, TextAlign, Theme } from '@/@types/common';
+import type { FitMode, LineHeight, TextAlign, Theme } from '@/@types/common';
 import type { Config } from '@/@types/config';
 import type { SelectionOption, UserHighlight } from '@/@types/selection';
 import type { PropertyChangeHandler, State, StateKey } from '@/@types/state';
@@ -13,6 +13,11 @@ export interface AddOnChangeEvent<T extends StateKey = StateKey> {
 export interface SetTheme {
   type: 'setTheme';
   theme: Theme;
+}
+
+export interface SetFitMode {
+  type: 'setFitMode';
+  fitMode: FitMode;
 }
 
 export interface MovePrev {
@@ -69,6 +74,11 @@ export interface CancelHighlight {
   key: string;
 }
 
+export interface CancelHighlight {
+  type: 'cancelHighlight';
+  key: string;
+}
+
 export interface DrawHighlights {
   type: 'drawHighlights';
   highlights: UserHighlight[];
@@ -94,7 +104,8 @@ export type Action =
   | NavigateToPage
   | ShowSelectionMenu
   | ConfirmHighlight
-  | CancelHighlight;
+  | CancelHighlight
+  | SetFitMode;
 
 export type Actions = {
   [K in Action['type']]: (params: {

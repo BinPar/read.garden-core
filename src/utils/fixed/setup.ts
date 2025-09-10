@@ -1,7 +1,6 @@
 import setCssVariable from '@/tools/setCssVariable';
 import setFitMode from '@/utils/fixed/setFitMode';
 import { setScale } from '@/utils/fixed/setupEvents';
-import redrawHighlights from '@/utils/redrawHighlights';
 import { getState, updateState } from '@/utils/state';
 import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
 
@@ -22,7 +21,7 @@ export const fixedSetup = () => {
     // checkCenter();
     window.requestAnimationFrame(() => {
       setCssVariable('viewer-margin-top', '0');
-      redrawHighlights();
+      // redrawHighlights();
       updateState({ rendering: false });
     });
   });

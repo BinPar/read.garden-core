@@ -10,6 +10,7 @@ import moveNext from '@/utils/actions/moveNext';
 import movePrev from '@/utils/actions/movePrev';
 import navigateToPage from '@/utils/actions/navigateToPage';
 import removeHighlights from '@/utils/actions/removeHighlights';
+import setFitMode from '@/utils/actions/setFitModeAction';
 import setFontFamily from '@/utils/actions/setFontFamily';
 import setLineHeight from '@/utils/actions/setLineHeight';
 import setTextAlign from '@/utils/actions/setTextAlign';
@@ -32,6 +33,7 @@ const actions: Actions = {
   confirmHighlight,
   cancelHighlight,
   showSelectionMenu,
+  setFitMode,
 };
 
 export default actions;
