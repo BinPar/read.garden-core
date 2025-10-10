@@ -1,3 +1,4 @@
+import debounce from '@/tools/debounce';
 import isWebKit from '@/tools/isWebKit';
 import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
@@ -19,12 +20,15 @@ let startX = 0;
 let startY = 0;
 let originX = 0;
 let originY = 0;
+let panStartScrollLeft = 0;
+let panStartScrollTop = 0;
 
 let previousFixedLeft = 0;
 let previousFixedTop = 0;
 
 export const checkCenter = () => {
   const state = getState();
+  const config = getConfig();
   const element = state.content;
   const parent = element.parentElement;
   if (!parent) {
@@ -37,9 +41,19 @@ export const checkCenter = () => {
     const parentHeight = parentRect.height;
 
     const elementRect = element.getBoundingClientRect();
+    const rightRect = state.contentRight
+      ? state.contentRight.getBoundingClientRect()
+      : null;
 
     let elementWidth = elementRect.width;
     let elementHeight = elementRect.height;
+    // In double page layout, use combined width and tallest height
+    if (state.pageLayout === 'double' && rightRect) {
+      elementWidth =
+        elementRect.width + rightRect.width + (config.contentGapSize || 0);
+
+      elementHeight = Math.max(elementRect.height, rightRect.height);
+    }
 
     if (elementHeight === 0 || elementWidth === 0) {
       return;
@@ -125,7 +139,7 @@ const setupEvents = () => {
   }
 
   scale = config.zoom / 100;
-  const element = state.content;
+  const element = state.content?.parentElement ?? state.content;
 
   let startDistance = 0;
 
@@ -140,6 +154,9 @@ const setupEvents = () => {
     isMultipleTouch = event.touches.length > 1;
     updateState({ fitMode: 'none' });
     swipeStartX = event.touches[0]?.clientX ?? 0;
+    // Registrar posición de scroll para detectar pan vs swipe
+    panStartScrollLeft = state.wrapper.scrollLeft;
+    panStartScrollTop = state.wrapper.scrollTop;
     if (event.touches.length === 2) {
       startX = state.wrapper.scrollLeft;
       startY = state.wrapper.scrollTop;
@@ -167,7 +184,25 @@ const setupEvents = () => {
   const handleTouchEnd = (event: TouchEvent) => {
     const swipeEndX = event.changedTouches[0]?.clientX ?? 0;
     const deltaX = swipeStartX - swipeEndX;
-    if (Math.abs(deltaX) > swipeThreshold && !isMultipleTouch) {
+    const effectiveThreshold = swipeThreshold * Math.max(1, scale);
+    const panDeltaX = Math.abs(state.wrapper.scrollLeft - panStartScrollLeft);
+    const panDeltaY = Math.abs(state.wrapper.scrollTop - panStartScrollTop);
+    const panThreshold = 5 * Math.max(1, scale);
+
+    if (
+      panDeltaX > panThreshold ||
+      panDeltaY > panThreshold ||
+      isMultipleTouch
+    ) {
+      if (event.touches.length === 0) {
+        startDistance = 0;
+        debounce(() => {
+          isMultipleTouch = false;
+        }, 500);
+      }
+      return;
+    }
+    if (Math.abs(deltaX) > effectiveThreshold && !isMultipleTouch) {
       if (deltaX > 0) {
         // Swipe hacia la izquierda
         moveForward();
@@ -178,7 +213,9 @@ const setupEvents = () => {
     }
     if (event.touches.length === 0) {
       startDistance = 0;
-      isMultipleTouch = false;
+      debounce(() => {
+        isMultipleTouch = false;
+      }, 500);
     }
   };
 

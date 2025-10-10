@@ -4,10 +4,20 @@ import { getState } from '@/utils/state';
 const redrawHighlights = () => {
   const state = getState();
 
-  state.highlights.remove();
   state.highlights.innerHTML = '';
+  if (state.highlightsRight) {
+    state.highlightsRight.innerHTML = '';
+  }
+
   if (state.layout === 'fixed') {
     state.content.appendChild(state.highlights);
+    if (
+      state.pageLayout === 'double' &&
+      state.contentRight &&
+      state.highlightsRight
+    ) {
+      state.contentRight.appendChild(state.highlightsRight);
+    }
   }
   if (state.layout === 'flow') {
     state.wrapper.appendChild(state.highlights);

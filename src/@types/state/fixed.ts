@@ -4,4 +4,6 @@ export interface FixedState {
   layout: 'fixed';
   zoom: number;
   fitMode: FitMode;
+  contentRight?: HTMLDivElement;
+  rightContentSlug?: string;
 }

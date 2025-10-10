@@ -20,6 +20,8 @@ const setupDomElements = (
   | 'noteMenu'
   | 'textarea'
   | 'notesActions'
+  | 'contentRight'
+  | 'highlightsRight'
 > => {
   const iframe = document.createElement('iframe');
   iframe.id = 'rg-iframe';
@@ -86,19 +88,41 @@ const setupDomElements = (
   wrapper.id = 'wrapper';
   viewer.appendChild(wrapper);
 
-  const content = iframeDoc.createElement('div');
-  content.id = 'content';
+  let content = iframeDoc.createElement('div');
+  content.id = 'content-left';
+
+  let contentRight: HTMLDivElement | undefined;
 
   const highlights = iframeDoc.createElement('div');
   highlights.id = 'highlights';
+  let highlightsRight: HTMLDivElement | undefined;
 
   if (initialOptions.layout === 'fixed') {
     const contentPlaceholder = iframeDoc.createElement('div');
     contentPlaceholder.id = 'content-placeholder';
     wrapper.appendChild(contentPlaceholder);
+
+    // Support two-page layout when configured
+    content = iframeDoc.createElement('div');
+    content.id = 'content';
+    content.classList.add('content');
+    contentRight = iframeDoc.createElement('div');
+    contentRight.id = 'content';
+    contentRight.classList.add('content');
+
+    // Create a second highlights container for the right page
+    highlightsRight = iframeDoc.createElement('div');
+    highlightsRight.id = 'highlights-right';
+
     contentPlaceholder.appendChild(content);
+    contentPlaceholder.appendChild(contentRight);
+    // Attach highlights overlays to each page container
+    content.appendChild(highlights);
+    contentRight.appendChild(highlightsRight);
   } else {
     wrapper.appendChild(content);
+    // Attach single highlights container in flow/single fixed
+    wrapper.appendChild(highlights);
   }
 
   const selectionMenu = iframeDoc.createElement('div');
@@ -139,6 +163,9 @@ const setupDomElements = (
     textarea,
     notesActions,
     preload,
+    contentRight,
+    // Expose right highlights for double-page
+    highlightsRight,
   };
 };
 

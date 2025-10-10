@@ -43,6 +43,9 @@ export const init = (initialOptions: Options) => {
     jsonData: initialOptions.jsonData,
     selectionMenuOptions: initialOptions.options.selectionMenuOptions,
     isEReader: initialOptions.options.isEReader,
+    contentGapSize:
+      initialOptions.options.contentGapSize ??
+      defaultCommonConfig.contentGapSize,
   };
 
   if (initialOptions.layout === 'flow') {

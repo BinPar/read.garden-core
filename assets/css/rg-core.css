@@ -12,7 +12,8 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
 }
 
-#content ::selection {
+#content ::selection,
+#content-right ::selection {
   background-color: var(--selection-highlight-color);
 }
 
@@ -163,15 +164,23 @@ body {
   touch-action: pan-y;
 }
 
-.fixed.paginated #content-placeholder {
-  position: relative;
+.fixed.paginated #wrapper #content-placeholder {
   height: 100%;
   padding-left: var(--fixed-left, 0);
   padding-top: var(--fixed-top, 0);
   will-change: padding-left, padding-top;
 }
 
-#content {
+.fixed.paginated.double #content-placeholder {
+  white-space: nowrap;
+}
+
+#container.fixed.double .content {
+  display: inline-block;
+  position: relative;
+}
+
+.content {
   position: relative;
   user-select: auto;
   text-rendering: optimizeLegibility;
@@ -191,7 +200,7 @@ body {
   text-align: var(--text-align) !important;
 }
 
-#content img {
+.content img {
   pointer-events: none;
   user-select: none;
   cursor: default;
@@ -209,7 +218,7 @@ body {
   filter: invert(1);
 }
 
-.fixed.paginated #content {
+.fixed.paginated .content {
   --scale: calc(var(--zoom) / 100);
   --left: calc(var(--padding-left, 0) / var(--scale));
   --top: calc(var(--padding-top, 0) / var(--scale));
@@ -220,11 +229,33 @@ body {
   will-change: zoom;
 }
 
-.fixed.paginated #content > div:first-child {
+.fixed.paginated.double .content {
+  --scale: calc(var(--zoom) / 100);
+  --left: calc(var(--padding-left, 0) / var(--scale));
+  --top: calc(var(--padding-top, 0) / var(--scale));
+  padding: var(--top) 5px calc(var(--padding-bottom, 0) / var(--scale)) 5px;
+}
+
+.fixed.paginated.double .content {
+  display: inline-block;
+}
+.fixed.paginated.double #content,
+.fixed.paginated.double #content-right {
+  --scale: calc(var(--zoom) / 100);
+  --left: calc(var(--padding-left, 0) / var(--scale));
+  --top: calc(var(--padding-top, 0) / var(--scale));
+  padding: var(--top) 5px calc(var(--padding-bottom, 0) / var(--scale)) 5px;
+}
+
+.fixed.paginated.double .content {
+  display: inline-block;
+}
+
+.fixed.paginated .content > div:first-child {
   position: relative;
 }
 
-.dark.fixed #content > div:first-child::before {
+.dark.fixed .content > div:first-child::before {
   position: absolute;
   content: '';
   inset: 0;
@@ -302,7 +333,8 @@ body {
   display: block;
 }
 
-#highlights {
+#highlights,
+#highlights-right {
   position: absolute;
   top: 0;
   left: 0;
@@ -315,7 +347,14 @@ body {
   top: var(--top);
 }
 
-#highlights > div {
+.fixed.paginated.double #highlights,
+.fixed.paginated.double #highlights-right {
+  left: 5px;
+  top: var(--top);
+}
+
+#highlights > div,
+#highlights-right > div {
   position: absolute;
   border: none;
   mix-blend-mode: multiply;
@@ -328,7 +367,8 @@ body {
   pointer-events: auto;
 }
 
-.dark #highlights > div {
+.dark #highlights > div,
+.dark #highlights-right > div {
   filter: invert(1) contrast(0.6);
 }
 

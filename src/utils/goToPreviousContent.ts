@@ -8,8 +8,11 @@ const goToPreviousContent = () => {
     if (state.layout === 'flow') {
       updateState({ goToEnd: true }, true);
     }
-    
-    loadContent(content.prev);
+    if (state.pageLayout === 'double' && content?.prev?.prev) {
+      loadContent(content?.prev?.prev);
+    } else {
+      loadContent(content.prev);
+    }
   }
 };
 

@@ -6,9 +6,14 @@ import setFitMode from '@/utils/fixed/setFitMode';
 import getSelection from '@/utils/getSelection';
 import hideMenuNote from '@/utils/hideNoteMenu';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
+import loadContent from '@/utils/loadContent';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
+import redrawHighlights from '@/utils/redrawHighlights';
+import waitForRender from '@/utils/waitForRender';
+import isWebKit from '@/tools/isWebKit';
+import { checkCenter } from '@/utils/fixed/setupEvents';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
@@ -103,8 +108,10 @@ const setupDomEvents = () => {
       if (
         range &&
         !range.collapsed &&
-        state.content.contains(range.startContainer) &&
-        state.content.contains(range.endContainer)
+        ((state.content.contains(range.startContainer) &&
+          state.content.contains(range.endContainer)) ||
+          (state.contentRight?.contains(range.startContainer) &&
+            state.contentRight?.contains(range.endContainer)))
       ) {
         updateState({
           currentSelection: { range, text },
@@ -154,16 +161,39 @@ const setupDomEvents = () => {
         containerHeight,
       });
 
-      if (state.layout === 'fixed') {
-        const newFitMode = state.fitMode || 'height';
-        setFitMode(newFitMode);
-      }
+      // Detect mobile landscape orientation
+      const isLandscape = screen.orientation?.type?.includes('landscape');
+      const pageLayout = isLandscape ? 'double' : 'single';
+      updateState({ pageLayout });
+      state.container.classList.remove('single');
+      state.container.classList.remove('double');
+      state.container.classList.add(pageLayout);
+
       if (state.layout === 'flow') {
         setTimeout(() => {
           state.wrapper.scrollTo({
             left: scrollPositionAfterResize,
             behavior: 'instant',
           });
+        }, 100);
+      }
+      if (state.layout === 'fixed') {
+        const currentContent = state.contentsBySlug?.get(state.contentSlug);
+        if (currentContent) {
+          loadContent(currentContent);
+        }
+        setTimeout(() => {
+          const newFitMode = isLandscape ? 'height' : 'width';
+          setFitMode(newFitMode);
+          // Esperar al siguiente frame y un breve timeout para que
+          // se apliquen zoom y centrado antes de recalcular highlights
+          waitForRender(
+            () => {
+              checkCenter();
+              redrawHighlights();
+            },
+            isWebKit() ? 128 : 1,
+          );
         }, 100);
       }
     }, 150);

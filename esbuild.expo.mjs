@@ -23,7 +23,7 @@ const ctx = await context({
   minify: false,
   platform: 'browser',
   target: 'node20',
-  outdir: packageJson.readGarden.publish.olectioExpoPath,
+  outdir: packageJson.readGarden.publish.rgAppExpoPath,
   outExtension: { '.js': '.viewerjs' },
   legalComments: 'none',
   sourcemap: false,

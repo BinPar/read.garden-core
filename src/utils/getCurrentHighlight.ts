@@ -27,18 +27,31 @@ const getCurrentHighlight = ({
   }
 
   const key = `hl-${getId()}`;
+  // Determine which content container the range belongs to (work with Text nodes)
+  let sideOverride: 'left' | 'right' | undefined;
+  if (state.pageLayout === 'double' && state.contentRight) {
+    sideOverride = state.contentRight.contains(range.startContainer)
+      ? 'right'
+      : 'left';
+  }
   const domHighlights = getDomHighlights({
     rects,
     highlighter,
     color,
     key,
     type,
+    sideOverride,
   });
 
   for (let i = 0, l = domHighlights.length; i < l; i++) {
     const highlight = domHighlights[i];
     if (highlight) {
-      state.highlights.appendChild(highlight);
+      const side = highlight.dataset.side;
+      if (side === 'right' && state.highlightsRight) {
+        state.highlightsRight.appendChild(highlight);
+      } else {
+        state.highlights.appendChild(highlight);
+      }
     }
   }
 

@@ -37,6 +37,9 @@ const setupCssVars = () => {
     setCssVariable('padding-left', `${config.padding.left}px`);
     setCssVariable('padding-right', `${config.padding.right}px`);
   }
+  if (config.layout === 'fixed') {
+    setCssVariable('column-gap', `${config.gapSize}px`);
+  }
 };
 
 export default setupCssVars;

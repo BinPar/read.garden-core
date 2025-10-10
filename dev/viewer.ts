@@ -262,6 +262,7 @@ window.onload = () => {
                 fontFamily: 'Obf-Helvetica',
                 selectionMenuOptions: selectionOptions,
                 pageLabelsTransformY: -20,
+                isEReader: false,
               },
               ui: {
                 buttons: [...commonButtons, ...flowButtons],
@@ -293,6 +294,7 @@ window.onload = () => {
                 },
                 zoom: 50,
                 selectionMenuOptions: selectionOptions,
+                isEReader: false,
               },
               ui: {
                 buttons: [...commonButtons, ...fixedButtons],

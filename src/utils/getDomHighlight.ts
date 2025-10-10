@@ -14,6 +14,7 @@ const getDomHighlight = ({
   highlighter,
   type,
   id,
+  side,
 }: {
   top: number;
   left: number;
@@ -24,6 +25,7 @@ const getDomHighlight = ({
   highlighter: string | number;
   type: HighlighterType;
   id?: string | number;
+  side?: 'left' | 'right';
 }) => {
   const state = getState();
 
@@ -35,6 +37,9 @@ const getDomHighlight = ({
   highlight.dataset.key = key;
   highlight.dataset.highlighter = `${highlighter}`;
   highlight.dataset.type = type;
+  if (side) {
+    highlight.dataset.side = side;
+  }
 
   if (id) {
     highlight.dataset.id = `${id}`;

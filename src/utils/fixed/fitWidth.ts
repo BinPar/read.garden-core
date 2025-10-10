@@ -7,7 +7,18 @@ export const getZoom = (content: Element) => {
 
   const horizontalPadding = config.padding.left + config.padding.right;
   const wrapperWidth = state.wrapper.clientWidth - horizontalPadding;
-  const contentWidth = content.clientWidth;
+
+  // Support double-page width by summing left + right + gap
+  const leftChild = state.content?.firstElementChild;
+  const rightChild = state.contentRight?.firstElementChild;
+
+  if (leftChild && rightChild) {
+    const gap = state.pageLayout === 'double' ? config.contentGapSize : 0;
+    const totalWidth = leftChild.clientWidth + rightChild.clientWidth + gap;
+    return (wrapperWidth / totalWidth) * 100;
+  }
+
+  const contentWidth = leftChild?.clientWidth ?? content.clientWidth;
   return (wrapperWidth / contentWidth) * 100;
 };
 

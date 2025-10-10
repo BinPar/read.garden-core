@@ -9,6 +9,7 @@ export interface CommonState {
   theme: Theme;
   layout: Layout;
   readMode: boolean;
+  pageLayout: 'single' | 'double';
 
   contentSlug: string;
   contentOrder: number;
@@ -31,7 +32,9 @@ export interface CommonState {
   viewer: HTMLDivElement;
   wrapper: HTMLDivElement;
   content: HTMLDivElement;
+  contentRight?: HTMLDivElement;
   highlights: HTMLDivElement;
+  highlightsRight?: HTMLDivElement;
   progress: HTMLDivElement;
   preload: HTMLDivElement;
   selectionMenu: HTMLDivElement;

@@ -13,6 +13,7 @@ export const defaultCommonConfig: Required<
     | 'uiModeScale'
     | 'lang'
     | 'selectionHighlightColor'
+    | 'contentGapSize'
   >
 > = {
   lang: 'es',
@@ -32,6 +33,7 @@ export const defaultCommonConfig: Required<
   uiModeLeft: 0,
   uiModeScale: 0.75,
   selectionHighlightColor: '#ff0',
+  contentGapSize: 5,
 };
 
 export const defaultFlowConfig: Required<Omit<FlowConfig, 'layout'>> = {

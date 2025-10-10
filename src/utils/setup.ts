@@ -62,6 +62,9 @@ const setup = (initialOptions: Options) => {
 
   domElements.container.classList.add(config.layout);
   domElements.container.classList.add(config.direction);
+  if (state.pageLayout) {
+    domElements.container.classList.add(`${state.pageLayout}`);
+  }
 
   if (config.layout === 'fixed' && config.paginated) {
     domElements.container.classList.add('paginated');
@@ -96,10 +99,12 @@ const setup = (initialOptions: Options) => {
   }
 
   const observer = new MutationObserver((mutations) => {
-    if (
-      state.layout === 'flow' ||
-      mutations.some((mutation) => mutation.target === state.content)
-    ) {
+    const mutatedContent = mutations.some(
+      (mutation) =>
+        mutation.target === state.content ||
+        mutation.target === state.contentRight,
+    );
+    if (state.layout === 'flow' || mutatedContent) {
       window.requestAnimationFrame(() => {
         const onReady = () => {
           if (state.layout === 'flow') {
@@ -172,6 +177,22 @@ const setup = (initialOptions: Options) => {
     childList: true,
     subtree: true,
   });
+
+  // Observe right page in double layout
+  if (state.content) {
+    observer.observe(state.content, {
+      attributes: false,
+      childList: true,
+      subtree: true,
+    });
+  }
+  if (state.contentRight) {
+    observer.observe(state.contentRight, {
+      attributes: false,
+      childList: true,
+      subtree: true,
+    });
+  }
 
   loadContentBySlug(initialContentSlug);
 

@@ -12,6 +12,7 @@ const getDomHighlights = ({
   key,
   type,
   id,
+  sideOverride,
 }: {
   rects: DOMRect[];
   highlighter: string | number;
@@ -19,6 +20,7 @@ const getDomHighlights = ({
   key: string;
   type: HighlighterType;
   id?: string | number;
+  sideOverride?: 'left' | 'right';
 }) => {
   const state = getState();
   const config = getConfig();
@@ -27,20 +29,36 @@ const getDomHighlights = ({
 
   if (state.layout === 'fixed') {
     const contentRect = state.content.getBoundingClientRect();
+    const contentRightRect = state.contentRight?.getBoundingClientRect();
     for (let i = 0, l = rects.length; i < l; i++) {
       const rect = rects[i];
       if (rect) {
         let top, left, width, height;
+        const computedRight =
+          state.pageLayout === 'double' &&
+          !!contentRightRect &&
+          rect.left >= contentRightRect.left;
+        const isRightPage = sideOverride
+          ? sideOverride === 'right'
+          : computedRight;
+        const baseRect =
+          isRightPage && contentRightRect ? contentRightRect : contentRect;
+        const leftPadding =
+          state.pageLayout === 'double' ? 5 : config.padding.left;
+
         if (isWebKit()) {
-          // En WebKit getBoundingClientRect ya devuelve los valores
-          // visuales escalados (solo se escala el padding por es es fijo)
-          top = rect.top - contentRect.top - config.padding.top / scale;
-          left = rect.left - contentRect.left - config.padding.left / scale;
+          // En WebKit, el contenedor de highlights en doble página usa left: 5px (no escalado).
+          // Por coherencia, sustraemos el padding/gap izquierdo sin dividir por scale.
+          top = rect.top - baseRect.top - config.padding.top / scale;
+          left =
+            state.pageLayout === 'double'
+              ? rect.left - baseRect.left - leftPadding
+              : rect.left - baseRect.left - leftPadding / scale;
           width = rect.width;
           height = rect.height;
         } else {
-          top = (rect.top - contentRect.top - config.padding.top) / scale;
-          left = (rect.left - contentRect.left - config.padding.left) / scale;
+          top = (rect.top - baseRect.top - config.padding.top) / scale;
+          left = (rect.left - baseRect.left - leftPadding) / scale;
           width = rect.width / scale;
           height = rect.height / scale;
         }
@@ -56,6 +74,7 @@ const getDomHighlights = ({
             key,
             type,
             id,
+            side: isRightPage ? 'right' : 'left',
           }),
         );
       }

@@ -42,14 +42,24 @@ export const init = (
   initialState: ReturnType<typeof setupDomElements>,
 ) => {
   const { layout } = initialOptions;
-  const { container } = initialState;
+  const { container, contentRight } = initialState;
+  const { highlightsRight } = initialState as typeof initialState & {
+    highlightsRight?: HTMLDivElement;
+  };
 
   const containerRect = container.getBoundingClientRect();
-  const containerWidth = Math.floor(containerRect.width);
+  let containerWidth = Math.floor(containerRect.width);
+  // If right content exists (double-page), sum both widths
+  if (contentRight) {
+    const rightRect = contentRight.getBoundingClientRect();
+    containerWidth = Math.floor(containerRect.width + rightRect.width);
+  }
   const containerHeight = Math.floor(containerRect.height);
 
   const readMode = initialOptions.options.readMode ?? defaultState.readMode;
   const theme = initialOptions.options.theme ?? defaultState.theme;
+  const isLandscapeOrientation =
+    !!screen && screen.orientation?.type.includes('landscape');
 
   let common: CommonState = {
     ...defaultState,
@@ -77,6 +87,9 @@ export const init = (
     coreHighlightsByKey: new Map<string, CoreHighlight>(),
     userHighlightsById: new Map<string | number, UserHighlight>(),
     pendingDrawActions: new Array<DrawHighlights>(),
+    contentRight: contentRight,
+    highlightsRight: highlightsRight,
+    pageLayout: isLandscapeOrientation ? 'double' : 'single',
   };
 
   if (initialOptions.jsonData) {

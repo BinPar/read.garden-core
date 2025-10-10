@@ -7,8 +7,15 @@ export const getZoom = (content: Element) => {
 
   const verticalPadding = config.padding.top + config.padding.bottom;
   const wrapperHeight = state.wrapper.clientHeight - verticalPadding;
-  const contentHeight = content.clientHeight;
-  return (wrapperHeight / contentHeight) * 100;
+  // Support double-page height by using the tallest page
+  const leftChild = state.content?.firstElementChild;
+  const rightChild = state.contentRight?.firstElementChild;
+
+  const leftHeight = leftChild?.clientHeight ?? content.clientHeight;
+  const rightHeight = rightChild?.clientHeight ?? 0;
+  const maxHeight = Math.max(leftHeight, rightHeight);
+
+  return (wrapperHeight / maxHeight) * 100;
 };
 
 const fitHeight = () => {

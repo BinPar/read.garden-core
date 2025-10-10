@@ -27,6 +27,14 @@ const renderUserHighlight = (highlight: UserHighlight) => {
     return;
   }
 
+  // Determine which content container the stored range belongs to when in double-page
+  const state = getState();
+  let sideOverride: 'left' | 'right' | undefined;
+  if (state.pageLayout === 'double' && state.contentRight) {
+    // Use contains to avoid calling closest on Node (Text may not be Element)
+    sideOverride = state.contentRight.contains(startContainer) ? 'right' : 'left';
+  }
+
   const highlights = getDomHighlights({
     rects: Array.from(rects),
     color: highlight.color,
@@ -34,14 +42,20 @@ const renderUserHighlight = (highlight: UserHighlight) => {
     key: `${highlight.id}`,
     id: highlight.id,
     type: highlight.type,
+    sideOverride,
   });
 
-  const state = getState();
+  
 
   for (let j = 0, m = highlights.length; j < m; j++) {
     const highlightElement = highlights[j];
     if (highlightElement) {
-      state.highlights.appendChild(highlightElement);
+      const side = highlightElement.dataset.side;
+      if (side === 'right' && state.highlightsRight) {
+        state.highlightsRight.appendChild(highlightElement);
+      } else {
+        state.highlights.appendChild(highlightElement);
+      }
     }
   }
 
