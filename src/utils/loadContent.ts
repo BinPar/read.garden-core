@@ -13,7 +13,11 @@ const loadContent = (content: CoreContent) => {
 
   const onHtmlLoaded = async (html: string) => {
     // If in fixed double layout, try to render next content on the right
-    if (state.layout === 'fixed' && state.pageLayout === 'double' && state.contentRight) {
+    if (
+      state.layout === 'fixed' &&
+      state.pageLayout === 'double' &&
+      state.contentRight
+    ) {
       let rightHtml: string | undefined;
       const rightContent = content.next;
       if (rightContent) {
@@ -44,7 +48,6 @@ const loadContent = (content: CoreContent) => {
         state.contentRight.innerHTML = '';
         updateState({ rightContentSlug: undefined });
       }
-      console.log('🚀 ~ onHtmlLoaded ~ renderContent:');
       renderContent(html, rightHtml);
     } else {
       renderContent(html);

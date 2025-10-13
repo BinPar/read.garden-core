@@ -89,7 +89,7 @@ const setupDomElements = (
   viewer.appendChild(wrapper);
 
   let content = iframeDoc.createElement('div');
-  content.id = 'content-left';
+  content.id = 'content';
 
   let contentRight: HTMLDivElement | undefined;
 

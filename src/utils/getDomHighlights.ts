@@ -47,8 +47,6 @@ const getDomHighlights = ({
           state.pageLayout === 'double' ? 5 : config.padding.left;
 
         if (isWebKit()) {
-          // En WebKit, el contenedor de highlights en doble página usa left: 5px (no escalado).
-          // Por coherencia, sustraemos el padding/gap izquierdo sin dividir por scale.
           top = rect.top - baseRect.top - config.padding.top / scale;
           left =
             state.pageLayout === 'double'
@@ -58,7 +56,10 @@ const getDomHighlights = ({
           height = rect.height;
         } else {
           top = (rect.top - baseRect.top - config.padding.top) / scale;
-          left = (rect.left - baseRect.left - leftPadding) / scale;
+          left =
+            state.pageLayout === 'double'
+              ? (rect.left - baseRect.left) / scale - leftPadding
+              : (rect.left - baseRect.left - leftPadding) / scale;
           width = rect.width / scale;
           height = rect.height / scale;
         }

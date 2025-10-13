@@ -7,11 +7,11 @@ import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import renderCurrentHighlight from '@/utils/renderCurrentHighlight';
 import { getState, updateState } from '@/utils/state';
 
-const setupSelectionMenu = (
+function setupSelectionMenu(
   options: SelectionOption[],
   id?: string | number,
   deleteOption?: boolean | string,
-) => {
+) {
   const state = getState();
   state.selectionMenu.innerHTML = '';
 
@@ -77,9 +77,22 @@ const setupSelectionMenu = (
                   'display',
                   `var(--highlighter-${option.key}-display, block)`,
                 );
+                // Mantener coherente el dataset
+                domHighlight.dataset.highlighter = `${option.key}`;
               }
             }
           }
+
+          // Sincronizar el estado persistente para futuros redraws
+          const existing = state.userHighlightsById.get(id);
+          if (existing) {
+            state.userHighlightsById.set(id, {
+              ...existing,
+              color: option.color,
+              highlighter: option.key,
+            });
+          }
+
           dispatchEvent({
             type: 'onHighlightEdit',
             id,
@@ -112,6 +125,6 @@ const setupSelectionMenu = (
       state.selectionMenu.appendChild(button);
     }
   }
-};
+}
 
 export default setupSelectionMenu;
