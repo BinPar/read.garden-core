@@ -2,7 +2,6 @@ import type { FullState } from '@/@types/state';
 import debounce from '@/tools/debounce';
 import clearSelection from '@/utils/clearSelection';
 import { getConfig } from '@/utils/config';
-import setFitMode from '@/utils/fixed/setFitMode';
 import getSelection from '@/utils/getSelection';
 import hideMenuNote from '@/utils/hideNoteMenu';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
@@ -12,10 +11,10 @@ import moveForward from '@/utils/moveForward';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import redrawHighlights from '@/utils/redrawHighlights';
 import waitForRender from '@/utils/waitForRender';
-import isWebKit from '@/tools/isWebKit';
 import { checkCenter } from '@/utils/fixed/setupEvents';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
+import { fixedSetup } from '@/utils/fixed/setup';
 
 const rightThreshold = 38.5;
 const rightThresholdLandscape = 30.5;
@@ -184,16 +183,12 @@ const setupDomEvents = () => {
         }
         setTimeout(() => {
           const newFitMode = isLandscape ? 'height' : 'width';
-          setFitMode(newFitMode);
-          // Esperar al siguiente frame y un breve timeout para que
-          // se apliquen zoom y centrado antes de recalcular highlights
-          waitForRender(
-            () => {
-              checkCenter();
-              redrawHighlights();
-            },
-            isWebKit() ? 128 : 1,
-          );
+          updateState({ fitMode: newFitMode });
+          fixedSetup();
+          waitForRender(() => {
+            checkCenter();
+            redrawHighlights();
+          }, 100);
         }, 100);
       }
     }, 150);
