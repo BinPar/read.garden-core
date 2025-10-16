@@ -44,10 +44,12 @@ const updateColumnNumber = () => {
   );
 
   if (config.direction === 'horizontal') {
+    // const forcedColumns = state.pageLayout === 'double' ? 2 : 1;
     const doubleColumnWidth = containerWidth / 2 - desiredColumnGap;
     const columnCount = Math.min(
       absoluteMaxColumns,
       doubleColumnWidth < minColumnWidth ? 1 : 2,
+      // forcedColumns,
     );
     const totalColumnWidth = containerWidth / columnCount;
     const columnGap = Math.min(
@@ -55,6 +57,15 @@ const updateColumnNumber = () => {
       Math.max(config.columnGap, totalColumnWidth - maxColumnWidth),
     );
     const columnWidth = totalColumnWidth - columnGap;
+
+    if (state.chapterStartRight) {
+      state.chapterStartRight.style.display =
+        columnCount >= 2 ? 'block' : 'none';
+    }
+    if (state.snapsContainerRight) {
+      state.snapsContainerRight.style.display =
+        columnCount >= 2 ? 'block' : 'none';
+    }
 
     setCssVariable('column-count', `${columnCount}`);
     setCssVariable('column-width', `${columnWidth}px`);
@@ -165,7 +176,10 @@ const setup = (checkColumns = false) => {
     }
   }
 
-  window.addEventListener('resize', debounce(flowSetup, 500));
+  window.addEventListener(
+    'resize',
+    debounce(() => flowSetup(true), 500),
+  );
 
   addPropertyChangeListener('fontSize', ({ newValue }) => {
     setCssVariable('viewer-margin-top', '200svh');

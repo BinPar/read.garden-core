@@ -22,6 +22,11 @@ const setupSnaps = () => {
   }
 
   const totalColumnWidth = state.columnWidth + state.columnGap;
+  // En modo doble (landscape) queremos snapear por pares de columnas
+  const pageStride =
+    state.pageLayout === 'double' && state.columnCount >= 2
+      ? totalColumnWidth * 2
+      : totalColumnWidth;
   const wrapperLeft = state.wrapper.getBoundingClientRect().left;
   let wrapperScrollLeft = state.wrapper.scrollLeft;
   const scale = state.readMode ? 1 : config.uiModeScale;
@@ -32,23 +37,37 @@ const setupSnaps = () => {
       ((chapterEndLeft - wrapperLeft) / scale +
         wrapperScrollLeft -
         state.columnGap / 2) /
-        totalColumnWidth,
-    ) * totalColumnWidth;
+        pageStride,
+    ) * pageStride;
 
   state.snapsContainer.innerHTML = '';
+  // Limpiar el contenedor derecho si existe
+  if (state.snapsContainerRight) {
+    state.snapsContainerRight.innerHTML = '';
+  }
   state.snaps.clear();
 
-  let lastSnap = totalColumnWidth;
-  let left = totalColumnWidth;
+  let lastSnap = pageStride;
+  let left = pageStride;
   const snapByLeft = new Map<number, HTMLDivElement>();
-  while (left < maxLeft) {
+  const snapByLeftRight = state.snapsContainerRight
+    ? new Map<number, HTMLDivElement>()
+    : null;
+  while (left <= maxLeft) {
     state.snaps.add(left);
     const snap = state.doc.createElement('div');
     snap.style.left = `${left}px`;
     snapByLeft.set(left, snap);
     state.snapsContainer.appendChild(snap);
+    // Crear snap equivalente en el contenedor derecho cuando estamos en doble página
+    if (snapByLeftRight) {
+      const snapRight = state.doc.createElement('div');
+      snapRight.style.left = `${left}px`;
+      snapByLeftRight.set(left, snapRight);
+      state.snapsContainerRight?.appendChild(snapRight);
+    }
     lastSnap = left;
-    left += totalColumnWidth;
+    left += pageStride;
   }
 
   const contentBySnapRange: ContentRange[] = [];
@@ -61,9 +80,16 @@ const setupSnaps = () => {
       labelContainer.classList.add('page-label');
       labelContainer.textContent = label;
       snap.appendChild(labelContainer);
+      const snapRight = snapByLeftRight?.get(left);
+      if (snapRight) {
+        const labelRight = state.doc.createElement('div');
+        labelRight.classList.add('page-label');
+        labelRight.textContent = label;
+        snapRight.appendChild(labelRight);
+      }
       const maxLeft = left + SCROLL_TOLERANCE;
       contentBySnapRange.push({
-        from: maxLeft - totalColumnWidth + 1,
+        from: maxLeft - pageStride + 1,
         to: maxLeft,
         slug: label,
       });
@@ -82,7 +108,7 @@ const setupSnaps = () => {
   let currentLeft = lefts.shift();
 
   if (wrapperScrollLeft > maxLeft) {
-    wrapperScrollLeft = maxLeft - totalColumnWidth;
+    wrapperScrollLeft = maxLeft - pageStride;
   }
   for (let i = 0, l = labels.length; i < l; i++) {
     const label = labels[i];
@@ -92,12 +118,10 @@ const setupSnaps = () => {
 
       const labelLeft =
         (labelRectLeft - wrapperLeft) / scale -
-        totalColumnWidth +
+        pageStride +
         Math.max(wrapperScrollLeft, 0);
 
-      const labelSnap =
-        Math.ceil(labelLeft / totalColumnWidth) * totalColumnWidth;
-
+      const labelSnap = Math.ceil(labelLeft / pageStride) * pageStride;
       while (currentLeft && currentLeft < labelSnap) {
         addLabel(lastLabel, currentLeft);
         currentLeft = lefts.shift();
@@ -131,13 +155,10 @@ const setupSnaps = () => {
     ? lastLabel
     : (state.previousContent ?? state.contentSlug);
 
-  const scrollLeft = state.goToEnd
-    ? lastSnap
-    : (previousContent ?? totalColumnWidth);
-
+  const scrollLeft = state.goToEnd ? lastSnap : (previousContent ?? pageStride);
   updateState(
     {
-      firstSnap: totalColumnWidth,
+      firstSnap: pageStride,
       lastSnap,
       snapByContent,
       contentBySnapRange,

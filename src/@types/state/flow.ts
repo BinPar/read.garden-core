@@ -12,8 +12,10 @@ export interface FlowState {
   fontsCssLoaded: boolean;
 
   chapterStart: HTMLDivElement;
+  chapterStartRight?: HTMLDivElement;
   chapterEnd: HTMLDivElement;
   snapsContainer: HTMLDivElement;
+  snapsContainerRight?: HTMLDivElement;
   contentBySnapRange: ContentRange[];
   snapByContent: Map<string, number>;
   previousContent: string | null;

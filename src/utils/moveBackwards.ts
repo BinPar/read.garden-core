@@ -11,8 +11,12 @@ const moveBackwards = () => {
       },
       true,
     );
-    const left =
-      state.wrapper.scrollLeft - (state.columnWidth + state.columnGap);
+    const totalColumnWidth = state.columnWidth + state.columnGap;
+    const stride =
+      state.pageLayout === 'double' && state.columnCount >= 2
+        ? totalColumnWidth * 2
+        : totalColumnWidth;
+    const left = state.wrapper.scrollLeft - stride;
     if (left < state.firstSnap) {
       goToPreviousContent();
     } else {

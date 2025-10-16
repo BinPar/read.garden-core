@@ -24,6 +24,7 @@ Nueva versión de Read Garden Viewer Core, extremadamente mejorado y completamen
 - **Personalización Avanzada de Lectura**: Ofrece un control total sobre la experiencia visual, permitiendo ajustar el tamaño de fuente, cambiar la familia tipográfica y modificar el interlineado y la alineación del texto.
 - **Modo dark/light**: Incluye modos de visualización claro (light) y oscuro (dark) para adaptarse a distintas condiciones de luz.
 - **Diseño "Mobile First"**: Construido desde cero para un rendimiento óptimo en dispositivos móviles.
+- **Modo horizontal**: Soporte para lectura en orientación horizontal, ideal para dispositivos con pantallas anchas.
 
 ## Primeros Pasos
 
@@ -52,14 +53,18 @@ pnpm run dev
 ## 🚀 Arrancar app
 
 Al ejecutar
+
 ```bash
 pnpm run dev
 ```
+
 se mostraran dos enlaces, el enlace web (túnel público) y el del servidor web de Ngrok
+
 ```bash
 ::: Server available with Ngrok on: https://example.com
 ::: Web available with Ngrok on: https://example.com
 ```
+
 se tienen que abrir ambos y dar click en "Visit site", primero hacerlo en el server y despues en la web, con esto deberia abrir correctamente la aplicacion.
 
 ## 🐛 Posibles errores
@@ -67,6 +72,7 @@ se tienen que abrir ambos y dar click en "Visit site", primero hacerlo en el ser
 - **Third-Party Cookies**: si al momento de abrir el enlace de la web, dar click en "Visit site" y si al abrir un enlace para visualizar el visor este se ve blanco, puede que sea por que es necesario activar las cookies de terceros en el navegador. Tanto en mobile como en desktop puede surgir este error.
 
 ## 📁 Estructura de directorios
+
 ```text
 read.garden-core/
 ├── assets/             # Archivos estáticos como CSS, imágenes y fuentes
@@ -103,6 +109,7 @@ Usamos un formato de commits convencional. La estructura general es la siguiente
 **Formato**: `type: description`
 
 **Tipos**:
+
 - `feat`: Nueva característica
 - `fix`: Corrección de bug
 - `docs`: Documentación
@@ -112,6 +119,7 @@ Usamos un formato de commits convencional. La estructura general es la siguiente
 - `chore`: Tareas de mantenimiento
 
 **Ejemplos**:
+
 - `feat: some highlights actions and events`
 - `fix: highlights positions`
 - `chore: logs cleaning`

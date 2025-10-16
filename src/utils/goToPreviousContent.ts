@@ -8,9 +8,15 @@ const goToPreviousContent = () => {
     if (state.layout === 'flow') {
       updateState({ goToEnd: true }, true);
     }
-    if (state.pageLayout === 'double' && content?.prev?.prev) {
-      loadContent(content?.prev?.prev);
+    // En layout fijo y doble página, retroceder dos contenidos
+    if (
+      state.layout === 'fixed' &&
+      state.pageLayout === 'double' &&
+      content?.prev?.prev
+    ) {
+      loadContent(content.prev.prev);
     } else {
+      // En flow, retroceder siempre un contenido
       loadContent(content.prev);
     }
   }

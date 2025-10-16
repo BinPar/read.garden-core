@@ -20,8 +20,9 @@ const rightThreshold = 38.5;
 const rightThresholdLandscape = 30.5;
 const leftThreshold = 17.5;
 const progressModes: FullState['progressMode'][] = ['percent', 'label', 'none'];
-let scrollPositionAfterResize = 0;
 let scrollPositionAfterSelect = 0;
+const SWIPE_DELTA_X_THRESHOLD = 80; // movimiento horizontal del puntero (px)
+const PAN_DELTA_THRESHOLD = 5; // cambio de scroll (px)
 
 const setupDomEvents = () => {
   const state = getState();
@@ -30,10 +31,18 @@ const setupDomEvents = () => {
   const touches = new Set<number>();
   let isMultipleTouch = false;
   let hasSelection = false;
+  let pointerStartX = 0;
+  let pointerStartScrollLeft = 0;
+  let pointerStartScrollTop = 0;
 
   const handleTouchStart = (event: PointerEvent) => {
     touches.add(event.pointerId);
     isMultipleTouch = touches.size > 1;
+
+    // Capturar estado inicial para detectar swipe/pan en pointerup
+    pointerStartX = event.clientX;
+    pointerStartScrollLeft = state.wrapper.scrollLeft;
+    pointerStartScrollTop = state.wrapper.scrollTop;
 
     if (state.currentSelection || state.currentHighlight) {
       if (state.currentHighlight) {
@@ -46,6 +55,24 @@ const setupDomEvents = () => {
   };
 
   const checkIfScreenXBorderIsPressed = (event: PointerEvent) => {
+    // Si parece un swipe/pan táctil, no ejecutar navegación por bordes
+    const isTouchPointer = event.pointerType !== 'mouse';
+    const deltaX = Math.abs(event.clientX - pointerStartX);
+    const scrollDeltaX = Math.abs(
+      state.wrapper.scrollLeft - pointerStartScrollLeft,
+    );
+    const scrollDeltaY = Math.abs(
+      state.wrapper.scrollTop - pointerStartScrollTop,
+    );
+    const isSwipeOrPan =
+      isTouchPointer &&
+      (deltaX > SWIPE_DELTA_X_THRESHOLD ||
+        scrollDeltaX > PAN_DELTA_THRESHOLD ||
+        scrollDeltaY > PAN_DELTA_THRESHOLD);
+    if (isSwipeOrPan) {
+      return;
+    }
+
     const touchX = event.x;
     if (touchX) {
       const width = state.doc.body.clientWidth;
@@ -149,7 +176,6 @@ const setupDomEvents = () => {
   };
 
   const handleOrientationChange = () => {
-    scrollPositionAfterResize = state.wrapper.scrollLeft;
     setTimeout(() => {
       const containerRect = state.container.getBoundingClientRect();
       const containerWidth = Math.floor(containerRect.width);
@@ -168,14 +194,6 @@ const setupDomEvents = () => {
       state.container.classList.remove('double');
       state.container.classList.add(pageLayout);
 
-      if (state.layout === 'flow') {
-        setTimeout(() => {
-          state.wrapper.scrollTo({
-            left: scrollPositionAfterResize,
-            behavior: 'instant',
-          });
-        }, 100);
-      }
       if (state.layout === 'fixed') {
         const currentContent = state.contentsBySlug?.get(state.contentSlug);
         if (currentContent) {

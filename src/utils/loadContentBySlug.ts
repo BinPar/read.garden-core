@@ -4,7 +4,6 @@ import { getState } from '@/utils/state';
 
 const loadContentBySlug = (contentSlug: string) => {
   const state = getState();
-
   if (!state.contentsBySlug) {
     throw new Error('Missing contents by slug map');
   }
