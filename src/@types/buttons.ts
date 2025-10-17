@@ -15,7 +15,8 @@ export type ButtonType =
   | 'drawHighlights'
   | 'removeHighlights'
   | 'setFontFamily'
-  | 'setTheme';
+  | 'setTheme'
+  | 'togglePageLayout';
 
 export interface Button<T extends keyof FullState = never> {
   type: ButtonType;

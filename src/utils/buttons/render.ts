@@ -10,6 +10,7 @@ import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import navigateToContentSlug from '@/utils/navigateToContentSlug';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
+import setPageLayout from '@/utils/setPageLayout';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
@@ -82,6 +83,9 @@ const render = (options?: UIOptions, isEReader?: boolean) => {
 
               if (type === 'setFontFamily') {
                 setFontFamily(value as string);
+              }
+              if (type === 'togglePageLayout') {
+                setPageLayout('auto');
               }
             }
           }

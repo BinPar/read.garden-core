@@ -46,6 +46,10 @@ const commonButtons: Button<'theme'>[] = [
     prop: 'theme',
     value: 'dark',
   },
+  {
+    type: 'togglePageLayout',
+    text: 'Double page',
+  },
 ];
 
 const flowButtons: (

@@ -13,6 +13,7 @@ import removeHighlights from '@/utils/actions/removeHighlights';
 import setFitMode from '@/utils/actions/setFitModeAction';
 import setFontFamily from '@/utils/actions/setFontFamily';
 import setLineHeight from '@/utils/actions/setLineHeight';
+import setPageLayout from '@/utils/actions/setPageLayoutAction';
 import setTextAlign from '@/utils/actions/setTextAlign';
 import setTheme from '@/utils/actions/setTheme';
 import showSelectionMenu from '@/utils/actions/showSelectionMenu';
@@ -34,6 +35,7 @@ const actions: Actions = {
   cancelHighlight,
   showSelectionMenu,
   setFitMode,
+  setPageLayout,
 };
 
 export default actions;

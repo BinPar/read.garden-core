@@ -41,7 +41,7 @@ export const init = (
   initialOptions: Options,
   initialState: ReturnType<typeof setupDomElements>,
 ) => {
-  const { layout } = initialOptions;
+  const { layout, autoPageLayout } = initialOptions;
   const { container, contentRight } = initialState;
   const { highlightsRight } = initialState as typeof initialState & {
     highlightsRight?: HTMLDivElement;
@@ -89,7 +89,7 @@ export const init = (
     pendingDrawActions: new Array<DrawHighlights>(),
     contentRight: contentRight,
     highlightsRight: highlightsRight,
-    pageLayout: isLandscapeOrientation ? 'double' : 'single',
+    pageLayout: isLandscapeOrientation && autoPageLayout ? 'double' : 'single',
   };
 
   if (initialOptions.jsonData) {

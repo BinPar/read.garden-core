@@ -3,13 +3,17 @@ import type { DrawHighlights } from '@/@types/actions';
 import type { Layout, Theme } from '@/@types/common';
 import type { FixedState } from '@/@types/state/fixed';
 import type { FlowState } from '@/@types/state/flow';
-import type { CoreHighlight, CurrentSelection, UserHighlight } from '@/@types/selection';
+import type {
+  CoreHighlight,
+  CurrentSelection,
+  UserHighlight,
+} from '@/@types/selection';
 
 export interface CommonState {
   theme: Theme;
   layout: Layout;
   readMode: boolean;
-  pageLayout: 'single' | 'double';
+  pageLayout: 'single' | 'double' | 'auto';
 
   contentSlug: string;
   contentOrder: number;

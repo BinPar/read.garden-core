@@ -14,6 +14,7 @@ export const defaultCommonConfig: Required<
     | 'lang'
     | 'selectionHighlightColor'
     | 'contentGapSize'
+    | 'autoPageLayout'
   >
 > = {
   lang: 'es',
@@ -34,6 +35,7 @@ export const defaultCommonConfig: Required<
   uiModeScale: 0.75,
   selectionHighlightColor: '#ff0',
   contentGapSize: 5,
+  autoPageLayout: false,
 };
 
 export const defaultFlowConfig: Required<Omit<FlowConfig, 'layout'>> = {

@@ -7,7 +7,7 @@ import updateProgress from '@/utils/updateProgress';
 
 const SCROLL_TOLERANCE = 2;
 let isOrientationChanging = false;
-const setupSnaps = () => {
+const setupSnaps = (pageLayoutChange?: boolean) => {
   const state = getState();
   const config = getConfig();
   const keyboardOpen = state.container.classList?.contains('note-mode');
@@ -177,12 +177,12 @@ const setupSnaps = () => {
     isOrientationChanging = true;
   });
   window.requestAnimationFrame(() => {
-    if (!isOrientationChanging) {
-      state.wrapper.scrollLeft = scrollLeft;
-    } else {
+    if (isOrientationChanging || pageLayoutChange) {
       const snapLeft = state.snapByContent.get(state.contentSlug);
       state.wrapper.scrollLeft = snapLeft ?? scrollLeft;
       isOrientationChanging = false;
+    } else {
+      state.wrapper.scrollLeft = scrollLeft;
     }
 
     window.requestAnimationFrame(() => {

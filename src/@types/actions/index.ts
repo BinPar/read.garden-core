@@ -20,6 +20,11 @@ export interface SetFitMode {
   fitMode: FitMode;
 }
 
+export interface SetPageLayout {
+  type: 'setPageLayout';
+  pageLayout: 'single' | 'double' | 'auto';
+}
+
 export interface MovePrev {
   type: 'movePrev';
 }
@@ -105,7 +110,8 @@ export type Action =
   | ShowSelectionMenu
   | ConfirmHighlight
   | CancelHighlight
-  | SetFitMode;
+  | SetFitMode
+  | SetPageLayout;
 
 export type Actions = {
   [K in Action['type']]: (params: {

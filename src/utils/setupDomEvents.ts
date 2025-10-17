@@ -188,11 +188,13 @@ const setupDomEvents = () => {
 
       // Detect mobile landscape orientation
       const isLandscape = screen.orientation?.type?.includes('landscape');
-      const pageLayout = isLandscape ? 'double' : 'single';
-      updateState({ pageLayout });
-      state.container.classList.remove('single');
-      state.container.classList.remove('double');
-      state.container.classList.add(pageLayout);
+      if (config.autoPageLayout) {
+        const pageLayout = isLandscape ? 'double' : 'single';
+        updateState({ pageLayout });
+        state.container.classList.remove('single');
+        state.container.classList.remove('double');
+        state.container.classList.add(pageLayout);
+      }
 
       if (state.layout === 'fixed') {
         const currentContent = state.contentsBySlug?.get(state.contentSlug);

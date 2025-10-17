@@ -85,6 +85,8 @@ export const init = (initialOptions: Options) => {
         initialOptions.options.fontFamilies ?? defaultFlowConfig.fontFamilies,
       lineHeight:
         initialOptions.options.lineHeight ?? defaultFlowConfig.lineHeight,
+      autoPageLayout:
+        initialOptions.autoPageLayout ?? defaultCommonConfig.autoPageLayout,
       textAlign:
         initialOptions.options.textAlign !== undefined
           ? initialOptions.options.textAlign

@@ -62,9 +62,7 @@ const setup = (initialOptions: Options) => {
 
   domElements.container.classList.add(config.layout);
   domElements.container.classList.add(config.direction);
-  if (state.pageLayout) {
-    domElements.container.classList.add(`${state.pageLayout}`);
-  }
+  domElements.container.classList.add(`${state.pageLayout}`);
 
   if (config.layout === 'fixed' && config.paginated) {
     domElements.container.classList.add('paginated');

@@ -43,6 +43,7 @@ export interface CommonConfig {
   eventHandler?: EventHandler;
   navigationBarHeight?: number;
   contentGapSize: number;
+  autoPageLayout?: boolean;
 }
 
 export type RequiredOptionsKeys = 'direction';
@@ -54,10 +55,11 @@ export type OptionsMainKeys =
   | 'localBaseUrl'
   | 'customRouteForImages'
   | 'jsonData'
-  | 'lang';
-export type PartialOptions = Partial<PartialProperties<
-  Pick<CommonConfig, 'padding' | 'readModeMargin'>
->>;
+  | 'lang'
+  | 'autoPageLayout';
+export type PartialOptions = Partial<
+  PartialProperties<Pick<CommonConfig, 'padding' | 'readModeMargin'>>
+>;
 
 export type RequiredOptions = Required<Pick<CommonConfig, RequiredOptionsKeys>>;
 export type OptionalOptions = Partial<

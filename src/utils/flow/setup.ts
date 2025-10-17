@@ -26,6 +26,7 @@ const updateColumnNumber = () => {
     maxCharsPerColumn,
     columnGap: desiredColumnGap,
     minColumnGap,
+    autoPageLayout,
   } = config;
 
   const { container } = state;
@@ -44,13 +45,17 @@ const updateColumnNumber = () => {
   );
 
   if (config.direction === 'horizontal') {
-    // const forcedColumns = state.pageLayout === 'double' ? 2 : 1;
+    // Numero de columnas según el ancho disponible
     const doubleColumnWidth = containerWidth / 2 - desiredColumnGap;
+    const predictiveColumnCount = doubleColumnWidth < minColumnWidth ? 1 : 2;
+    // Numero de columnas según el pageLayout
+    const pageLayoutColumnCount = state.pageLayout === 'double' ? 2 : 1;
+
     const columnCount = Math.min(
       absoluteMaxColumns,
-      doubleColumnWidth < minColumnWidth ? 1 : 2,
-      // forcedColumns,
+      autoPageLayout ? predictiveColumnCount : pageLayoutColumnCount,
     );
+
     const totalColumnWidth = containerWidth / columnCount;
     const columnGap = Math.min(
       containerWidth - minColumnWidth,
@@ -80,17 +85,17 @@ const updateColumnNumber = () => {
   }
 };
 
-export const flowSetup = (checkColumns = false) => {
+export const flowSetup = (checkColumns = false, pageLayoutChange = false) => {
   if (checkColumns) {
     window.requestAnimationFrame(() => {
       updateColumnNumber();
       window.requestAnimationFrame(() => {
-        setupSnaps();
+        setupSnaps(pageLayoutChange);
       });
     });
   } else {
     window.requestAnimationFrame(() => {
-      setupSnaps();
+      setupSnaps(pageLayoutChange);
     });
   }
 };
