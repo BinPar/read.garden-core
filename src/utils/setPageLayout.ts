@@ -17,6 +17,7 @@ const setPageLayout = (pageLayout: SetPageLayout['pageLayout']) => {
   state.container.classList.remove('single');
   state.container.classList.remove('double');
   state.container.classList.add(newPageLayout);
+  const isLandscape = screen.orientation?.type?.includes('landscape');
   if (state.layout === 'flow') {
     flowSetup(true, true);
   }
@@ -26,6 +27,8 @@ const setPageLayout = (pageLayout: SetPageLayout['pageLayout']) => {
       loadContent(currentContent);
     }
     setTimeout(() => {
+      const newFitMode = isLandscape ? 'height' : 'width';
+      updateState({ fitMode: newFitMode });
       fixedSetup();
       waitForRender(() => {
         checkCenter();

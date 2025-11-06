@@ -108,7 +108,7 @@ const setup = (initialOptions: Options) => {
           if (state.layout === 'flow') {
             flowSetup();
           }
-          if (state.layout === 'fixed') {
+          if (state.layout === 'fixed' && !state.loadingStyles) {
             fixedSetup();
           }
 
