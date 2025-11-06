@@ -11,7 +11,12 @@ const cssLoaderListener: StatePropChangeHandler<'loadingStyles'> = {
     if (state.layout === 'flow') {
       flowSetup(true);
     }
-    if (state.layout === 'fixed') {
+    // validamos el ancho de state.content.firstElementChild para
+    // confirmar que se inserto el contenido del libro
+    if (
+      state.layout === 'fixed' &&
+      (state.content.firstElementChild?.clientWidth || 0) > 0
+    ) {
       fixedSetup();
     }
   },
