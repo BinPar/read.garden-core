@@ -4,6 +4,11 @@ import { getState, updateState } from '@/utils/state';
 const navigateToContentSlug = (contentSlug: string) => {
   const state = getState();
 
+  const currentContentSlug = state.contentSlug;
+  if (currentContentSlug === contentSlug) {
+    return;
+  }
+
   const content = state.contentsBySlug?.get(contentSlug);
 
   if (!content) {

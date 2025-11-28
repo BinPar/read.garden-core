@@ -55,6 +55,11 @@ const setupDomEvents = () => {
   };
 
   const checkIfScreenXBorderIsPressed = (event: PointerEvent) => {
+    const target = event.target as HTMLElement;
+    if (target?.closest?.('a[data-link]')) {
+      // Evita cambios de pagina al hacer clic en un enlace
+      return;
+    }
     // Si parece un swipe/pan táctil, no ejecutar navegación por bordes
     const isTouchPointer = event.pointerType !== 'mouse';
     const deltaX = Math.abs(event.clientX - pointerStartX);
