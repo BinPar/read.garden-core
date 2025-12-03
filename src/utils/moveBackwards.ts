@@ -3,7 +3,7 @@ import { getState, updateState } from '@/utils/state';
 
 const moveBackwards = () => {
   const state = getState();
-  
+
   if (state.layout === 'flow') {
     updateState(
       {
@@ -24,6 +24,14 @@ const moveBackwards = () => {
         left,
         behavior: 'instant',
       });
+      const contentSlug = state.contentBySnapRange.find(
+        (r) => left >= r.from && left <= r.to,
+      )?.slug;
+      if (contentSlug) {
+        updateState({
+          contentSlug,
+        });
+      }
     }
   }
 

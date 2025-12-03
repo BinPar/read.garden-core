@@ -219,6 +219,17 @@ const setupDomEvents = () => {
     }, 150);
   };
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    const { key } = event;
+    if (key === 'ArrowLeft' || key === 'PageUp') {
+      moveBackwards();
+      preventAndStopPropagation(event);
+    } else if (key === 'ArrowRight' || key === 'PageDown') {
+      moveForward();
+      preventAndStopPropagation(event);
+    }
+  };
+
   window.addEventListener('contextmenu', handleContextMenu, true);
   document.addEventListener('contextmenu', handleContextMenu, true);
   window.addEventListener('contextmenu', handleContextMenu);
@@ -226,6 +237,7 @@ const setupDomEvents = () => {
   window.screen.orientation.addEventListener('change', handleOrientationChange);
 
   state.win.addEventListener('contextmenu', handleContextMenu, true);
+  state.win.addEventListener('keydown', handleKeyDown);
   state.doc.addEventListener('contextmenu', handleContextMenu, true);
   state.win.addEventListener('contextmenu', handleContextMenu);
   state.doc.addEventListener('contextmenu', handleContextMenu);

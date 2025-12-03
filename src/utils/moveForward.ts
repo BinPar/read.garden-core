@@ -26,6 +26,14 @@ const moveForward = () => {
         left,
         behavior: 'instant',
       });
+      const contentSlug = state.contentBySnapRange.find(
+        (r) => left >= r.from && left <= r.to,
+      )?.slug;
+      if (contentSlug) {
+        updateState({
+          contentSlug,
+        });
+      }
     }
   }
 
