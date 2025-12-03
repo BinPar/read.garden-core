@@ -42,7 +42,8 @@ export const init = (initialOptions: Options) => {
     customRouteForImages: initialOptions.customRouteForImages,
     jsonData: initialOptions.jsonData,
     selectionMenuOptions: initialOptions.options.selectionMenuOptions,
-    isEReader: initialOptions.options.isEReader,
+    initAnimationsEnabled:
+      initialOptions.options.initAnimationsEnabled === false ? false : true,
     contentGapSize:
       initialOptions.options.contentGapSize ??
       defaultCommonConfig.contentGapSize,

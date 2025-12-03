@@ -10,11 +10,12 @@ import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import navigateToContentSlug from '@/utils/navigateToContentSlug';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
+import setAnimationsEnabled from '@/utils/setAnimationsEnabled';
 import setPageLayout from '@/utils/setPageLayout';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
 
-const render = (options?: UIOptions, isEReader?: boolean) => {
+const render = (options?: UIOptions, animationsEnabled?: boolean) => {
   if (!options?.buttons?.length && !options?.pageSelect) {
     return;
   }
@@ -22,7 +23,7 @@ const render = (options?: UIOptions, isEReader?: boolean) => {
   const state = getState();
 
   const uiContainer = state.doc.createElement('div');
-  if (!isEReader) {
+  if (animationsEnabled) {
     uiContainer.style.transition = 'top var(--animation-delay)';
   }
   uiContainer.id = 'ui-container';
@@ -42,7 +43,7 @@ const render = (options?: UIOptions, isEReader?: boolean) => {
         const prop = typeof button === 'string' ? undefined : button.prop;
         const value = typeof button === 'string' ? undefined : button.value;
         domButton.classList.add('button');
-        domButton.addEventListener('pointerdown', (event) => {
+        domButton.addEventListener('click', (event) => {
           if (event.button === 0) {
             event.preventDefault();
             event.stopPropagation();
@@ -85,7 +86,10 @@ const render = (options?: UIOptions, isEReader?: boolean) => {
                 setFontFamily(value as string);
               }
               if (type === 'togglePageLayout') {
-                setPageLayout('auto');
+                setPageLayout('toggle');
+              }
+              if (type === 'toggleAnimationsEnabled') {
+                setAnimationsEnabled(!state.animationsEnabled);
               }
             }
           }

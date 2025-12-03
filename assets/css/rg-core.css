@@ -318,8 +318,8 @@ body {
   transition: top var(--animation-delay);
 }
 
-.flow.ui-mode .page-label {
-  top: calc(100svh + var(--pages-labels-transform-y, 0)) !important;
+.flow.ui-mode.animated .page-label {
+  top: calc(100svh + var(--pages-labels-transform-y, 0));
 }
 
 #chapter-start,

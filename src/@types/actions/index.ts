@@ -22,7 +22,12 @@ export interface SetFitMode {
 
 export interface SetPageLayout {
   type: 'setPageLayout';
-  pageLayout: 'single' | 'double' | 'auto';
+  pageLayout: 'single' | 'double' | 'toggle';
+}
+
+export interface SetAnimationsEnabled {
+  type: 'setAnimationsEnabled';
+  animationsEnabled: boolean;
 }
 
 export interface MovePrev {
@@ -111,7 +116,8 @@ export type Action =
   | ConfirmHighlight
   | CancelHighlight
   | SetFitMode
-  | SetPageLayout;
+  | SetPageLayout
+  | SetAnimationsEnabled;
 
 export type Actions = {
   [K in Action['type']]: (params: {

@@ -17,6 +17,7 @@ import setPageLayout from '@/utils/actions/setPageLayoutAction';
 import setTextAlign from '@/utils/actions/setTextAlign';
 import setTheme from '@/utils/actions/setTheme';
 import showSelectionMenu from '@/utils/actions/showSelectionMenu';
+import setAnimationsEnabled from '@/utils/actions/setAnimationsEnabledAction';
 
 const actions: Actions = {
   setTheme,
@@ -36,6 +37,7 @@ const actions: Actions = {
   showSelectionMenu,
   setFitMode,
   setPageLayout,
+  setAnimationsEnabled,
 };
 
 export default actions;

@@ -25,8 +25,8 @@ import redrawHighlights from '@/utils/redrawHighlights';
 import showNoteMenu from '@/utils/showNoteMenu';
 
 const setup = (initialOptions: Options) => {
-  const domElements = setupDomElements(initialOptions);
   initConfig(initialOptions);
+  const domElements = setupDomElements(initialOptions);
   initState(initialOptions, domElements);
 
   const config = getConfig();
@@ -198,7 +198,7 @@ const setup = (initialOptions: Options) => {
     setupSelectionMenu(config.selectionMenuOptions);
   }
 
-  render(initialOptions.ui, initialOptions.options?.isEReader);
+  render(initialOptions.ui, state?.animationsEnabled);
 
   addPropertyChangeListener('contentSlug', () => {
     updateProgress();

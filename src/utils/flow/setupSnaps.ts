@@ -195,7 +195,10 @@ const setupSnaps = (pageLayoutChange?: boolean) => {
       updateState({ rendering: false });
       window.requestAnimationFrame(() => {
         setCssVariable('overflow-x', 'auto');
-        setCssVariable('scroll-behavior', config.isEReader ? 'auto' : 'smooth');
+        setCssVariable(
+          'scroll-behavior',
+          state.animationsEnabled ? 'smooth' : 'auto',
+        );
         setCssVariable('scroll-snap-type', 'x mandatory');
         updateProgress();
       });

@@ -71,7 +71,7 @@ const setupDomElements = (
   }
 
   const container = iframeDoc.createElement('div');
-  if (!initialOptions.options?.isEReader) {
+  if (initialOptions.options?.initAnimationsEnabled) {
     container.classList.add('animated');
   }
   container.id = 'container';

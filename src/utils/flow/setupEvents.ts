@@ -1,6 +1,5 @@
 import type { ContentRange } from '@/@types/state/flow';
 import setCssVariable from '@/tools/setCssVariable';
-import { getConfig } from '@/utils/config';
 import goToNextContent from '@/utils/goToNextContent';
 import goToPreviousContent from '@/utils/goToPreviousContent';
 import moveBackwards from '@/utils/moveBackwards';
@@ -21,7 +20,6 @@ let swipeStartX = 0;
 
 const setupEvents = () => {
   const state = getState();
-  const config = getConfig();
 
   if (state.layout !== 'flow') {
     return;
@@ -123,7 +121,10 @@ const setupEvents = () => {
       setCssVariable('scroll-snap-type', 'none');
     } else if (wasNotSmooth) {
       wasNotSmooth = false;
-      setCssVariable('scroll-behavior', config.isEReader ? 'auto' : 'smooth');
+      setCssVariable(
+        'scroll-behavior',
+        state.animationsEnabled ? 'smooth' : 'auto',
+      );
       setCssVariable('scroll-snap-type', 'x mandatory');
     }
   };
@@ -139,7 +140,7 @@ const setupEvents = () => {
     if (
       Math.abs(deltaX) > swipeThreshold &&
       !isMultipleTouch &&
-      config.isEReader
+      !state.animationsEnabled
     ) {
       if (deltaX > 0) {
         // Swipe hacia la izquierda

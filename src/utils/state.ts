@@ -90,6 +90,8 @@ export const init = (
     contentRight: contentRight,
     highlightsRight: highlightsRight,
     pageLayout: isLandscapeOrientation && autoPageLayout ? 'double' : 'single',
+    animationsEnabled:
+      initialOptions.options.initAnimationsEnabled === false ? false : true,
   };
 
   if (initialOptions.jsonData) {

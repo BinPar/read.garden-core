@@ -13,7 +13,8 @@ export interface CommonState {
   theme: Theme;
   layout: Layout;
   readMode: boolean;
-  pageLayout: 'single' | 'double' | 'auto';
+  pageLayout: 'single' | 'double' | 'toggle';
+  animationsEnabled: boolean;
 
   contentSlug: string;
   contentOrder: number;

@@ -32,7 +32,7 @@ export interface CommonConfig {
   uiModeLeft: number;
   baseUrl?: string;
   customRouteForImages?: string;
-  isEReader?: boolean;
+  initAnimationsEnabled?: boolean;
   localBaseUrl?: string;
   jsonData?: JsonData;
   initialContentSlug?: string;

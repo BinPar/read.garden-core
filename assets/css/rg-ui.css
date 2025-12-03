@@ -12,6 +12,7 @@
   padding-block: 1rem;
   gap: 1rem;
   z-index: 100;
+  overflow-x: scroll;
 }
 
 .ui-mode #ui-container {
@@ -29,6 +30,7 @@
   align-items: center;
   text-align: center;
   hyphens: auto;
+  flex-shrink: 0;
 }
 
 #ui-container select {
