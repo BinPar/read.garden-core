@@ -23,6 +23,7 @@ import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import hideMenuNote from '@/utils/hideNoteMenu';
 import redrawHighlights from '@/utils/redrawHighlights';
 import showNoteMenu from '@/utils/showNoteMenu';
+import setCssVariable from '@/tools/setCssVariable';
 
 const setup = (initialOptions: Options) => {
   initConfig(initialOptions);
@@ -250,6 +251,10 @@ const setup = (initialOptions: Options) => {
     } else {
       hideMenuNote();
     }
+  });
+
+  addPropertyChangeListener('brightness', ({ newValue }) => {
+    setCssVariable('brightness', `${newValue}`);
   });
 
   return {

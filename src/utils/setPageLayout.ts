@@ -9,10 +9,7 @@ import waitForRender from '@/utils/waitForRender';
 
 const setPageLayout = (pageLayout: SetPageLayout['pageLayout']) => {
   const state = getState();
-  let newPageLayout = pageLayout;
-  if (newPageLayout === 'toggle') {
-    newPageLayout = state.pageLayout === 'double' ? 'single' : 'double';
-  }
+  const newPageLayout = pageLayout;
   updateState({ pageLayout: newPageLayout });
   state.container.classList.remove('single');
   state.container.classList.remove('double');

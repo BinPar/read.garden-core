@@ -1,11 +1,13 @@
 import type { FitMode } from '@/@types/common';
 import type { UIOptions } from '@/@types/config';
+import decreaseBrightness from '@/utils/decreaseBrightness';
 import setFitMode from '@/utils/fixed/setFitMode';
 import zoomIn from '@/utils/fixed/zoomIn';
 import zoomOut from '@/utils/fixed/zoomOut';
 import decreaseFont from '@/utils/flow/decreaseFont';
 import increaseFont from '@/utils/flow/increaseFont';
 import setFontFamily from '@/utils/flow/setFontFamily';
+import increaseBrightness from '@/utils/increaseBrightness';
 import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import navigateToContentSlug from '@/utils/navigateToContentSlug';
@@ -78,6 +80,14 @@ const render = (options?: UIOptions, animationsEnabled?: boolean) => {
                 decreaseFont();
               }
 
+              if (type === 'increaseBrightness') {
+                increaseBrightness();
+              }
+
+              if (type === 'decreaseBrightness') {
+                decreaseBrightness();
+              }
+
               if (type === 'setFitMode') {
                 setFitMode(value as FitMode);
               }
@@ -85,9 +95,13 @@ const render = (options?: UIOptions, animationsEnabled?: boolean) => {
               if (type === 'setFontFamily') {
                 setFontFamily(value as string);
               }
+
               if (type === 'togglePageLayout') {
-                setPageLayout('toggle');
+                setPageLayout(
+                  state.pageLayout === 'double' ? 'single' : 'double',
+                );
               }
+
               if (type === 'toggleAnimationsEnabled') {
                 setAnimationsEnabled(!state.animationsEnabled);
               }

@@ -21,10 +21,11 @@ body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  filter: brightness(var(--brightness));
 }
 
 #container.dark {
-  filter: invert(1) contrast(0.8);
+  filter: invert(1) contrast(0.8) brightness(var(--brightness));
 }
 
 #progress {

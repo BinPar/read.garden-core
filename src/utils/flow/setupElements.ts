@@ -1,6 +1,10 @@
+import type { Options } from '@/@types/config';
 import type setupDomElements from '@/utils/setupDomElements';
 
-const setupElements = (initialState: ReturnType<typeof setupDomElements>) => {
+const setupElements = (
+  initialState: ReturnType<typeof setupDomElements>,
+  initialOptions: Options,
+) => {
   const chapterStart = initialState.doc.createElement('div');
   chapterStart.id = 'chapter-start';
   initialState.content.insertAdjacentElement('beforebegin', chapterStart);
@@ -16,10 +20,16 @@ const setupElements = (initialState: ReturnType<typeof setupDomElements>) => {
 
   const snapsContainer = initialState.doc.createElement('div');
   snapsContainer.id = 'snaps-container';
+  if (initialOptions.options.hideSnapText) {
+    snapsContainer.style.display = 'none';
+  }
   initialState.wrapper.appendChild(snapsContainer);
 
   const snapsContainerRight = initialState.doc.createElement('div');
   snapsContainerRight.id = 'snaps-container-right';
+  if (initialOptions.options.hideSnapText) {
+    snapsContainerRight.style.display = 'none';
+  }
   initialState.wrapper.appendChild(snapsContainerRight);
 
   return {

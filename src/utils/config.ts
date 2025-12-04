@@ -44,9 +44,14 @@ export const init = (initialOptions: Options) => {
     selectionMenuOptions: initialOptions.options.selectionMenuOptions,
     initAnimationsEnabled:
       initialOptions.options.initAnimationsEnabled === false ? false : true,
+    hideSnapText: initialOptions.options.hideSnapText ?? false,
     contentGapSize:
       initialOptions.options.contentGapSize ??
       defaultCommonConfig.contentGapSize,
+    brightness: initialOptions.options.brightness ?? 1,
+    maxBrightness: 1.5,
+    minBrightness: 0.5,
+    brightnessStep: 0.1,
   };
 
   if (initialOptions.layout === 'flow') {

@@ -13,8 +13,9 @@ export interface CommonState {
   theme: Theme;
   layout: Layout;
   readMode: boolean;
-  pageLayout: 'single' | 'double' | 'toggle';
+  pageLayout: 'single' | 'double';
   animationsEnabled: boolean;
+  brightness: number;
 
   contentSlug: string;
   contentOrder: number;

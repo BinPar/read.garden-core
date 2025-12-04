@@ -11,6 +11,7 @@ const setupCssVars = () => {
   setCssVariable('ui-left', `${config.uiModeLeft}px`);
   setCssVariable('ui-top', `${config.uiModeTop}px`);
   setCssVariable('selection-highlight-color', config.selectionHighlightColor);
+  setCssVariable('brightness', `${config.brightness}`);
 
   if (config.layout === 'flow') {
     setCssVariable('scroll-behavior', 'auto');

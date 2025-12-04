@@ -36,7 +36,8 @@ export type CssVariableKey =
   | 'scroll-snap-type'
   | 'overflow-x'
   | 'pages-labels-transform-y'
-  | 'selection-highlight-color';
+  | 'selection-highlight-color'
+  | 'brightness';
 
 export interface CoreContent {
   file: string;

@@ -54,6 +54,14 @@ const commonButtons: Button<'theme'>[] = [
     type: 'toggleAnimationsEnabled',
     text: 'Animations',
   },
+  {
+    type: 'increaseBrightness',
+    text: '☀️+',
+  },
+  {
+    type: 'decreaseBrightness',
+    text: '☀️-',
+  },
 ];
 
 const flowButtons: (

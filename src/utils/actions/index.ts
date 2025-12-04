@@ -18,6 +18,9 @@ import setTextAlign from '@/utils/actions/setTextAlign';
 import setTheme from '@/utils/actions/setTheme';
 import showSelectionMenu from '@/utils/actions/showSelectionMenu';
 import setAnimationsEnabled from '@/utils/actions/setAnimationsEnabledAction';
+import increaseBrightness from '@/utils/actions/increaseBrightnessAction';
+import decreaseBrightness from '@/utils/actions/decreaseBrightnessAction';
+import setBrightness from '@/utils/actions/setBrightnessAction';
 
 const actions: Actions = {
   setTheme,
@@ -38,6 +41,9 @@ const actions: Actions = {
   setFitMode,
   setPageLayout,
   setAnimationsEnabled,
+  increaseBrightness,
+  decreaseBrightness,
+  setBrightness,
 };
 
 export default actions;

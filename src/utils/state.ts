@@ -92,6 +92,7 @@ export const init = (
     pageLayout: isLandscapeOrientation && autoPageLayout ? 'double' : 'single',
     animationsEnabled:
       initialOptions.options.initAnimationsEnabled === false ? false : true,
+    brightness: 1,
   };
 
   if (initialOptions.jsonData) {
@@ -116,7 +117,7 @@ export const init = (
       throw new Error('Not flow config in flow layout');
     }
 
-    const flowElements = setupFlowElements(initialState);
+    const flowElements = setupFlowElements(initialState, initialOptions);
 
     state = {
       ...common,

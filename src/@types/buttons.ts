@@ -8,6 +8,8 @@ export type ButtonType =
   | 'zoomOut'
   | 'increaseFont'
   | 'decreaseFont'
+  | 'increaseBrightness'
+  | 'decreaseBrightness'
   | 'setFitMode'
   | 'navigateToPage'
   | 'setTextAlign'

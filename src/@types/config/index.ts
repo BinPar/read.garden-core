@@ -33,6 +33,7 @@ export interface CommonConfig {
   baseUrl?: string;
   customRouteForImages?: string;
   initAnimationsEnabled?: boolean;
+  hideSnapText?: boolean;
   localBaseUrl?: string;
   jsonData?: JsonData;
   initialContentSlug?: string;
@@ -44,6 +45,10 @@ export interface CommonConfig {
   navigationBarHeight?: number;
   contentGapSize: number;
   autoPageLayout?: boolean;
+  brightness: number;
+  maxBrightness: number;
+  minBrightness: number;
+  brightnessStep: number;
 }
 
 export type RequiredOptionsKeys = 'direction';

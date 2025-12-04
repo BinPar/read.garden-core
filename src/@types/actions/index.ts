@@ -22,7 +22,7 @@ export interface SetFitMode {
 
 export interface SetPageLayout {
   type: 'setPageLayout';
-  pageLayout: 'single' | 'double' | 'toggle';
+  pageLayout: 'single' | 'double';
 }
 
 export interface SetAnimationsEnabled {
@@ -44,6 +44,19 @@ export interface IncreaseFontSize {
 
 export interface DecreaseFontSize {
   type: 'decreaseFontSize';
+}
+
+export interface IncreaseBrightness {
+  type: 'increaseBrightness';
+}
+
+export interface DecreaseBrightness {
+  type: 'decreaseBrightness';
+}
+
+export interface SetBrightness {
+  type: 'setBrightness';
+  brightness: number;
 }
 
 export interface SetLineHeight {
@@ -117,7 +130,10 @@ export type Action =
   | CancelHighlight
   | SetFitMode
   | SetPageLayout
-  | SetAnimationsEnabled;
+  | SetAnimationsEnabled
+  | IncreaseBrightness
+  | DecreaseBrightness
+  | SetBrightness;
 
 export type Actions = {
   [K in Action['type']]: (params: {
