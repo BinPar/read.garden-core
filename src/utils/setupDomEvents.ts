@@ -207,7 +207,8 @@ const setupDomEvents = () => {
           loadContent(currentContent);
         }
         setTimeout(() => {
-          const newFitMode = isLandscape ? 'height' : 'width';
+          // const newFitMode = isLandscape ? 'height' : 'width';
+          const newFitMode = 'width';
           updateState({ fitMode: newFitMode });
           fixedSetup();
           waitForRender(() => {
