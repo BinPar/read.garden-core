@@ -49,6 +49,7 @@ export interface CommonConfig {
   maxBrightness: number;
   minBrightness: number;
   brightnessStep: number;
+  fitHeightInLandscape?: boolean;
 }
 
 export type RequiredOptionsKeys = 'direction';

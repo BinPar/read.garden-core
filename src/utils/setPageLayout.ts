@@ -1,4 +1,5 @@
 import type { SetPageLayout } from '@/@types/actions';
+import { getConfig } from '@/utils/config';
 import { fixedSetup } from '@/utils/fixed/setup';
 import { checkCenter } from '@/utils/fixed/setupEvents';
 import { flowSetup } from '@/utils/flow/setup';
@@ -9,6 +10,7 @@ import waitForRender from '@/utils/waitForRender';
 
 const setPageLayout = (pageLayout: SetPageLayout['pageLayout']) => {
   const state = getState();
+  const config = getConfig();
   const newPageLayout = pageLayout;
   updateState({ pageLayout: newPageLayout });
   state.container.classList.remove('single');
@@ -24,7 +26,8 @@ const setPageLayout = (pageLayout: SetPageLayout['pageLayout']) => {
       loadContent(currentContent);
     }
     setTimeout(() => {
-      const newFitMode = isLandscape ? 'height' : 'width';
+      const newFitMode =
+        isLandscape && config.fitHeightInLandscape ? 'height' : 'width';
       updateState({ fitMode: newFitMode });
       fixedSetup();
       waitForRender(() => {

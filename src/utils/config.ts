@@ -52,6 +52,7 @@ export const init = (initialOptions: Options) => {
     maxBrightness: 1.5,
     minBrightness: 0.5,
     brightnessStep: 0.1,
+    fitHeightInLandscape: initialOptions.options.fitHeightInLandscape ?? false,
   };
 
   if (initialOptions.layout === 'flow') {
