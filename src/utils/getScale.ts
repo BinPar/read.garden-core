@@ -7,7 +7,7 @@ const getScale = () => {
     return state.zoom / 100;
   }
 
-  if (state.readMode) {
+  if (state.readMode || !state.animationsEnabled) {
     return 1;
   }
   const config = getConfig();
