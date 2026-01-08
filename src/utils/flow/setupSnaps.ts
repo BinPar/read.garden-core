@@ -14,7 +14,6 @@ const setupSnaps = (pageLayoutChange?: boolean) => {
 
   if (
     state.layout !== 'flow' ||
-    config.layout !== 'flow' ||
     // previene cambiar de capitulo al agregar nota en android
     keyboardOpen
   ) {
@@ -36,7 +35,8 @@ const setupSnaps = (pageLayoutChange?: boolean) => {
     Math.floor(
       ((chapterEndLeft - wrapperLeft) / scale +
         wrapperScrollLeft -
-        state.columnGap / 2) /
+        state.columnGap / 2 -
+        1) /
         pageStride,
     ) * pageStride;
 
@@ -141,8 +141,9 @@ const setupSnaps = (pageLayoutChange?: boolean) => {
   if (lefts.length && lastLabel) {
     for (let i = 0, l = lefts.length; i < l; i++) {
       const snapLeft = lefts[i];
-      if (snapLeft) {
-        addLabel(lastLabel, snapLeft);
+      if (snapLeft && currentLeft) {
+        addLabel(lastLabel, currentLeft);
+        currentLeft = snapLeft;
       }
     }
   }

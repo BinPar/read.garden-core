@@ -21,14 +21,14 @@ const setupElements = (
   const snapsContainer = initialState.doc.createElement('div');
   snapsContainer.id = 'snaps-container';
   if (initialOptions.options.hideSnapText) {
-    snapsContainer.style.display = 'none';
+    snapsContainer.classList.add('hide-text');
   }
   initialState.wrapper.appendChild(snapsContainer);
 
   const snapsContainerRight = initialState.doc.createElement('div');
   snapsContainerRight.id = 'snaps-container-right';
   if (initialOptions.options.hideSnapText) {
-    snapsContainerRight.style.display = 'none';
+    snapsContainerRight.classList.add('hide-text');
   }
   initialState.wrapper.appendChild(snapsContainerRight);
 

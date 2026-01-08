@@ -303,6 +303,11 @@ body {
   /* Importante: sin scroll-snap-align para no interferir con el snapping */
 }
 
+#snaps-container.hide-text .page-label,
+#snaps-container-right.hide-text .page-label {
+  display: none;
+}
+
 .page-label {
   position: absolute;
   top: 100svh;
