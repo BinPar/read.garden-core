@@ -17,6 +17,11 @@ body {
   background-color: var(--selection-highlight-color);
 }
 
+.dark #content ::selection,
+.dark #content-right ::selection {
+  background-color: #aaaa00;
+}
+
 #container {
   height: 100%;
   width: 100%;
@@ -422,7 +427,7 @@ body {
 
 #note-menu textarea {
   width: 100%;
-  height: 3.5rem;
+  height: 4.5rem;
   padding: 0.5rem;
   background: #fff;
   border: 1px solid #ddd;
@@ -443,8 +448,8 @@ body {
 
 #note-options button {
   position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
   text-indent: -10000px;
   overflow: hidden;
   cursor: pointer;
@@ -455,7 +460,7 @@ body {
   position: absolute;
   inset: 0;
   background-repeat: no-repeat;
-  background-position: -0.4rem -0.4rem;
+  background-position: -0.5rem -0.5rem;
   background-size: 130%;
 }
 
@@ -505,6 +510,7 @@ body {
   text-indent: -10000px;
   outline: none;
   border-radius: 0.5rem;
+  flex: 1;
 }
 
 .dark #selection-menu button {
@@ -528,21 +534,29 @@ body {
 
 #selection-menu button.delete::after {
   background-image: url(../img/delete.svg);
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 #selection-menu button.highlighter::after {
   mask-image: url(../img/highlighter.svg);
   -webkit-mask-image: url(../img/highlighter.svg);
+  mask-repeat: no-repeat;
+  mask-position: center;
 }
 
 #selection-menu button.highlighter.selected::after {
   mask-image: url(../img/highlighter-selected.svg);
   -webkit-mask-image: url(../img/highlighter-selected.svg);
+  mask-repeat: no-repeat;
+  mask-position: center;
 }
 
 #selection-menu button.note::after {
   mask-image: url(../img/note.svg);
   -webkit-mask-image: url(../img/note.svg);
+  mask-repeat: no-repeat;
+  mask-position: center;
 }
 
 #selection-menu button.note.selected::after {
