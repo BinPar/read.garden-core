@@ -51,7 +51,6 @@
     "http-server": "^14.1.1",
     "js-base64": "^3.7.7",
     "jsonwebtoken": "^9.0.2",
-    "ngrok": "5.0.0-beta.2",
     "prettier": "^3.4.2",
     "redis": "^4.7.0",
     "ts-patch": "^3.3.0",
@@ -71,5 +70,8 @@
       "t3WebExpoPath": "../read.garden-t3/core",
       "rgAppExpoPath": "../../read-garden/read.garden-mobile/sdk-viewer"
     }
+  },
+  "dependencies": {
+    "@ngrok/ngrok": "^1.7.0"
   }
 }
