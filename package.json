@@ -18,7 +18,8 @@
   "type": "module",
   "scripts": {
     "build": "rm -rf build;pnpm run build:bundle && pnpm run build:viewer",
-    "build:expo": "node esbuild.expo.mjs",
+    "build:olectio": "node esbuild.expo.olectio.mjs",
+    "build:rg": "node esbuild.expo.rg.mjs",
     "build:bundle": "node esbuild.mjs",
     "build:dev": "node esbuild.dev.mjs",
     "build:viewer": "tspc --declaration --emitDeclarationOnly --project tsconfig.viewer.json",
