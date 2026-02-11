@@ -27,6 +27,7 @@ const render = (options?: UIOptions, animationsEnabled?: boolean) => {
   const uiContainer = state.doc.createElement('div');
   if (animationsEnabled) {
     uiContainer.style.transition = 'top var(--animation-delay)';
+    state.arrowNavigation.style.transition = 'bottom var(--animation-delay)';
   }
   uiContainer.id = 'ui-container';
   if (options.buttons) {

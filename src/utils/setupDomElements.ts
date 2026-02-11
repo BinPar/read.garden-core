@@ -1,5 +1,5 @@
 import type { Options } from '@/@types/config';
-import type { State } from '@/@types/state';
+import type { ArrowNavigationDivElement, State } from '@/@types/state';
 import { updateState } from '@/utils/state';
 
 const setupDomElements = (
@@ -148,7 +148,9 @@ const setupDomElements = (
   const progress = iframeDoc.createElement('div');
   progress.id = 'progress';
 
-  const arrowNavigation = iframeDoc.createElement('div');
+  const arrowNavigation = iframeDoc.createElement(
+    'div',
+  ) as ArrowNavigationDivElement;
   arrowNavigation.id = 'arrowNavigation';
 
   if (initialOptions.options.showArrowNavigation) {
@@ -164,7 +166,6 @@ const setupDomElements = (
 
     const pagePill = iframeDoc.createElement('div');
     pagePill.className = 'rg-page-pill';
-    pagePill.textContent = '5';
 
     const rightBtn = iframeDoc.createElement('button');
     rightBtn.type = 'button';
@@ -175,6 +176,10 @@ const setupDomElements = (
         <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     `;
+
+    arrowNavigation.leftBtn = leftBtn;
+    arrowNavigation.rightBtn = rightBtn;
+    arrowNavigation.pagePill = pagePill;
 
     arrowNavigation.appendChild(leftBtn);
     arrowNavigation.appendChild(pagePill);

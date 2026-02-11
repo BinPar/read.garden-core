@@ -1,29 +1,29 @@
 import { type Options } from '@/@types/config';
 
-import render from '@/utils/buttons/render';
-import setupDomEvents from '@/utils/setupDomEvents';
-import setupDomElements from '@/utils/setupDomElements';
-import { getState, init as initState, updateState } from '@/utils/state';
-import { getConfig, init as initConfig } from '@/utils/config';
-import setupCssVars from '@/utils/setupCssVars';
-import loadContentBySlug from '@/utils/loadContentBySlug';
 import genericCatch from '@/tools/genericCatch';
-import flowSetup from '@/utils/flow/setup';
+import getId from '@/tools/getId';
+import setCssVariable from '@/tools/setCssVariable';
+import render from '@/utils/buttons/render';
+import { getConfig, init as initConfig } from '@/utils/config';
+import { defaultCommonConfig } from '@/utils/defaults';
+import dispatch from '@/utils/dispatch';
+import dispatchEvent from '@/utils/events/dispatchEvent';
 import fixedSetup from '@/utils/fixed/setup';
 import setupFixedEvents from '@/utils/fixed/setupEvents';
+import flowSetup from '@/utils/flow/setup';
 import setupFlowEvents from '@/utils/flow/setupEvents';
-import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
-import dispatch from '@/utils/dispatch';
-import updateProgress from '@/utils/updateProgress';
-import { defaultCommonConfig } from '@/utils/defaults';
-import dispatchEvent from '@/utils/events/dispatchEvent';
-import setupSelectionMenu from '@/utils/setupSelectionMenu';
-import getId from '@/tools/getId';
-import hideSelectionMenu from '@/utils/hideSelectionMenu';
 import hideMenuNote from '@/utils/hideNoteMenu';
+import hideSelectionMenu from '@/utils/hideSelectionMenu';
+import loadContentBySlug from '@/utils/loadContentBySlug';
 import redrawHighlights from '@/utils/redrawHighlights';
+import setupCssVars from '@/utils/setupCssVars';
+import setupDomElements from '@/utils/setupDomElements';
+import setupDomEvents from '@/utils/setupDomEvents';
+import setupSelectionMenu from '@/utils/setupSelectionMenu';
 import showNoteMenu from '@/utils/showNoteMenu';
-import setCssVariable from '@/tools/setCssVariable';
+import { getState, init as initState, updateState } from '@/utils/state';
+import { addPropertyChangeListener } from '@/utils/state/propertyChangeListener';
+import updateProgress from '@/utils/updateProgress';
 
 const setup = (initialOptions: Options) => {
   initConfig(initialOptions);
@@ -95,6 +95,10 @@ const setup = (initialOptions: Options) => {
   if (!initialContentSlug) {
     console.warn('Missing initial content slug, assuming "1"');
     initialContentSlug = '1';
+  }
+
+  if (state.arrowNavigation.pagePill) {
+    state.arrowNavigation.pagePill.textContent = initialContentSlug;
   }
 
   const observer = new MutationObserver((mutations) => {
@@ -203,6 +207,10 @@ const setup = (initialOptions: Options) => {
 
   addPropertyChangeListener('contentSlug', () => {
     updateProgress();
+
+    if (state.arrowNavigation.pagePill) {
+      state.arrowNavigation.pagePill.textContent = state.contentSlug;
+    }
   });
 
   addPropertyChangeListener('contentOrder', () => {

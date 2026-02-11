@@ -574,7 +574,7 @@ body {
 #arrowNavigation {
   position: fixed;
   left: 50%;
-  bottom: 16px;
+  bottom: -70px;
   transform: translateX(-50%);
   z-index: 2147483647;
 
@@ -595,6 +595,10 @@ body {
   border: 1px solid rgba(0, 0, 0, .06);
 
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.arrowNavigationBottom {
+  bottom: 0 !important;
 }
 
 #arrowNavigation button.rg-nav-btn {

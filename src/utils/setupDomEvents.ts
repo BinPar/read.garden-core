@@ -2,6 +2,8 @@ import type { FullState } from '@/@types/state';
 import debounce from '@/tools/debounce';
 import clearSelection from '@/utils/clearSelection';
 import { getConfig } from '@/utils/config';
+import { fixedSetup } from '@/utils/fixed/setup';
+import { checkCenter } from '@/utils/fixed/setupEvents';
 import getSelection from '@/utils/getSelection';
 import hideMenuNote from '@/utils/hideNoteMenu';
 import hideSelectionMenu from '@/utils/hideSelectionMenu';
@@ -10,11 +12,9 @@ import moveBackwards from '@/utils/moveBackwards';
 import moveForward from '@/utils/moveForward';
 import preventAndStopPropagation from '@/utils/preventAndStopPropagation';
 import redrawHighlights from '@/utils/redrawHighlights';
-import waitForRender from '@/utils/waitForRender';
-import { checkCenter } from '@/utils/fixed/setupEvents';
 import { getState, updateState } from '@/utils/state';
 import switchMode from '@/utils/switchMode';
-import { fixedSetup } from '@/utils/fixed/setup';
+import waitForRender from '@/utils/waitForRender';
 
 const rightThreshold = 38.5;
 const rightThresholdLandscape = 30.5;
@@ -254,6 +254,15 @@ const setupDomEvents = () => {
     'pointercancel',
     preventAndStopPropagation,
   );
+
+  if (state.arrowNavigation.leftBtn && state.arrowNavigation.rightBtn) {
+    state.arrowNavigation.leftBtn.addEventListener('click', () => {
+      moveBackwards();
+    });
+    state.arrowNavigation.rightBtn.addEventListener('click', () => {
+      moveForward();
+    });
+  }
 };
 
 export default setupDomEvents;

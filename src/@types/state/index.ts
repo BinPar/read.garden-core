@@ -8,6 +8,12 @@ import type {
 import type { FixedState } from '@/@types/state/fixed';
 import type { FlowState } from '@/@types/state/flow';
 
+export type ArrowNavigationDivElement = HTMLDivElement & {
+  leftBtn: HTMLButtonElement;
+  rightBtn: HTMLButtonElement;
+  pagePill: HTMLDivElement;
+};
+
 export interface CommonState {
   theme: Theme;
   layout: Layout;
@@ -41,7 +47,7 @@ export interface CommonState {
   highlights: HTMLDivElement;
   highlightsRight?: HTMLDivElement;
   progress: HTMLDivElement;
-  arrowNavigation: HTMLDivElement;
+  arrowNavigation: ArrowNavigationDivElement;
   preload: HTMLDivElement;
   selectionMenu: HTMLDivElement;
   noteMenu: HTMLDivElement;
