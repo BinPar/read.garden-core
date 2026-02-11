@@ -572,25 +572,26 @@ body {
 
 /* Navigation */
 #arrowNavigation {
-  position: sticky;
-  left: 50%;
+  position: fixed;
   bottom: 0;
+  left: 50%;
   transform: translateX(-50%);
-  z-index: 2147483647;
+
+  width: clamp(260px, 35vw, 420px);
+  max-width: calc(100% - 24px);
+
+  z-index: 20;
 
   background: rgba(0, 0, 0, .4);
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 
   padding: 10px 14px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 10px;
 
-  width: clamp(260px, 35vw, 420px);
   justify-content: space-between;
-  max-width: calc(100vw - 24px);
-
   box-shadow: 0 6px 24px rgba(0, 0, 0, .18);
   border: 1px solid rgba(0, 0, 0, .06);
 
