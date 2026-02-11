@@ -572,9 +572,9 @@ body {
 
 /* Navigation */
 #arrowNavigation {
-  position: fixed;
+  position: sticky;
   left: 50%;
-  bottom: -70px;
+  bottom: 0;
   transform: translateX(-50%);
   z-index: 2147483647;
 
@@ -598,7 +598,7 @@ body {
 }
 
 .arrowNavigationBottom {
-  bottom: 0 !important;
+  bottom: -70px !important;
 }
 
 #arrowNavigation button.rg-nav-btn {
