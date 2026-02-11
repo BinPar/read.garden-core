@@ -1,8 +1,8 @@
-import genericCatch from '@/tools/genericCatch';
-import type { JsonData } from '@/@types/rg';
-import type { SelectionOption, SelectionRange } from '@/@types/selection';
 import type { Button } from '@/@types/buttons';
 import type { EventHandler } from '@/@types/events';
+import type { JsonData } from '@/@types/rg';
+import type { SelectionOption, SelectionRange } from '@/@types/selection';
+import genericCatch from '@/tools/genericCatch';
 import getId from '@/tools/getId';
 import nonNullable from '@/tools/nonNullable';
 
@@ -278,6 +278,7 @@ window.onload = () => {
                 fontFamily: 'Obf-Helvetica',
                 selectionMenuOptions: selectionOptions,
                 pageLabelsTransformY: -20,
+                showArrowNavigation: true,
               },
               ui: {
                 buttons: [...commonButtons, ...flowButtons],
@@ -309,6 +310,7 @@ window.onload = () => {
                 },
                 zoom: 50,
                 selectionMenuOptions: selectionOptions,
+                showArrowNavigation: true,
               },
               ui: {
                 buttons: [...commonButtons, ...fixedButtons],

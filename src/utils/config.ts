@@ -53,6 +53,7 @@ export const init = (initialOptions: Options) => {
     minBrightness: 0.5,
     brightnessStep: 0.1,
     fitHeightInLandscape: initialOptions.options.fitHeightInLandscape ?? false,
+    showArrowNavigation: initialOptions.options.showArrowNavigation ?? false,
   };
 
   if (initialOptions.layout === 'flow') {

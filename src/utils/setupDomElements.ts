@@ -22,6 +22,7 @@ const setupDomElements = (
   | 'notesActions'
   | 'contentRight'
   | 'highlightsRight'
+  | 'arrowNavigation'
 > => {
   const iframe = document.createElement('iframe');
   iframe.id = 'rg-iframe';
@@ -146,7 +147,42 @@ const setupDomElements = (
 
   const progress = iframeDoc.createElement('div');
   progress.id = 'progress';
-  container.appendChild(progress);
+
+  const arrowNavigation = iframeDoc.createElement('div');
+  arrowNavigation.id = 'arrowNavigation';
+
+  if (initialOptions.options.showArrowNavigation) {
+    const leftBtn = iframeDoc.createElement('button');
+    leftBtn.type = 'button';
+    leftBtn.className = 'rg-nav-btn';
+    leftBtn.setAttribute('aria-label', 'Página anterior');
+    leftBtn.innerHTML = `
+      <svg class="rg-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+
+    const pagePill = iframeDoc.createElement('div');
+    pagePill.className = 'rg-page-pill';
+    pagePill.textContent = '5';
+
+    const rightBtn = iframeDoc.createElement('button');
+    rightBtn.type = 'button';
+    rightBtn.className = 'rg-nav-btn';
+    rightBtn.setAttribute('aria-label', 'Página siguiente');
+    rightBtn.innerHTML = `
+      <svg class="rg-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+
+    arrowNavigation.appendChild(leftBtn);
+    arrowNavigation.appendChild(pagePill);
+    arrowNavigation.appendChild(rightBtn);
+    container.appendChild(arrowNavigation);
+  } else {
+    container.appendChild(progress);
+  }
 
   return {
     doc: iframeDoc,
@@ -158,6 +194,7 @@ const setupDomElements = (
     wrapper,
     content,
     progress,
+    arrowNavigation,
     selectionMenu,
     noteMenu,
     textarea,

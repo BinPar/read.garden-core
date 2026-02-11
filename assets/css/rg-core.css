@@ -8,8 +8,10 @@ body {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
 }
 
 #content ::selection,
@@ -122,11 +124,8 @@ body {
 }
 
 .flow.ui-mode.animated #wrapper {
-  --transform-y: calc(
-    calc(var(--vertical-padding-corrector) * 0.5) + var(--ui-top, 0)
-  );
-  transform: scale(var(--ui-scale, 1))
-    translate3d(var(--ui-left, 0), var(--transform-y, 0), 0);
+  --transform-y: calc(calc(var(--vertical-padding-corrector) * 0.5) + var(--ui-top, 0));
+  transform: scale(var(--ui-scale, 1)) translate3d(var(--ui-left, 0), var(--transform-y, 0), 0);
 }
 
 .fixed.paginated #wrapper {
@@ -143,8 +142,7 @@ body {
 .flow #wrapper {
   height: calc(100% + 100px);
   pointer-events: var(--pointer-events, auto);
-  padding: var(--padding-top) calc(var(--column-gap) / 2)
-    calc(var(--padding-bottom) + calc(var(--vertical-padding-corrector) * 3));
+  padding: var(--padding-top) calc(var(--column-gap) / 2) calc(var(--padding-bottom) + calc(var(--vertical-padding-corrector) * 3));
 }
 
 .flow.horizontal #wrapper {
@@ -155,10 +153,12 @@ body {
   overflow-y: hidden;
   touch-action: pan-x;
 }
+
 .flow.horizontal #wrapper {
   scroll-behavior: var(--scroll-behavior, auto);
   overflow-x: hidden;
 }
+
 .flow.horizontal.animated #wrapper {
   scroll-behavior: var(--scroll-behavior, smooth);
   overflow-x: var(--overflow-x, auto);
@@ -192,16 +192,16 @@ body {
   cursor: auto;
 }
 
-.flow #content > div:first-child {
+.flow #content>div:first-child {
   font-size: var(--font-size);
   font-family: var(--font-family);
 }
 
-.flow #content > div:first-child * {
+.flow #content>div:first-child * {
   line-height: var(--line-height) !important;
 }
 
-.flow.with-text-align #content > div:first-child * {
+.flow.with-text-align #content>div:first-child * {
   text-align: var(--text-align) !important;
 }
 
@@ -227,8 +227,7 @@ body {
   --scale: calc(var(--zoom) / 100);
   --left: calc(var(--padding-left, 0) / var(--scale));
   --top: calc(var(--padding-top, 0) / var(--scale));
-  padding: var(--top) calc(var(--padding-right, 0) / var(--scale))
-    calc(var(--padding-bottom, 0) / var(--scale)) var(--left);
+  padding: var(--top) calc(var(--padding-right, 0) / var(--scale)) calc(var(--padding-bottom, 0) / var(--scale)) var(--left);
   display: inline-block;
   zoom: var(--scale);
   will-change: zoom;
@@ -244,6 +243,7 @@ body {
 .fixed.paginated.double .content {
   display: inline-block;
 }
+
 .fixed.paginated.double #content,
 .fixed.paginated.double #content-right {
   --scale: calc(var(--zoom) / 100);
@@ -256,11 +256,11 @@ body {
   display: inline-block;
 }
 
-.fixed.paginated .content > div:first-child {
+.fixed.paginated .content>div:first-child {
   position: relative;
 }
 
-.dark.fixed .content > div:first-child::before {
+.dark.fixed .content>div:first-child::before {
   position: absolute;
   content: '';
   inset: 0;
@@ -274,7 +274,7 @@ body {
   left: 0;
 }
 
-#snaps-container > div {
+#snaps-container>div {
   position: absolute;
   top: 0;
   border: 0;
@@ -295,7 +295,7 @@ body {
   left: calc(var(--column-width) + var(--column-gap));
 }
 
-#snaps-container-right > div {
+#snaps-container-right>div {
   position: absolute;
   top: 0;
   border: 0;
@@ -359,11 +359,9 @@ body {
 }
 
 #chapter-end::after {
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 1),
-    rgba(255, 0, 0, 0)
-  );
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 1),
+      rgba(255, 0, 0, 0));
 }
 
 #content span[data-page]::before {
@@ -391,8 +389,8 @@ body {
   top: var(--top);
 }
 
-#highlights > div,
-#highlights-right > div {
+#highlights>div,
+#highlights-right>div {
   position: absolute;
   border: none;
   mix-blend-mode: multiply;
@@ -405,8 +403,8 @@ body {
   pointer-events: auto;
 }
 
-.dark #highlights > div,
-.dark #highlights-right > div {
+.dark #highlights>div,
+.dark #highlights-right>div {
   filter: invert(1) contrast(0.6);
 }
 
@@ -467,10 +465,12 @@ body {
 #note-options button.save::after {
   background-image: url(../img/check.svg);
 }
+
 #note-options button.cancel::after,
 #note-options button.remove::after {
   background-image: url(../img/close.svg);
 }
+
 #note-options button.edit::after {
   background-image: url(../img/edit.svg);
   background-position: 0.15rem;
@@ -494,6 +494,7 @@ body {
   overflow-x: scroll;
   will-change: bottom;
 }
+
 .flow.animated #selection-menu {
   transition: bottom var(--animation-delay);
 }
@@ -567,4 +568,84 @@ body {
 .selection-mode #selection-menu,
 .note-mode #note-menu {
   bottom: 0;
+}
+
+/* Navigation */
+#arrowNavigation {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 2147483647;
+
+  background: rgba(0, 0, 0, .4);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+
+  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  width: clamp(260px, 35vw, 420px);
+  justify-content: space-between;
+  max-width: calc(100vw - 24px);
+
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .18);
+  border: 1px solid rgba(0, 0, 0, .06);
+
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+#arrowNavigation button.rg-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255);
+  color: rgb(255 255 255);
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+  user-select: none;
+}
+
+#arrowNavigation button.rg-nav-btn:hover {
+  filter: brightness(0.98);
+}
+
+#arrowNavigation button.rg-nav-btn:active {
+  transform: translateY(1px);
+}
+
+#arrowNavigation button.rg-nav-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+#arrowNavigation .rg-page-pill {
+  height: 34px;
+  padding: 0 18px;
+  min-width: 92px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgb(255 255 255);
+  color: rgb(255 255 255);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+#arrowNavigation .rg-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
 }

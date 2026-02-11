@@ -1,13 +1,12 @@
-import type { CoreContent } from '@/@types/common';
 import type { DrawHighlights } from '@/@types/actions';
-import type { Layout, Theme } from '@/@types/common';
-import type { FixedState } from '@/@types/state/fixed';
-import type { FlowState } from '@/@types/state/flow';
+import type { CoreContent, Layout, Theme } from '@/@types/common';
 import type {
   CoreHighlight,
   CurrentSelection,
   UserHighlight,
 } from '@/@types/selection';
+import type { FixedState } from '@/@types/state/fixed';
+import type { FlowState } from '@/@types/state/flow';
 
 export interface CommonState {
   theme: Theme;
@@ -42,6 +41,7 @@ export interface CommonState {
   highlights: HTMLDivElement;
   highlightsRight?: HTMLDivElement;
   progress: HTMLDivElement;
+  arrowNavigation: HTMLDivElement;
   preload: HTMLDivElement;
   selectionMenu: HTMLDivElement;
   noteMenu: HTMLDivElement;
