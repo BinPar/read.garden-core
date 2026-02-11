@@ -654,3 +654,11 @@ body {
   height: 18px;
   display: block;
 }
+
+@media (orientation: landscape) and (max-height: 800px) and (hover: none) and (pointer: coarse) {
+  #arrowNavigation {
+    left: auto;
+    transform: none;
+    right: 0;
+  }
+}
