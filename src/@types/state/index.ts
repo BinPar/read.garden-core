@@ -11,7 +11,7 @@ import type { FlowState } from '@/@types/state/flow';
 export type ArrowNavigationDivElement = HTMLDivElement & {
   leftBtn: HTMLButtonElement;
   rightBtn: HTMLButtonElement;
-  pagePill: HTMLDivElement;
+  pagePill: HTMLButtonElement;
 };
 
 export interface CommonState {

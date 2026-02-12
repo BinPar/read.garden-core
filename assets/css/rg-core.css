@@ -577,7 +577,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
 
-  width: clamp(260px, 35vw, 420px);
+  width: clamp(260px, 35vw, 360px);
   max-width: calc(100% - 24px);
 
   z-index: 20;
@@ -633,6 +633,7 @@ body {
 
 #arrowNavigation .rg-page-pill {
   height: 34px;
+  cursor: pointer;
   padding: 0 18px;
   min-width: 92px;
   border-radius: 999px;
@@ -647,6 +648,10 @@ body {
   font-size: 14px;
   line-height: 1;
   white-space: nowrap;
+}
+
+#arrowNavigation .rg-page-pill.hidden {
+  opacity: 0;
 }
 
 #arrowNavigation .rg-icon {

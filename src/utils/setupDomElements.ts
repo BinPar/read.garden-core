@@ -164,8 +164,10 @@ const setupDomElements = (
       </svg>
     `;
 
-    const pagePill = iframeDoc.createElement('div');
+    const pagePill = iframeDoc.createElement('button');
     pagePill.className = 'rg-page-pill';
+    pagePill.type = 'button';
+    pagePill.setAttribute('aria-label', 'Progreso');
 
     const rightBtn = iframeDoc.createElement('button');
     rightBtn.type = 'button';

@@ -20,6 +20,11 @@ const rightThreshold = 38.5;
 const rightThresholdLandscape = 30.5;
 const leftThreshold = 17.5;
 const progressModes: FullState['progressMode'][] = ['percent', 'label', 'none'];
+const progressModesArrowNavigation: FullState['progressMode'][] = [
+  'label',
+  'percent',
+  'none',
+];
 let scrollPositionAfterSelect = 0;
 const SWIPE_DELTA_X_THRESHOLD = 80; // movimiento horizontal del puntero (px)
 const PAN_DELTA_THRESHOLD = 5; // cambio de scroll (px)
@@ -170,9 +175,13 @@ const setupDomEvents = () => {
 
   const handleProgressClick = (event: PointerEvent) => {
     preventAndStopPropagation(event);
-    const progressIndex = progressModes.indexOf(state.progressMode);
+    const currentProgressMode = config.showArrowNavigation
+      ? progressModesArrowNavigation
+      : progressModes;
+    const progressIndex = currentProgressMode.indexOf(state.progressMode);
+
     const progressMode =
-      progressModes[(progressIndex + 1) % progressModes.length];
+      currentProgressMode[(progressIndex + 1) % currentProgressMode.length];
     if (progressMode) {
       updateState({
         progressMode,
@@ -255,12 +264,19 @@ const setupDomEvents = () => {
     preventAndStopPropagation,
   );
 
-  if (state.arrowNavigation.leftBtn && state.arrowNavigation.rightBtn) {
+  if (
+    state.arrowNavigation.leftBtn &&
+    state.arrowNavigation.rightBtn &&
+    state.arrowNavigation.pagePill
+  ) {
     state.arrowNavigation.leftBtn.addEventListener('click', () => {
       moveBackwards();
     });
     state.arrowNavigation.rightBtn.addEventListener('click', () => {
       moveForward();
+    });
+    state.arrowNavigation.pagePill.addEventListener('click', (e) => {
+      handleProgressClick(e);
     });
   }
 };

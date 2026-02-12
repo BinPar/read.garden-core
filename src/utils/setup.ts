@@ -207,10 +207,6 @@ const setup = (initialOptions: Options) => {
 
   addPropertyChangeListener('contentSlug', () => {
     updateProgress();
-
-    if (state.arrowNavigation.pagePill) {
-      state.arrowNavigation.pagePill.textContent = state.contentSlug;
-    }
   });
 
   addPropertyChangeListener('contentOrder', () => {

@@ -1,16 +1,16 @@
+import type { DrawHighlights } from '@/@types/actions';
 import type { Options } from '@/@types/config';
 import type { CommonState, FullState, State } from '@/@types/state';
 import type { StatePropChangeHandler } from '@/utils/state/getPropertyValueListener';
-import type { DrawHighlights } from '@/@types/actions';
 
-import listeners from '@/utils/state/listeners';
-import processJsonData from '@/utils/processJsonData';
-import { notifyPropertyChange } from '@/utils/state/propertyChangeListener';
-import type setupDomElements from '@/utils/setupDomElements';
-import { defaultFixedConfig, defaultState } from '@/utils/defaults';
-import { getConfig } from '@/utils/config';
-import setupFlowElements from '@/utils/flow/setupElements';
 import type { CoreHighlight, UserHighlight } from '@/@types/selection';
+import { getConfig } from '@/utils/config';
+import { defaultFixedConfig, defaultState } from '@/utils/defaults';
+import setupFlowElements from '@/utils/flow/setupElements';
+import processJsonData from '@/utils/processJsonData';
+import type setupDomElements from '@/utils/setupDomElements';
+import listeners from '@/utils/state/listeners';
+import { notifyPropertyChange } from '@/utils/state/propertyChangeListener';
 
 let state: State | undefined;
 
@@ -64,6 +64,9 @@ export const init = (
   let common: CommonState = {
     ...defaultState,
     ...initialState,
+    progressMode: initialOptions.options.showArrowNavigation
+      ? 'label'
+      : defaultState.progressMode,
     theme,
     readMode,
     isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
