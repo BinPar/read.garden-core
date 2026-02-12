@@ -577,7 +577,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
 
-  width: clamp(260px, 35vw, 360px);
+  width: clamp(260px, 35vw, 420px);
   max-width: calc(100% - 24px);
 
   z-index: 20;
@@ -665,5 +665,6 @@ body {
     left: auto;
     transform: none;
     right: 0;
+    width: min(260px, calc(100% - 24px));
   }
 }
