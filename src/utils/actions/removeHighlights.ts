@@ -22,9 +22,6 @@ const removeHighlights: ActionHandler<RemoveHighlights> = ({
     }
   }
 
-  if (!userHighlightsById.size) {
-    state.arrowNavigation.style.removeProperty('display');
-  }
 };
 
 export default removeHighlights;

@@ -23,8 +23,6 @@ const redrawHighlights = () => {
     state.wrapper.appendChild(state.highlights);
   }
 
-  let hasRenderedHighlights = false;
-
   if (state.userHighlightsById?.size) {
     const highlights = Array.from(state.userHighlightsById.values());
 
@@ -33,16 +31,11 @@ const redrawHighlights = () => {
       if (highlight) {
         const domHighlights = renderUserHighlight(highlight);
 
-        if (domHighlights?.length) {
-          hasRenderedHighlights = true;
+        if (domHighlights) {
           state.domHighlightsById.set(highlight.id, domHighlights);
         }
       }
     }
-  }
-
-  if (!hasRenderedHighlights) {
-    state.arrowNavigation.style.removeProperty('display');
   }
 };
 

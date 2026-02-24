@@ -570,6 +570,10 @@ body {
   bottom: 0;
 }
 
+.selection-mode #arrowNavigation {
+  display: none;
+}
+
 /* Navigation */
 #arrowNavigation {
   position: fixed;

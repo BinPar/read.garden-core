@@ -35,8 +35,6 @@ const renderUserHighlight = (highlight: UserHighlight) => {
     sideOverride = state.contentRight.contains(startContainer) ? 'right' : 'left';
   }
 
-  state.arrowNavigation.style.display = 'none';
-
   const highlights = getDomHighlights({
     rects: Array.from(rects),
     color: highlight.color,
