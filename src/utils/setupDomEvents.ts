@@ -23,7 +23,6 @@ const progressModes: FullState['progressMode'][] = ['percent', 'label', 'none'];
 const progressModesArrowNavigation: FullState['progressMode'][] = [
   'label',
   'percent',
-  'none',
 ];
 let scrollPositionAfterSelect = 0;
 const SWIPE_DELTA_X_THRESHOLD = 80; // movimiento horizontal del puntero (px)
@@ -275,7 +274,7 @@ const setupDomEvents = () => {
     state.arrowNavigation.rightBtn.addEventListener('click', () => {
       moveForward();
     });
-    state.arrowNavigation.pagePill.addEventListener('click', (e) => {
+    state.arrowNavigation.pagePill.addEventListener('pointerdown', (e) => {
       handleProgressClick(e);
     });
   }
