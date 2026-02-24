@@ -2,7 +2,9 @@ import { getState } from '@/utils/state';
 
 const hideSelectionMenu = () => {
   const state = getState();
-  state.container.classList.remove('selection-mode');
+  window.setTimeout(() => {
+    state.container.classList.remove('selection-mode');
+  }, 0);
 };
 
 export default hideSelectionMenu;

@@ -35,6 +35,7 @@ function setupSelectionMenu(
       });
       hideSelectionMenu();
     });
+    button.addEventListener('click', preventAndStopPropagation);
     button.addEventListener('pointercancel', preventAndStopPropagation);
 
     state.selectionMenu.appendChild(button);
@@ -120,6 +121,7 @@ function setupSelectionMenu(
           }
         }
       });
+      button.addEventListener('click', preventAndStopPropagation);
       button.addEventListener('pointercancel', preventAndStopPropagation);
       state.selectionMenu.appendChild(button);
     }
