@@ -22,7 +22,8 @@ function setupSelectionMenu(
     button.innerText = title;
     button.classList.add('delete');
 
-    button.addEventListener('pointerdown', (event) => {
+    button.addEventListener('pointerdown', preventAndStopPropagation);
+    button.addEventListener('pointerup', (event) => {
       preventAndStopPropagation(event);
       dispatchEvent({
         type: 'onHighlightRemove',
@@ -34,8 +35,6 @@ function setupSelectionMenu(
       });
       hideSelectionMenu();
     });
-
-    button.addEventListener('pointerup', preventAndStopPropagation);
     button.addEventListener('pointercancel', preventAndStopPropagation);
 
     state.selectionMenu.appendChild(button);
@@ -60,7 +59,8 @@ function setupSelectionMenu(
       }
       button.setAttribute('style', `--highlighter-color: ${option.color}`);
 
-      button.addEventListener('pointerdown', (event) => {
+      button.addEventListener('pointerdown', preventAndStopPropagation);
+      button.addEventListener('pointerup', (event) => {
         preventAndStopPropagation(event);
 
         if (id) {
@@ -120,7 +120,6 @@ function setupSelectionMenu(
           }
         }
       });
-      button.addEventListener('pointerup', preventAndStopPropagation);
       button.addEventListener('pointercancel', preventAndStopPropagation);
       state.selectionMenu.appendChild(button);
     }
