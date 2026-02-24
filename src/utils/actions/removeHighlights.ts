@@ -21,6 +21,10 @@ const removeHighlights: ActionHandler<RemoveHighlights> = ({
       userHighlightsById.delete(id);
     }
   }
+
+  if (!userHighlightsById.size) {
+    state.arrowNavigation.style.removeProperty('display');
+  }
 };
 
 export default removeHighlights;
