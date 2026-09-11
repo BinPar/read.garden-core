@@ -103,6 +103,10 @@ const setupDomElements = (
     contentPlaceholder.id = 'content-placeholder';
     wrapper.appendChild(contentPlaceholder);
 
+    const fixedContentTransform = iframeDoc.createElement('div');
+    fixedContentTransform.id = 'fixed-content-transform';
+    contentPlaceholder.appendChild(fixedContentTransform);
+
     // Support two-page layout when configured
     content = iframeDoc.createElement('div');
     content.id = 'content';
@@ -115,8 +119,8 @@ const setupDomElements = (
     highlightsRight = iframeDoc.createElement('div');
     highlightsRight.id = 'highlights-right';
 
-    contentPlaceholder.appendChild(content);
-    contentPlaceholder.appendChild(contentRight);
+    fixedContentTransform.appendChild(content);
+    fixedContentTransform.appendChild(contentRight);
     // Attach highlights overlays to each page container
     content.appendChild(highlights);
     contentRight.appendChild(highlightsRight);

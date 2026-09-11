@@ -1,5 +1,4 @@
 import type { HighlighterType } from '@/@types/common';
-import isWebKit from '@/tools/isWebKit';
 import { getConfig } from '@/utils/config';
 import getDomHighlight from '@/utils/getDomHighlight';
 import getScale from '@/utils/getScale';
@@ -46,23 +45,13 @@ const getDomHighlights = ({
         const leftPadding =
           state.pageLayout === 'double' ? 5 : config.padding.left;
 
-        if (isWebKit()) {
-          top = rect.top - baseRect.top - config.padding.top / scale;
-          left =
-            state.pageLayout === 'double'
-              ? rect.left - baseRect.left - leftPadding
-              : rect.left - baseRect.left - leftPadding / scale;
-          width = rect.width;
-          height = rect.height;
-        } else {
-          top = (rect.top - baseRect.top - config.padding.top) / scale;
-          left =
-            state.pageLayout === 'double'
-              ? (rect.left - baseRect.left) / scale - leftPadding
-              : (rect.left - baseRect.left - leftPadding) / scale;
-          width = rect.width / scale;
-          height = rect.height / scale;
-        }
+        top = (rect.top - baseRect.top - config.padding.top) / scale;
+        left =
+          state.pageLayout === 'double'
+            ? (rect.left - baseRect.left) / scale - leftPadding
+            : (rect.left - baseRect.left - leftPadding) / scale;
+        width = rect.width / scale;
+        height = rect.height / scale;
 
         highlights.push(
           getDomHighlight({

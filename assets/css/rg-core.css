@@ -170,13 +170,23 @@ body {
 }
 
 .fixed.paginated #wrapper #content-placeholder {
+  --scale: calc(var(--zoom) / 100);
   height: 100%;
+  min-width: calc(var(--fixed-layout-width, 0px) + var(--fixed-left, 0px));
+  min-height: calc(var(--fixed-layout-height, 0px) + var(--fixed-top, 0px));
   padding-left: var(--fixed-left, 0);
   padding-top: var(--fixed-top, 0);
   will-change: padding-left, padding-top;
 }
 
-.fixed.paginated.double #content-placeholder {
+.fixed.paginated #fixed-content-transform {
+  display: inline-block;
+  transform: scale(var(--scale));
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.fixed.paginated.double #fixed-content-transform {
   white-space: nowrap;
 }
 
@@ -224,13 +234,10 @@ body {
 }
 
 .fixed.paginated .content {
-  --scale: calc(var(--zoom) / 100);
   --left: calc(var(--padding-left, 0) / var(--scale));
   --top: calc(var(--padding-top, 0) / var(--scale));
   padding: var(--top) calc(var(--padding-right, 0) / var(--scale)) calc(var(--padding-bottom, 0) / var(--scale)) var(--left);
   display: inline-block;
-  zoom: var(--scale);
-  will-change: zoom;
 }
 
 .fixed.paginated.double .content {

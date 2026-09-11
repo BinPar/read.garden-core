@@ -27,6 +27,8 @@ export type CssVariableKey =
   | 'zoom'
   | 'fixed-left'
   | 'fixed-top'
+  | 'fixed-layout-width'
+  | 'fixed-layout-height'
   | 'ui-scale'
   | 'ui-top'
   | 'ui-left'

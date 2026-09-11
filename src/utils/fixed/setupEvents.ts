@@ -1,5 +1,4 @@
 import debounce from '@/tools/debounce';
-import isWebKit from '@/tools/isWebKit';
 import setCssVariable from '@/tools/setCssVariable';
 import { getConfig } from '@/utils/config';
 import moveBackwards from '@/utils/moveBackwards';
@@ -26,11 +25,33 @@ let panStartScrollTop = 0;
 let previousFixedLeft = 0;
 let previousFixedTop = 0;
 
+const getFixedContentTransform = () => {
+  const state = getState();
+  const parent = state.content.parentElement;
+
+  if (parent?.id === 'fixed-content-transform') {
+    return parent;
+  }
+
+  return state.content;
+};
+
+const updateFixedLayoutSize = () => {
+  const element = getFixedContentTransform();
+  const layoutWidth = element.scrollWidth || element.clientWidth;
+  const layoutHeight = element.scrollHeight || element.clientHeight;
+  const width = layoutWidth * scale;
+  const height = layoutHeight * scale;
+
+  setCssVariable('fixed-layout-width', `${width}px`);
+  setCssVariable('fixed-layout-height', `${height}px`);
+
+  return { width, height };
+};
+
 export const checkCenter = () => {
   const state = getState();
-  const config = getConfig();
-  const element = state.content;
-  const parent = element.parentElement;
+  const parent = state.wrapper;
   if (!parent) {
     return;
   }
@@ -40,28 +61,11 @@ export const checkCenter = () => {
     const parentWidth = parentRect.width;
     const parentHeight = parentRect.height;
 
-    const elementRect = element.getBoundingClientRect();
-    const rightRect = state.contentRight
-      ? state.contentRight.getBoundingClientRect()
-      : null;
-
-    let elementWidth = elementRect.width;
-    let elementHeight = elementRect.height;
-    // In double page layout, use combined width and tallest height
-    if (state.pageLayout === 'double' && rightRect) {
-      elementWidth =
-        elementRect.width + rightRect.width + (config.contentGapSize || 0);
-
-      elementHeight = Math.max(elementRect.height, rightRect.height);
-    }
+    const { width: elementWidth, height: elementHeight } =
+      updateFixedLayoutSize();
 
     if (elementHeight === 0 || elementWidth === 0) {
       return;
-    }
-
-    if (isWebKit()) {
-      elementWidth = elementWidth * scale;
-      elementHeight = elementHeight * scale;
     }
 
     let fixedLeft = 0;
@@ -119,9 +123,10 @@ const updateScale = () => {
 export const setScale = (newValue: number) => {
   const newScale = Math.min(Math.max(newValue, minScale), maxScale);
   if (newScale === scale) {
+    updateScale();
     return;
   }
-  scale = newValue;
+  scale = newScale;
   updateScale();
 };
 
@@ -139,7 +144,7 @@ const setupEvents = () => {
   }
 
   scale = config.zoom / 100;
-  const element = state.content?.parentElement ?? state.content;
+  const element = getFixedContentTransform();
 
   let startDistance = 0;
 
