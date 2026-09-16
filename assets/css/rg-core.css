@@ -183,7 +183,6 @@ body {
   display: inline-block;
   transform: scale(var(--scale));
   transform-origin: top left;
-  will-change: transform;
 }
 
 .fixed.paginated.double #fixed-content-transform {
